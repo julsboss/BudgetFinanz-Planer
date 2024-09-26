@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanz- und Budgetplaner</title>
+    <link rel="stylesheet" href="css/styleAddCashflow.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Finanzen hinzufügen</h1>
+        <form id="transaction-form">
+            <div class="input-group">
+                <label for="type">Typ:</label>
+                <select id="type" required>
+                    <option value="">Wählen...</option>
+                    <option value="income">Einkommen</option>
+                    <option value="expense">Ausgabe</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="category">Kategorie:</label>
+                <select id="category" required>
+                    <!-- Add categories here -->
+                    <option value="salary">Gehälter</option>
+                    <option value="groceries">Lebensmittel</option>
+                    <option value="gas">Gas</option>
+                    <option value="rent">Miete</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="groceries">Lebensmittel</option>
+                    <!-- Add more categories as needed -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="amount">Betrag (€):</label>
+                <input type="number" id="amount" placeholder="0.00" required step="0.01">
+            </div>
+            <div class="input-group">
+                <label for="date">Datum:</label>
+                <input type="date" id="date" required>
+            </div>
+            <button type="submit">Transaktion hinzufügen</button>
+        </form>
+
+        <div id="transactions-list">
+            <!-- Transactions will be listed here -->
+        </div>
+
+        <div class="summary">
+            <p><strong>Gesamteinkommen:</strong> €<span id="total-income">0.00</span></p>
+            <p><strong>Gesamtausgaben:</strong> €<span id="total-expenses">0.00</span></p>
+        </div>
+    </div>
+
+    <script src="js/AddCashflow.js"></script>
+</body>
+</html>

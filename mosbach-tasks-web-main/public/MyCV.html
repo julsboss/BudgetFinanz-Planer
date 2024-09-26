@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lebenslauf Julia Bossauer</title>
+<link rel ="stylesheet"  href = "css/bootstrap.min.css">
+<link rel ="stylesheet"  href = "css/MyCV.css">
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/MyFunctions.js"></script>
+</head>
+
+<body>
+<h1>Mein Lebenslauf</h1>
+
+<div class ="container">
+    <div class ="row">
+        <div class ="col-md-6 col-sm-12"> 
+            Zuerst wurde ich in <span class="city" ">Dernbach</span> geboren. Dann bin ich in <span class="city">Hillscheid</span> aufgewachsen und war dort in der Grundschule. Anschließend war ich in <span class="city" >Vallendar</span> auf dem Gymnasium. Nun studiere ich in <span class="city">Mosbach</span>.
+        </div>
+        <div class = "col-md-6 col-sm-12">
+            <iframe 
+            id="gmap1" 
+            src="https://google.com/maps?q=dernbach&output=embed">
+        </iframe>
+        </div>
+    </div>
+</div>
+<script>
+    $("span.city").click(function(){
+        wh_location('gmap1', $(this).html())
+    });
+</script>
+
+
+</body>
+</html>

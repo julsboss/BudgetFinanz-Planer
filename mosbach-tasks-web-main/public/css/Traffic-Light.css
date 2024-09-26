@@ -1,0 +1,32 @@
+h1 {
+    color:red;
+}
+
+.light {
+    border: 2px black solid;
+   /* width: 25%; fluid*/
+   /*width: 200px; fest*/
+    width: 25%;
+    height: 80px;
+    display : inline-block;
+    margin : 5px;
+}
+@media (max-width: 650px){
+.light {
+   /* width: 400px; adaptiv */
+   width : 80% /*responsiv*/
+
+}
+}
+
+.red {
+    background-color: red;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.green {
+    background-color: yellowgreen;
+}
