@@ -9,7 +9,7 @@ document.getElementById('transaction-form').addEventListener('submit', function(
         alert("Bitte füllen Sie alle Felder korrekt aus.");
         return;
     }
-
+    
     const transactionList = document.getElementById('transactions-list');
     
     const transactionItem = document.createElement('div');
