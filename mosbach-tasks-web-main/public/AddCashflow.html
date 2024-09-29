@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="css/styleAddCashflow.css">
 </head>
 <body>
+    <header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../ressources/logo.jpg" alt="Logo" />
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">Über uns</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+    </nav>
+    </header>
     <div class="container">
         <h1>Finanzen hinzufügen</h1>
         <form id="transaction-form">
@@ -15,14 +28,17 @@
                 <select id="type" required>
                     <option value="">Wählen...</option>
                     <option value="income">Einkommen</option>
-                    <option value="expense">Ausgabe</option>
+                    <option value="fix costs">Fixe Kosten</option>
+                    <option value="variable costs">Variable Kosten</option>
+
                 </select>
             </div>
             <div class="input-group">
                 <label for="category">Kategorie:</label>
                 <select id="category" required>
                     <!-- Add categories here -->
-                    <option value="salary">Gehälter</option>
+                    <option value="">Wählen...</option>
+                    <option value="salary">Gehalt</option>
                     <option value="groceries">Lebensmittel</option>
                     <option value="gas">Gas</option>
                     <option value="rent">Miete</option>
@@ -39,11 +55,40 @@
                 <label for="date">Datum:</label>
                 <input type="date" id="date" required>
             </div>
+            
+            <div class="input-group">
+                <label for="payment-method">Zahlmethode:</label>
+                <select id="payment-method" required>
+                    <option value="">Wählen...</option>
+                    <!-- Add categories here -->
+                    <option value="cash">Bargeld</option>
+                    <option value="card">Bankkonto</option>
+                    <option value="paypal">Paypal</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="repetition">Wiederholung:</label>
+                <select id="repetition">
+                    <option value="" disabled selected>Wählen...</option>
+                    <option value="none">Keine Option</option>
+                    <option value="monthly">Jährlich</option>
+                    <option value="monthly">Monatlich</option>
+                    <option value="weekly">Wöchentlich</option>
+                    <option value="daily">Täglich</option>
+                </select>
+            </div>
+            <div class="input-group">
+            <label for="comments">Anmerkungen:</label>
+            <textarea id="comments" placeholder="Optional"></textarea>
+        </div>
             <button type="submit">Transaktion hinzufügen</button>
         </form>
-
+        
         <div id="transactions-list">
-            <!-- Transactions will be listed here -->
+            <h2>Transaktionen</h2>
+            <div id="transactions-container">
+                <!-- Transaktionen werden hier hinzugefügt -->
+            </div>
         </div>
 
         <div class="summary">
@@ -52,6 +97,6 @@
         </div>
     </div>
 
-    <script src="js/AddCashflow.js"></script>
+    <script src="js/AddCashflowV2.js"></script>
 </body>
 </html>
