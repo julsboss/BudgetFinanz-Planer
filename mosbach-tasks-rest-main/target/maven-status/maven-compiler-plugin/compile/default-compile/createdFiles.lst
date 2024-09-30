@@ -1,2 +1,4 @@
-mosbach/dhbw/de/cftestbackend/TasksBackendApplication.class
-mosbach/dhbw/de/cftestbackend/controller/PersonController.class
+mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.class
+mosbach\dhbw\de\mymonthlybudget\controller\MappingController.class
+mosbach\dhbw\de\mymonthlybudget\model\Cashflow.class
+mosbach\dhbw\de\TasksBackendApplication.class
