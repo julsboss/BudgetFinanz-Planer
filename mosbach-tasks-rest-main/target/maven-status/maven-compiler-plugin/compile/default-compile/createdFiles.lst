@@ -1,5 +1,8 @@
-mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.class
-mosbach\dhbw\de\mymonthlybudget\controller\MappingController.class
 mosbach\dhbw\de\mymonthlybudget\model\Cashflow.class
 mosbach\dhbw\de\TasksBackendApplication.class
+mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.class
+mosbach\dhbw\de\mymonthlybudget\controller\MappingController.class
+mosbach\dhbw\de\mymonthlybudget\data\api\CashflowManager.class
+mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowImpl.class
+mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowManagerImpl.class
 mosbach\dhbw\de\mymonthlybudget\data\api\Cashflow.class

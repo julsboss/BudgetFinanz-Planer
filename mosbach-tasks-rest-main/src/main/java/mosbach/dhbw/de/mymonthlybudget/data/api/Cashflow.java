@@ -7,6 +7,6 @@ public interface Cashflow {
         Double getAmount();
         String getDate();
         String getPaymentMethod();
-        String getRepition();
+        String getRepetition();
         String getComment();
 }
