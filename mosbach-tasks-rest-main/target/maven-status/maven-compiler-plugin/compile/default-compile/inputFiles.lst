@@ -1,9 +1,10 @@
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\controller\MappingController.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\api\Cashflow.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\api\CashflowManager.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowImpl.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowManagerImpl.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\Cashflow.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\MessageAnswer.java
-C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\TasksBackendApplication.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\controller\AuthController.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\controller\MappingController.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\api\Cashflow.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\api\CashflowManager.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowImpl.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowManagerImpl.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\Cashflow.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\MessageAnswer.java
+C:\Users\azureadmin\Budget-Finanzplaner\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\TasksBackendApplication.java
