@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://api.system.01.cf.eu01.stackit.cloud/", allowedHeaders = "*")
+@CrossOrigin(origins = "https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -23,7 +23,7 @@ public class UserController {
     public ResponseEntity<?> getUser(@RequestHeader("Authorization") String token){
         User user = userService.getUser(token);
         if(user != null){
-            return new ResponseEntity<User>((MultiValueMap<String, String>) new UserDTO(user), HttpStatus.OK);
+            return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
             //return new ResponseEntity<User>(new UserDTO(user), HttpStatus.OK);
         }
         else{

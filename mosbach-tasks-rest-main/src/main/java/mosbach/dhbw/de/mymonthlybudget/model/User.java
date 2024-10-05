@@ -7,11 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 public class User {
     private static int userIDCounter = 1;
-
+    public boolean checkPassword;
 
 
     @Id
     private int userID;
+    private String pat; //Personal Access Token
     private String firstName;
     private String lastName;
     private String email;
@@ -27,8 +28,14 @@ public class User {
         this.email = email;
         this.password = passwordEncoder.encode(password);
         this.isVerified= false;
-
+        this.pat = "";
     }
+
+    public User(String firstName, String lastName, String email, String password, String pat) {
+        this(firstName, lastName, email, password);
+        this.pat = pat;
+    }
+
     //Getter Setter
 
     public int getUserID() {
@@ -38,6 +45,7 @@ public class User {
     public void setUserID(int userID) {
         this.userID = userID;
     }
+
 
 
     public String getFirstName() {
@@ -84,4 +92,23 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public String getPat() {
+        return pat;
+    }
+
+    public void setPat(String pat) {
+        this.pat = pat;
+    }
+
+    //Functions
+
+    public boolean checkToken(){
+        return !pat.isEmpty();
+    }
+    public boolean checkPassword(String password){
+        return passwordEncoder.matches(password, this.password);
+    }
+
+
 }

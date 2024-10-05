@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private AuthService authService;
 
     static{
-        users.add(new User("Mariam", "Kmayha", "m.kmayha@outlook.de","1234"));
+        users.add(new User("Mariam", "Kmayha", "mar.kmayha.23@lehre.mosbach.dhbw.de","1234"));
     }
 
 

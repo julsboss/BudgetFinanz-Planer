@@ -1,5 +1,7 @@
 package mosbach.dhbw.de.mymonthlybudget.dto;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,12 +24,19 @@ public class UserDTO {
     @JsonProperty("password")
     private String password;
 
+    @JsonProperty("pat")
+    private String pat;
 
-    public UserDTO(String firstName, String lastName, String email, String password) {
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+
+    public UserDTO(String firstName, String lastName, String email, String password, String pat) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.pat = pat;
 
     }
     public UserDTO(User user){
@@ -35,6 +44,7 @@ public class UserDTO {
         this.lastName = user.getLastName();
         this.email =user.getEmail();
         this.password ="";
+        this.pat = user.getPat();
 
     }
 
@@ -69,10 +79,34 @@ public class UserDTO {
     public String getPassword() {
         return password;
     }
+
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @JsonProperty("pat")
+    public String getPat() {
+        return pat;
+    }
+    @JsonProperty("pat")
+    public void setPat(String pat) {
+        this.pat = pat;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+
+
+
 
 
 
