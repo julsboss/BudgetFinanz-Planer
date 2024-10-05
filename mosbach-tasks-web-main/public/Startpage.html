@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - My Monthly Budget</title>
     <link rel="stylesheet" href="css/styleStartpage.css">
-    <script src="js/"></script>
+  <!--  <script src="js/"></script>-->
 </head>
 <body>
     <header id="navbar">
@@ -34,59 +34,22 @@
         </section>
         <section id="map-section">
             <input id="pac-input" class="controls" type="text" placeholder="Suche nach Geldautomaten"/>
-            <div class = "col-md-6 col-sm-12">
+            <div>
                 <iframe 
-                id="map" 
-                src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d20876.407104210895!2d9.188812034820737!3d49.152150948092235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sGeld%C2%ADautomaten%20Heilbronn!5e0!3m2!1sde!2sde!4v1728167120921!5m2!1sde!2sde">
-            </iframe>
-
+                    id="map" 
+                    src="https://www.google.com/maps?q=Geldautomat&output=embed">
+                </iframe>
             </div>
-
         </section>
-        <script src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d20876.407104210895!2d9.188812034820737!3d49.152150948092235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sGeld%C2%ADautomaten%20Heilbronn!5e0!3m2!1sde!2sde!4v1728167120921!5m2!1sde!2sde"></script>
         <script>
-            function initMap() {
-              var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -33.8688, lng: 151.2195},
-                zoom: 13
-              });
-              var input = document.getElementById('searchInput');
-              var searchBox = new google.maps.places.SearchBox(input);
-              map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-      
-              map.addListener('bounds_changed', function() {
-                searchBox.setBounds(map.getBounds());
-              });
-      
-              searchBox.addListener('places_changed', function() {
-                var places = searchBox.getPlaces();
-                if (places.length == 0) {
-                  return;
-                }
-      
-                var bounds = new google.maps.LatLngBounds();
-                places.forEach(function(place) {
-                  if (!place.geometry) {
-                    console.log("Returned place contains no geometry");
-                    return;
-                  }
-      
-                  if (place.geometry.viewport) {
-                    bounds.union(place.geometry.viewport);
-                  } else {
-                    bounds.extend(place.geometry.location);
-                  }
-                });
-                map.fitBounds(bounds);
-              });
-            }
-          </script>
-        <!--<script>
-            $("pac-input.controls").on(function(){
-                wh_location('map', $(this).html())
+            document.getElementById('pac-input').addEventListener('input', function() {
+                const location = encodeURIComponent(this.value);
+                const map = document.getElementById('map');
+                map.src = `https://www.google.com/maps?q=${location}+Geldautomat&output=embed`;
             });
-        </script>-->
-    
+        </script>
+       
+        
         
       
     <footer>
