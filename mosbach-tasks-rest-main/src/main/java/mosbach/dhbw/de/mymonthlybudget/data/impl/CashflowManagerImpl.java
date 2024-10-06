@@ -15,9 +15,7 @@ import java.util.logging.Logger;
 public class CashflowManagerImpl implements CashflowManager {
 
 
-    private final String fileName = "src/main/resources/tasks.properties";
-
-
+   String fileName = "cashflow.properties";
     private static CashflowManagerImpl cashflowManagerImpl = null;
 
     private CashflowManagerImpl(){};
@@ -45,20 +43,28 @@ public class CashflowManagerImpl implements CashflowManager {
             try(InputStream resourceStream = loader.getResourceAsStream(fileName)){
                 properties.load(resourceStream);
             }
-            while(properties.containsKey("Cashflow." + i + ".Type")) {
-                String type = properties.getProperty("Task." + i + ".Type");
-                String category = properties.getProperty("Task." + i + ".Category");
-                Double amount = Double.parseDouble(properties.getProperty("Task." + i + ".Amount"));
-                String date = properties.getProperty("Task." + i + ".Date");
-                String paymentMethod = properties.getProperty("Task." + i + ".PaymentMethod");
-                String repetition = properties.getProperty("Task." + i + ".Repetition");
-                String comment = properties.getProperty("Task." + i + ".Comment");
-                i++;
+            Logger
+                    .getLogger("CashflowManager")
+                    .log(Level.INFO, "Loaded the file");
 
+            while(properties.containsKey("Cashflow." + i + ".Type")) {
+                String type = properties.getProperty("Cashflow." + i + ".Type");
+                Integer cashflowID = Integer.valueOf(properties.getProperty("Cashflow."+ i + ".CashflowID"));
+                String category = properties.getProperty("Cashflow." + i + ".Category");
+                Double amount = Double.parseDouble(properties.getProperty("Cashflow." + i + ".Amount"));
+                String date = properties.getProperty("Cashflow." + i + ".Date");
+                String paymentMethod = properties.getProperty("Cashflow." + i + ".PaymentMethod");
+                String repetition = properties.getProperty("Cashflow." + i + ".Repetition");
+                String comment = properties.getProperty("Cashflow." + i + ".Comment");
+
+                Logger
+                        .getLogger("CashflowManager")
+                        .log(Level.INFO, "Found a file");
                 cashflows.add(new
-                        CashflowImpl(type, category,amount,date,paymentMethod,repetition,comment)
+                        CashflowImpl(type,category,amount,date,paymentMethod,repetition,comment)
 
                 );
+                i++;
             }
         } catch (IOException e) {
             Logger.getLogger( "GetAllCashflowReader").log(Level.INFO,
@@ -80,16 +86,18 @@ public class CashflowManagerImpl implements CashflowManager {
 
         for( Cashflow t : cashflows){
             properties.setProperty("Cashflow." + i + ".Type", t.getType());
+            properties.setProperty("Cashflow." + i + ".CashflowID", t.getID()+"");
             properties.setProperty("Cashflow." + i + ".Category", t.getCategory());
             properties.setProperty("Cashflow." + i + ".Amount", t.getAmount()+"");
             properties.setProperty("Cashflow." + i + ".Date", t.getDate());
             properties.setProperty("Cashflow." + i + ".PaymentMethod", t.getPaymentMethod());
             properties.setProperty("Cashflow." + i + ".Repetition", t.getRepetition());
             properties.setProperty("Cashflow." + i + ".Comment", t.getComment());
+            i++;
         }
         try { //hier fehlt was soll noch geschickt werden
             properties.store(new FileOutputStream(fileName), null);
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.getLogger("SetAllCashflowWriter").log(Level.INFO, "File cannot be written to disk");
         }
     }

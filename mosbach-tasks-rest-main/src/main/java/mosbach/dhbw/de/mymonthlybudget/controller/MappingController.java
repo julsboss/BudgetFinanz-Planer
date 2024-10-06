@@ -1,9 +1,13 @@
 package mosbach.dhbw.de.mymonthlybudget.controller;
 
+import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowImpl;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowManagerImpl;
 import mosbach.dhbw.de.mymonthlybudget.model.CashflowRequest;
 import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
+import mosbach.dhbw.de.mymonthlybudget.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,37 +23,37 @@ public class MappingController {
 
     public MappingController(
     ) {}
+    @Autowired
+    private UserService userService;
+   
 
     @PostMapping (
             path = "/cashflow",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public MessageAnswer createTasks(@RequestBody  CashflowRequest request) {
+    public MessageAnswer createCashflow(@RequestHeader ("Authorization") String token, @RequestBody  CashflowRequest request) {
 
-        String token = request.getToken();
-        if (token != null && token.startsWith("Authorization")) {
-            token = token.substring(7);
-            // Verwenden Sie den Token hier
+        User user = userService.getUser(token);
+        if(user != null) {
+            propertiesCashflowManager.addCashflow(new CashflowImpl(
+                    request.getCashflow().getType(),
+                    request.getCashflow().getCategory(),
+                    request.getCashflow().getAmount(),
+                    // Double.parseDouble(tokenTask.getTask().getGrade()),
+                    request.getCashflow().getDate(),
+                    request.getCashflow().getPaymentMethod(),
+                    request.getCashflow().getRepetition(),
+                    request.getCashflow().getComment()
+
+            ));
+
+            return
+                    new MessageAnswer("Cashflow added to your Cashflowlist.");
         }
-        //TODO check the token
-        propertiesCashflowManager.addCashflow(new CashflowImpl(
-                request.getCashflow().getType(),
-                request.getCashflow().getCategory(),
-                request.getCashflow().getAmount(),
-               // Double.parseDouble(tokenTask.getTask().getGrade()),
-                request.getCashflow().getDate(),
-                request.getCashflow().getPaymentMethod(),
-                request.getCashflow().getRepetition(),
-                request.getCashflow().getComment()
+        else {
+            return new MessageAnswer("Wrong Credentials");
+        }
 
-        ));
-
-
-        // Double gradeDouble = Double.parseDouble(tokenTask.getTask().getGrade());
-        // String answer = "You were a bit lazy.";
-        // if (gradeDouble < 2.3) answer = "OK, you have learned";
-        return
-                new MessageAnswer("Task added to your tasklist.");
     }
     /*public ResponseEntity<?> createCashflow(@RequestHeader("Authorization") String token,@RequestBody CashflowRequest request) {
         // Logik zur Verarbeitung der Transaktion
