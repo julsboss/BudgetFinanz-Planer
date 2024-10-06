@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - My Monthly Budget</title>
+    <link rel="stylesheet" href="css/styleStartpage.css">
+  <!--  <script src="js/"></script>-->
+</head>
+<body>
+    <header id="navbar">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../ressources/logo.jpg" alt="Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a href="Homepage.html">Home</a></li>
+                <li><a href="#features">Funktionen</a></li>
+                <li><a href="#about">Über uns</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+                <li><a href="LoginPage.html" class="login-icon">Abmelden</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="dashboard">
+            <h1>Willkommen zurück, [Benutzername]!</h1>
+            <div class="button-container">
+               <a href="AddCashflow.html"> <button  class="btn btn-primary">Finanzstrom hinzufügen</button></a>
+                <button class="btn btn-secondary">Statistik anzeigen</button>
+                <!-- Weitere Buttons hinzufügen -->
+            </div>
+        </section>
+        <section id="map-section">
+            <input id="pac-input" class="controls" type="text" placeholder="Suche nach Geldautomaten"/>
+            <div>
+                <iframe 
+                    id="map" 
+                    src="https://www.google.com/maps?q=Geldautomat&output=embed">
+                </iframe>
+            </div>
+        </section>
+        <script>
+            document.getElementById('pac-input').addEventListener('input', function() {
+                const location = encodeURIComponent(this.value);
+                const map = document.getElementById('map');
+                map.src = `https://www.google.com/maps?q=${location}+Geldautomat&output=embed`;
+            });
+        </script>
+       
+        
+        
+      
+    <footer>
+        <p>&copy; 2024 My Monthly Budget. Alle Rechte vorbehalten.</p>
+    </footer>
+
+</body>
+</html>
