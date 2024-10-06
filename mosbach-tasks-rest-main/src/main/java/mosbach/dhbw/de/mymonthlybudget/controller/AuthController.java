@@ -1,27 +1,23 @@
 package mosbach.dhbw.de.mymonthlybudget.controller;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
-import mosbach.dhbw.de.mymonthlybudget.data.api.VerificationService;
-import mosbach.dhbw.de.mymonthlybudget.dto.AuthMessage;
-import mosbach.dhbw.de.mymonthlybudget.data.api.VerificationService;
-import mosbach.dhbw.de.mymonthlybudget.data.impl.AuthServiceImpl;
-import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
-import mosbach.dhbw.de.mymonthlybudget.dto.MessageToken;
-import mosbach.dhbw.de.mymonthlybudget.dto.UserDTO;
-import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
+import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
+import mosbach.dhbw.de.mymonthlybudget.dto.AuthMessage;
+import mosbach.dhbw.de.mymonthlybudget.dto.MessageToken;
+import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
+import mosbach.dhbw.de.mymonthlybudget.model.User;
+
 import javax.print.attribute.standard.Media;
 
 
-@CrossOrigin(origins = "https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/", allowedHeaders = "*")
+@CrossOrigin(origins = "https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -32,15 +28,14 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+   /*
     @Autowired
     private VerificationService verificationService;
 
-    @GetMapping
-    public String getAuth() {
-        return "I am alive.";
-    }
+    */
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
+
+    @PostMapping(path = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> signIn(@RequestBody AuthMessage authMessage){
         User user = userService.getUserByEmail(authMessage.getEmail());
         if(user != null) {
@@ -55,7 +50,7 @@ public class AuthController {
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("User not found"), HttpStatus.UNAUTHORIZED);
         }
     }
-
+/*
     @PostMapping( path = "/sign-in", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> signIn(@RequestBody UserDTO userRequest){
         User user;
@@ -72,7 +67,7 @@ public class AuthController {
             return new ResponseEntity<MessageReason>(new MessageReason("Mail already exists"), HttpStatus.BAD_REQUEST);
         }
     }
-
+*/
     @DeleteMapping
     public ResponseEntity<?> signOut(@RequestHeader("Authorization") String token) {
         if(authService.isTokenExpired(token)) return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong credentials"), HttpStatus.UNAUTHORIZED);

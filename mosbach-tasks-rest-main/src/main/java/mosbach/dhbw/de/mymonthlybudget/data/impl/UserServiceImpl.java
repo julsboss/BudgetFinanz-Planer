@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     static{
         users.add(new User("Mariam", "Kmayha", "mar.kmayha.23@lehre.mosbach.dhbw.de","1234"));
+        users.get(0).setVerified(true);
     }
 
 
@@ -29,11 +30,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return (User) users
+       User foundUser = users
+
                 .stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst()
                 .orElse(null);
+        if(foundUser == null){
+            System.out.println("Benutzer nicht gefunden");
+        } else {
+            System.out.println("Benutzer gefunden" + foundUser.getEmail());
+        }
+        return foundUser;
+
     }
 
     @Override
@@ -49,4 +58,5 @@ public class UserServiceImpl implements UserService {
                 .findFirst()
                 .orElse(null);
     }
+
 }

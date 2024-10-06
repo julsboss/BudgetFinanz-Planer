@@ -20,11 +20,6 @@ public class MappingController {
     public MappingController(
     ) {}
 
-    @GetMapping ("/auth")
-    public String getAuth() {
-        return "I am alive.";
-    }
-
     @PostMapping (
             path = "/cashflow",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
@@ -32,7 +27,7 @@ public class MappingController {
     public MessageAnswer createTasks(@RequestBody  CashflowRequest request) {
 
         String token = request.getToken();
-        if (token != null && token.startsWith("Bearer ")) {
+        if (token != null && token.startsWith("Authorization")) {
             token = token.substring(7);
             // Verwenden Sie den Token hier
         }

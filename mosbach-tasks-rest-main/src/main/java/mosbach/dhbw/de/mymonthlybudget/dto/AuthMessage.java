@@ -1,9 +1,13 @@
 package mosbach.dhbw.de.mymonthlybudget.dto;
 
-import com.fasterxml.jackson.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthMessage {
@@ -21,6 +25,9 @@ public class AuthMessage {
         this.email = email;
         this.password = password;
     }
+
+
+
     @JsonProperty("email")
     public String getEmail(){
         return email;
@@ -37,18 +44,18 @@ public class AuthMessage {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public void setAdditionalProperties(String name, String value) {
         this.additionalProperties.put(name, value);
     }
 
- */
+
 
 
 }

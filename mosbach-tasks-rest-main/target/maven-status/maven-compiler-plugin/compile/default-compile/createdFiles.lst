@@ -16,6 +16,7 @@ mosbach\dhbw\de\mymonthlybudget\model\User.class
 mosbach\dhbw\de\mymonthlybudget\model\Cashflow.class
 mosbach\dhbw\de\mymonthlybudget\model\MessageAnswer.class
 mosbach\dhbw\de\mymonthlybudget\dto\UserDTO.class
+mosbach\dhbw\de\mymonthlybudget\data\api\UserManager.class
 mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.class
 mosbach\dhbw\de\mymonthlybudget\data\api\CashflowManager.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\CashflowImpl.class
