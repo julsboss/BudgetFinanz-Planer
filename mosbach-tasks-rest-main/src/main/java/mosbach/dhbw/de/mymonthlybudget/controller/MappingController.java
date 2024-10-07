@@ -3,15 +3,18 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowImpl;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowManagerImpl;
-import mosbach.dhbw.de.mymonthlybudget.model.CashflowRequest;
-import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
+import mosbach.dhbw.de.mymonthlybudget.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import mosbach.dhbw.de.mymonthlybudget.data.api.CashflowManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -55,9 +58,43 @@ public class MappingController {
         }
 
     }
-    /*public ResponseEntity<?> createCashflow(@RequestHeader("Authorization") String token,@RequestBody CashflowRequest request) {
-        // Logik zur Verarbeitung der Transaktion
-        System.out.println(request);
-        return ResponseEntity.ok("Transaktion erfolgreich erstellt");
-    }*/
+
+    @GetMapping("/cashflow")
+    public CashflowResponse getAllCashflows(
+            @RequestParam (value = "sortOrder", defaultValue = "date") String sortOrder,
+            @RequestHeader ("Authorization") String token
+    ) {
+        User user = userService.getUser(token);
+        if(user != null){
+            Logger
+                    .getLogger("MappingController")
+                    .log(Level.INFO, "Get-Call-Ausführung");
+            CashflowResponse answerCashflow = new CashflowResponse();
+            List<Cashflow> myCashflows = new ArrayList<>();
+            for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : propertiesCashflowManager.getAllCashflows())
+                myCashflows.add(new mosbach.dhbw.de.mymonthlybudget.model.Cashflow(
+                        c.getType(),
+                        c.getCategory(),
+                        c.getAmount(),
+                        c.getDate(),
+                        c.getPaymentMethod(),
+                        c.getRepetition(),
+                        c.getComment()
+
+                ));
+            answerCashflow.setSortOrder("NOT YET SORTED");
+            Logger
+                    .getLogger("MappingController")
+                    .log(Level.INFO, "Cashflows from file");
+
+            answerCashflow.setCashflow( myCashflows);
+            return
+                    answerCashflow;
+        }
+     else{ return null;
+
+    }
+
+    }
+
 }

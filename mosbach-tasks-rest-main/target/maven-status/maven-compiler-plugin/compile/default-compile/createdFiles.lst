@@ -10,6 +10,7 @@ mosbach\dhbw\de\mymonthlybudget\controller\AuthController.class
 mosbach\dhbw\de\mymonthlybudget\dto\AuthMessage.class
 mosbach\dhbw\de\mymonthlybudget\controller\UserController.class
 mosbach\dhbw\de\mymonthlybudget\data\api\VerificationService.class
+mosbach\dhbw\de\mymonthlybudget\model\CashflowResponse.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\UserServiceImpl.class
 mosbach\dhbw\de\mymonthlybudget\dto\MessageReason.class
 mosbach\dhbw\de\mymonthlybudget\model\User.class
