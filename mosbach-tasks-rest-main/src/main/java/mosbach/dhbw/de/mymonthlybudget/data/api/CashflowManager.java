@@ -7,4 +7,6 @@ public interface CashflowManager {
     void addCashflow(Cashflow newCashflow);
 
     List<Cashflow> getAllCashflows();
+
+   // boolean removeCashflow(String cashflowID, Integer userID );
 }
