@@ -70,7 +70,7 @@ public class MappingController {
                     .getLogger("MappingController")
                     .log(Level.INFO, "Get-Call-Ausführung");
             CashflowResponse answerCashflow = new CashflowResponse();
-            List<Cashflow> myCashflows = new ArrayList<>();
+            List<mosbach.dhbw.de.mymonthlybudget.model.Cashflow> myCashflows = new ArrayList<>();
             for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : propertiesCashflowManager.getAllCashflows())
                 myCashflows.add(new mosbach.dhbw.de.mymonthlybudget.model.Cashflow(
                         c.getType(),
