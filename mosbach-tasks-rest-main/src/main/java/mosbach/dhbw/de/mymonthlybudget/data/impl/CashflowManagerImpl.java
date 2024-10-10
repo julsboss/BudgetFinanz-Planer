@@ -79,6 +79,19 @@ public class CashflowManagerImpl implements CashflowManager {
 
         return cashflows;
     }
+
+    @Override
+    public boolean removeCashflow(String cashflowID) {
+        List<Cashflow> cashflows = getAllCashflows();
+        boolean removed = cashflows.removeIf(c -> c.getID().equals(cashflowID));
+
+        if (removed) {
+            setAllCashflows(cashflows);
+        }
+
+        return removed;
+    }
+
     public void setAllCashflows(List<Cashflow> cashflows){
 
         Properties properties = new Properties();

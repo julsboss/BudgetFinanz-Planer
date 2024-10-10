@@ -96,5 +96,21 @@ public class MappingController {
     }
 
     }
+    @DeleteMapping("/cashflow/{cashflowId}")
+    public ResponseEntity<String> deleteCashflow(
+            @PathVariable String cashflowId,
+            @RequestHeader("Authorization") String token) {
+        User user = userService.getUser(token);
+        if (user != null) {
+            boolean removed = propertiesCashflowManager.removeCashflow(cashflowId);
+            if (removed) {
+                return ResponseEntity.ok("Cashflow successfully deleted.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cashflow not found.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        }
+    }
 
 }
