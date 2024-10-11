@@ -1,8 +1,8 @@
 ---
 applications:
-- name: TasksFrontend
+- name: BudgetFrontend
   instances: 1
-  host: TasksFrontend{random-word}
+  host: BudgetFrontend{random-word}
   path: .
   buildpacks:
     - php_buildpack
