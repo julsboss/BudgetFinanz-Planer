@@ -5,7 +5,6 @@ import jakarta.persistence.Id;
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 @Entity
 public class CashflowImpl implements Cashflow {
-    private static int cashflowIDCounter =1;
     @Id
     private int cashflowID;
     private String type;
@@ -24,12 +23,22 @@ public class CashflowImpl implements Cashflow {
         this.paymentMethod = paymentMethod;
         this.repetition = repetition;
         this.comments = comments;
-        this.cashflowID = cashflowIDCounter;
-        cashflowIDCounter++;
+    }
+    // Optional: Konstruktor mit ID für Datenbankabfragen
+    public CashflowImpl(int id, String type, String category, Double amount, String date,
+                        String paymentMethod, String repetition, String comments) {
+        this.cashflowID = id; // Setze die ID beim Abrufen aus der Datenbank
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+        this.paymentMethod = paymentMethod;
+        this.repetition = repetition;
+        this.comments = comments;
     }
 
     @Override
-    public Integer getID() {
+    public Integer getCashflowID() {
         return cashflowID;
     }
 

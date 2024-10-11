@@ -3,6 +3,7 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowImpl;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowManagerImpl;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.PostgresDBCashflowManagerImpl;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,9 @@ public class MappingController {
     CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
     // private final PersonRepository personRepository;
 
+    //TODO: when ready for using database manager, switch to:
+   // CashflowManager cashflowManager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
+
     public MappingController(
     ) {}
     @Autowired
@@ -39,6 +43,7 @@ public class MappingController {
         User user = userService.getUser(token);
         if(user != null) {
             propertiesCashflowManager.addCashflow(new CashflowImpl(
+                    request.getCashflow().getId(), //muss drüber geschaut werden
                     request.getCashflow().getType(),
                     request.getCashflow().getCategory(),
                     request.getCashflow().getAmount(),
@@ -58,7 +63,19 @@ public class MappingController {
         }
 
     }
+   /* wenn datenbank erfolgreich implementiert
+    @GetMapping("/create-task-table")
+    public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
+        Logger.getLogger("MappingController")
+                .log(Level.INFO,"MappingController create-task-table " + token);
 
+        // TODO:  Check token, this should be a very long, super secret token
+        // Usually this is done via a different, internal component, not the same component for all public REST access
+
+        cashflowManager.createTaskTable();
+
+        return "ok";
+    }*/
     @GetMapping("/cashflow")
     public CashflowResponse getAllCashflows(
             @RequestParam (value = "sortOrder", defaultValue = "date") String sortOrder,
@@ -73,6 +90,7 @@ public class MappingController {
             List<mosbach.dhbw.de.mymonthlybudget.model.Cashflow> myCashflows = new ArrayList<>();
             for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : propertiesCashflowManager.getAllCashflows())
                 myCashflows.add(new mosbach.dhbw.de.mymonthlybudget.model.Cashflow(
+                        c.getCashflowID(),
                         c.getType(),
                         c.getCategory(),
                         c.getAmount(),
@@ -97,8 +115,8 @@ public class MappingController {
 
     }
     @DeleteMapping("/cashflow/{cashflowId}")
-    public ResponseEntity<String> deleteCashflow(
-            @PathVariable String cashflowId,
+    public ResponseEntity<?> deleteCashflow(
+            @PathVariable int cashflowId,
             @RequestHeader("Authorization") String token) {
         User user = userService.getUser(token);
         if (user != null) {
@@ -112,5 +130,5 @@ public class MappingController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
         }
     }
-
+    //TODO: ALEXA implementieren
 }

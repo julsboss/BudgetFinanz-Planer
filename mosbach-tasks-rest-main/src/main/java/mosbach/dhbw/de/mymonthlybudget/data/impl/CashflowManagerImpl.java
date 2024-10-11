@@ -81,9 +81,10 @@ public class CashflowManagerImpl implements CashflowManager {
     }
 
     @Override
-    public boolean removeCashflow(String cashflowID) {
+    public boolean removeCashflow(int cashflowID) {
+
         List<Cashflow> cashflows = getAllCashflows();
-        boolean removed = cashflows.removeIf(c -> c.getID().equals(cashflowID));
+        boolean removed = cashflows.removeIf(c -> c.getCashflowID().equals(cashflowID));
 
         if (removed) {
             setAllCashflows(cashflows);
@@ -99,7 +100,7 @@ public class CashflowManagerImpl implements CashflowManager {
 
         for( Cashflow t : cashflows){
             properties.setProperty("Cashflow." + i + ".Type", t.getType());
-            properties.setProperty("Cashflow." + i + ".CashflowID", t.getID()+"");
+            properties.setProperty("Cashflow." + i + ".CashflowID", t.getCashflowID()+"");
             properties.setProperty("Cashflow." + i + ".Category", t.getCategory());
             properties.setProperty("Cashflow." + i + ".Amount", t.getAmount()+"");
             properties.setProperty("Cashflow." + i + ".Date", t.getDate());
@@ -108,7 +109,7 @@ public class CashflowManagerImpl implements CashflowManager {
             properties.setProperty("Cashflow." + i + ".Comment", t.getComment());
             i++;
         }
-        try { //hier fehlt was soll noch geschickt werden
+        try {
             properties.store(new FileOutputStream(fileName), null);
         } catch (IOException e) {
             Logger.getLogger("SetAllCashflowWriter").log(Level.INFO, "File cannot be written to disk");
