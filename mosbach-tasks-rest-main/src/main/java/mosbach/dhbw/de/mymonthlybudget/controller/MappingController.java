@@ -22,17 +22,29 @@ import java.util.logging.Logger;
 @RequestMapping("/api")
 public class MappingController {
 
-    CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
+  //  CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
     // private final PersonRepository personRepository;
 
     //TODO: when ready for using database manager, switch to:
-   // CashflowManager cashflowManager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
+  CashflowManager cashflowManager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
 
     public MappingController(
     ) {}
     @Autowired
     private UserService userService;
-   
+
+    @GetMapping("/create-task-table")
+    public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
+        Logger.getLogger("MappingController")
+                .log(Level.INFO,"MappingController create-task-table " + token);
+
+        // TODO:  Check token, this should be a very long, super secret token
+        // Usually this is done via a different, internal component, not the same component for all public REST access
+
+        cashflowManager.createCashflowTable();
+
+        return "ok";
+    }
 
     @PostMapping (
             path = "/cashflow",
@@ -42,8 +54,8 @@ public class MappingController {
 
         User user = userService.getUser(token);
         if(user != null) {
-            propertiesCashflowManager.addCashflow(new CashflowImpl(
-                    request.getCashflow().getId(), //muss drüber geschaut werden
+            cashflowManager.addCashflow(new CashflowImpl(
+                 //   request.getCashflow().getId(), //muss drüber geschaut werden
                     request.getCashflow().getType(),
                     request.getCashflow().getCategory(),
                     request.getCashflow().getAmount(),
@@ -88,7 +100,7 @@ public class MappingController {
                     .log(Level.INFO, "Get-Call-Ausführung");
             CashflowResponse answerCashflow = new CashflowResponse();
             List<mosbach.dhbw.de.mymonthlybudget.model.Cashflow> myCashflows = new ArrayList<>();
-            for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : propertiesCashflowManager.getAllCashflows())
+            for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : cashflowManager.getAllCashflows())
                 myCashflows.add(new mosbach.dhbw.de.mymonthlybudget.model.Cashflow(
                         c.getCashflowID(),
                         c.getType(),
@@ -120,7 +132,7 @@ public class MappingController {
             @RequestHeader("Authorization") String token) {
         User user = userService.getUser(token);
         if (user != null) {
-            boolean removed = propertiesCashflowManager.removeCashflow(cashflowId);
+            boolean removed = cashflowManager.removeCashflow(cashflowId);
             if (removed) {
                 return ResponseEntity.ok("Cashflow successfully deleted.");
             } else {
@@ -131,4 +143,5 @@ public class MappingController {
         }
     }
     //TODO: ALEXA implementieren
+
 }

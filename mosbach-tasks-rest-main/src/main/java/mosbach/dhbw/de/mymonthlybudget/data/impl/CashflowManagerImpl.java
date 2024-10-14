@@ -93,6 +93,11 @@ public class CashflowManagerImpl implements CashflowManager {
         return removed;
     }
 
+    @Override
+    public void createCashflowTable() {
+
+    }
+
     public void setAllCashflows(List<Cashflow> cashflows){
 
         Properties properties = new Properties();

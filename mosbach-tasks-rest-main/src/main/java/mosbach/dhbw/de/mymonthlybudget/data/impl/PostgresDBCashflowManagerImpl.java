@@ -41,6 +41,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             postgresDBCashflowManager = new PostgresDBCashflowManagerImpl();
         return postgresDBCashflowManager;
     }
+
     public void createCashflowTable() {
 
         // Be carefull: It deletes data if table already exists.
@@ -54,7 +55,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             stmt.executeUpdate(dropTable);
 
             String createTable = "CREATE TABLE group21cashflows (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "cashflow_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "type VARCHAR(50) NOT NULL, " +
                     "category VARCHAR(100) NOT NULL, " +
                     "amount DECIMAL(10, 2) NOT NULL, " +
@@ -91,7 +92,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
          try {
              connection = DriverManager.getConnection(dbUrl, username, password);
 
-             String insertSQL = "INSERT INTO cashflows (type, category, amount, date, payment_method, recurrence, notes) VALUES (?, ?, ?, ?, ?, ?, ?)";
+             String insertSQL = "INSERT INTO group21cashflows (type, category, amount, date, payment_method, repetition, comment) VALUES (?, ?, ?, ?, ?, ?, ?)";
              pstmt = connection.prepareStatement(insertSQL);
              pstmt.setString(1, cashflow.getType());
              pstmt.setString(2, cashflow.getCategory());
@@ -130,20 +131,20 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             stmt = connection.createStatement();
 
             // Ausführen einer SQL-Abfrage, um alle Cashflows zu erhalten
-            ResultSet rs = stmt.executeQuery("SELECT * FROM cashflows");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM group21cashflows");
 
             // Iteration über das ResultSet, um Cashflow-Objekte zu erstellen
             while (rs.next()) {
                 cashflows.add(
                         new CashflowImpl(
-                                rs.getInt("id"),  // Lesen der ID
+                                rs.getInt("cashflow_id"),  // Lesen der ID
                                 rs.getString("type"),  // Lesen des Typs (Einkommen oder Ausgabe)
                                 rs.getString("category"),  // Lesen der Kategorie
                                 rs.getDouble("amount"),  // Lesen des Betrags
                                 rs.getDate("date").toString(),  // Lesen des Datums
                                 rs.getString("payment_method"),  // Lesen der Zahlungsmethode
-                                rs.getString("recurrence"),  // Lesen der Wiederholung
-                                rs.getString("notes")  // Lesen der Anmerkungen
+                                rs.getString("repetition"),  // Lesen der Wiederholung
+                                rs.getString("comment")  // Lesen der Anmerkungen
                         )
                 );
             }
@@ -170,7 +171,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
         try {
             connection = DriverManager.getConnection(dbUrl, username, password);
 
-            String deleteSQL = "DELETE FROM cashflows WHERE id = ?";
+            String deleteSQL = "DELETE FROM group21cashflows WHERE cashflow_id = ?";
             pstmt = connection.prepareStatement(deleteSQL);
             pstmt.setInt(1, cashflowID);
 
@@ -208,7 +209,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
         try {
             connection = DriverManager.getConnection(dbUrl, username, password);
 
-            String sql = "SELECT * FROM cashflows WHERE user_id = ? AND ((repetition = 'monthly') OR (MONTH(date) = ? AND YEAR(date) = ?)) AND type = ?";
+            String sql = "SELECT * FROM group21cashflows WHERE user_id = ? AND ((repetition = 'monthly') OR (MONTH(date) = ? AND YEAR(date) = ?)) AND type = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, userID);
             pstmt.setInt(2, month);
@@ -219,7 +220,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
 
             while (rs.next()) {
                 Cashflow cashflow = new CashflowImpl(
-                        rs.getInt("id"),
+                        rs.getInt("cashflow_id"),
                         rs.getString("type"),
                         rs.getString("category"),
                         rs.getDouble("amount"),
@@ -255,7 +256,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
         try {
             connection = DriverManager.getConnection(dbUrl, username, password);
 
-            String sql = "SELECT * FROM cashflows WHERE user_id = ? AND MONTH(date) = ? AND YEAR(date) = ?";
+            String sql = "SELECT * FROM group21cashflows WHERE user_id = ? AND MONTH(date) = ? AND YEAR(date) = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, userID);
             pstmt.setInt(2, month);
@@ -265,14 +266,14 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
 
             while (rs.next()) {
                 Cashflow cashflow = new CashflowImpl(
-                        rs.getInt("id"),
+                        rs.getInt("cashflow_id"),
                         rs.getString("type"),
                         rs.getString("category"),
                         rs.getDouble("amount"),
                         rs.getDate("date").toString(),
                         rs.getString("payment_method"),
-                        rs.getString("recurrence"),
-                        rs.getString("notes")
+                        rs.getString("repetition"),
+                        rs.getString("comment")
                 );
                 cashflows.add(cashflow);
             }

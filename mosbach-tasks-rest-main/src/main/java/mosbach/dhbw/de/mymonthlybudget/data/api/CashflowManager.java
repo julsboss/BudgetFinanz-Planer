@@ -9,4 +9,6 @@ public interface CashflowManager {
     List<Cashflow> getAllCashflows();
 
     boolean removeCashflow( int cashflowID );
+
+    void createCashflowTable();
 }
