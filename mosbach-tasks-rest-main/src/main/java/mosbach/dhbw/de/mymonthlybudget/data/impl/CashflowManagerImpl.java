@@ -98,6 +98,11 @@ public class CashflowManagerImpl implements CashflowManager {
 
     }
 
+    @Override
+    public List<Cashflow> getCashflowsByUser(String token) {
+        return List.of();
+    }
+
     public void setAllCashflows(List<Cashflow> cashflows){
 
         Properties properties = new Properties();

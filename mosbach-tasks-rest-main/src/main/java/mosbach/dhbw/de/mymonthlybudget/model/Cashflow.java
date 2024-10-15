@@ -30,6 +30,8 @@ public class Cashflow {
     private String repetition;
     @JsonProperty("comment")
     private String comment;
+    @JsonProperty("user_id")
+    private Integer user_id;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -50,6 +52,18 @@ public class Cashflow {
      * @param category
      * @param repetition
      */
+    public Cashflow(Integer id, String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment, Integer user_id) {
+        super();
+        this.id = id;
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+        this.paymentMethod = paymentMethod;
+        this.repetition = repetition;
+        this.comment = comment;
+        this.user_id = user_id;
+    }
     public Cashflow(Integer id, String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment) {
         super();
         this.id = id;
@@ -60,7 +74,7 @@ public class Cashflow {
         this.paymentMethod = paymentMethod;
         this.repetition = repetition;
         this.comment = comment;
-    }
+            }
 
     @JsonProperty("type")
     public String getType() {
@@ -145,9 +159,18 @@ public class Cashflow {
     public Integer getId() {
         return id;  // Getter for ID
     }
-
     @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;  // Setter for ID
     }
+    @JsonProperty("user_id")
+    public void setUserId(Integer user_id) {
+        this.user_id = user_id;  // Setter for ID
+    }
+    @JsonProperty("user_id")
+    public Integer getUserId() {
+        return user_id;  // Getter for ID
+    }
+
+
 }

@@ -3,6 +3,10 @@ package mosbach.dhbw.de.mymonthlybudget.data.impl;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
+import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
+import mosbach.dhbw.de.mymonthlybudget.model.User;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 @Entity
 public class CashflowImpl implements Cashflow {
     @Id
@@ -14,6 +18,7 @@ public class CashflowImpl implements Cashflow {
     private String paymentMethod;
     private String repetition;
     private String comments;
+    private int user_id;
 
     public CashflowImpl(String type, String category, Double amount, String date, String paymentMethod, String repetition, String comments) {
         this.type = type;
@@ -35,6 +40,22 @@ public class CashflowImpl implements Cashflow {
         this.paymentMethod = paymentMethod;
         this.repetition = repetition;
         this.comments = comments;
+
+    }
+    public CashflowImpl(int id, String type, String category, Double amount, String date,
+                        String paymentMethod, String repetition, String comments, @RequestHeader String token) {
+        this.cashflowID = id; // Setze die ID beim Abrufen aus der Datenbank
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+        this.paymentMethod = paymentMethod;
+        this.repetition = repetition;
+        this.comments = comments;
+        UserService userService = new UserServiceImpl();
+        User user = userService.getUser(token);
+        this.user_id = user.getUserID();
+
     }
 
     @Override
@@ -75,5 +96,16 @@ public class CashflowImpl implements Cashflow {
     @Override
     public String getComment() {
         return comments;
+    }
+
+    @Override
+    public Integer getUserID() {
+        return user_id;
+    }
+
+    public void setUserID(String token){
+        UserService userService = new UserServiceImpl();
+        User user = userService.getUser(token);
+        this.user_id = user.getUserID();
     }
 }

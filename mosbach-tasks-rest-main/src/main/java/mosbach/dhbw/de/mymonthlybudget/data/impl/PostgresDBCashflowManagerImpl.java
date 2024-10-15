@@ -65,6 +65,8 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
                     "payment_method VARCHAR(50) NOT NULL, " +
                     "repetition VARCHAR(50), " +
                     "comment TEXT"+
+                    "user_id INT" +
+                   // wichtig wenn User Tabelle klappt: FOREIGN KEY (user_id) REFERENCES Group21Users(user_id)" +
                     ")";
             stmt.executeUpdate(createTable);
             stmt.close();
@@ -83,7 +85,14 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             }
         }
     }
-     @Override
+
+    @Override
+    public List<Cashflow> getCashflowsByUser(String token) {
+        return List.of();
+    }
+
+
+    @Override
     public void addCashflow(Cashflow cashflow) {
          final Logger createCashflowLogger = Logger.getLogger("CreateCashflowLogger");
          createCashflowLogger.log(Level.INFO, "Start creating cashflow of type " + cashflow.getType());
@@ -94,7 +103,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
          try {
              connection = DriverManager.getConnection(dbUrl, username, password);
 
-             String insertSQL = "INSERT INTO group21cashflows (type, category, amount, date, payment_method, repetition, comment) VALUES (?, ?, ?, ?, ?, ?, ?)";
+             String insertSQL = "INSERT INTO group21cashflows (type, category, amount, date, payment_method, repetition, comment, user_id) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
              pstmt = connection.prepareStatement(insertSQL);
              pstmt.setString(1, cashflow.getType());
              pstmt.setString(2, cashflow.getCategory());
@@ -112,6 +121,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
              pstmt.setString(5, cashflow.getPaymentMethod());
              pstmt.setString(6, cashflow.getRepetition());
              pstmt.setString(7, cashflow.getComment());
+             pstmt.setInt(8, cashflow.getUserID());
 
              pstmt.executeUpdate();
 
@@ -155,7 +165,8 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
                                 rs.getDate("date").toString(),  // Lesen des Datums
                                 rs.getString("payment_method"),  // Lesen der Zahlungsmethode
                                 rs.getString("repetition"),  // Lesen der Wiederholung
-                                rs.getString("comment")  // Lesen der Anmerkungen
+                                rs.getString("comment")
+                                //rs.getInt("user_id")// Lesen der Anmerkungen
                         )
                 );
             }
@@ -209,10 +220,10 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
         return isRemoved;
 
     }
-    public List<Cashflow> getCashflowByMonthAndType(int userID, int month, int year, String type) {
+    public List<Cashflow> getCashflowByMonthAndType(int userID, String month, int year, String type) {
         final Logger logger = Logger.getLogger("GetCashflowByMonthLogger");
-        logger.log(Level.INFO, "Fetching cashflows for user ID: " + userID + ", month: " + month + "/" + year + ", type: " + type);
-
+        logger.log(Level.INFO, "Fetching cashflows for user_ID: " + userID + ", month: " + month + "/" + year + ", type: " + type);
+        int monthNumber = MonthConverter.monthNameToNumber(month); // TODO: muss man schauen, ob die klasse wirklich klappt
         List<Cashflow> cashflows = new ArrayList<>();
         Connection connection = null;
         PreparedStatement pstmt = null;
@@ -223,7 +234,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             String sql = "SELECT * FROM group21cashflows WHERE user_id = ? AND ((repetition = 'monthly') OR (MONTH(date) = ? AND YEAR(date) = ?)) AND type = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, userID);
-            pstmt.setInt(2, month);
+            pstmt.setInt(2, monthNumber);
             pstmt.setInt(3, year);
             pstmt.setString(4, type);
 

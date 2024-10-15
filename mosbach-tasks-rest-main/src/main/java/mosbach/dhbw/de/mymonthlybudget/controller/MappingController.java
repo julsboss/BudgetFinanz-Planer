@@ -110,7 +110,6 @@ public class MappingController {
                         c.getPaymentMethod(),
                         c.getRepetition(),
                         c.getComment()
-
                 ));
             answerCashflow.setSortOrder("NOT YET SORTED");
             Logger

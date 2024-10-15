@@ -11,4 +11,6 @@ public interface CashflowManager {
     boolean removeCashflow( int cashflowID );
 
     void createCashflowTable();
+
+    List<Cashflow> getCashflowsByUser (String token);
 }
