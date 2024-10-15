@@ -6,6 +6,8 @@ import mosbach.dhbw.de.mymonthlybudget.data.api.CashflowManager;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -55,15 +57,15 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             stmt.executeUpdate(dropTable);
 
             String createTable = "CREATE TABLE group21cashflows (" +
-                    "cashflow_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "cashflow_id SERIAL PRIMARY KEY," +
                     "type VARCHAR(50) NOT NULL, " +
                     "category VARCHAR(100) NOT NULL, " +
                     "amount DECIMAL(10, 2) NOT NULL, " +
                     "date DATE NOT NULL, " +
                     "payment_method VARCHAR(50) NOT NULL, " +
                     "repetition VARCHAR(50), " +
-                    "comment TEXT)";
-
+                    "comment TEXT"+
+                    ")";
             stmt.executeUpdate(createTable);
             stmt.close();
             connection.close();
@@ -97,14 +99,23 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
              pstmt.setString(1, cashflow.getType());
              pstmt.setString(2, cashflow.getCategory());
              pstmt.setDouble(3, cashflow.getAmount());
-             pstmt.setString(4, cashflow.getDate());
+             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+             try {
+                 java.util.Date utilDate = sdf.parse(cashflow.getDate());
+                 Date sqlDate = new Date(utilDate.getTime());
+                 pstmt.setDate(4, sqlDate);
+             } catch (ParseException e) {
+                 e.printStackTrace();
+                 // Handle the parse exception (e.g., log it or notify the user)
+             }
+            // pstmt.setString(4, cashflow.getDate());
              pstmt.setString(5, cashflow.getPaymentMethod());
              pstmt.setString(6, cashflow.getRepetition());
              pstmt.setString(7, cashflow.getComment());
 
              pstmt.executeUpdate();
 
-         } catch (SQLException e) {
+         } catch (SQLException e ) {
              e.printStackTrace();
          } finally {
              try {
@@ -132,7 +143,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
 
             // Ausführen einer SQL-Abfrage, um alle Cashflows zu erhalten
             ResultSet rs = stmt.executeQuery("SELECT * FROM group21cashflows");
-
+            readCashflowLogger.log(Level.INFO, "SQL-Abfrage erfolgreich ausgeführt");
             // Iteration über das ResultSet, um Cashflow-Objekte zu erstellen
             while (rs.next()) {
                 cashflows.add(
@@ -148,7 +159,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
                         )
                 );
             }
-
+            readCashflowLogger.log(Level.INFO, "Cashflow hinzugefügt: " + rs.getInt("cashflow_id"));
             // Schließen des Statements und der Verbindung
             stmt.close();
             connection.close();
