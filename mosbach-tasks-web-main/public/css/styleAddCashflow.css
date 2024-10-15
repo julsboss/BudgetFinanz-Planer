@@ -119,3 +119,83 @@ button:hover {
     color:#ccc ;
 
 }
+button.back-button {
+    background-color: #f8f8f8;
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button.back-button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+.month-nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.month-nav li {
+    display: inline;
+    margin-right: 15px;
+}
+
+.report-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+section {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+.content {
+    margin-top: 10px;
+}
+
+.month-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    margin: 20px 0;
+}
+
+.month-nav select {
+    margin: 0 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.month-nav select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+.back-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Adjust padding for size */
+    margin-top: 10px;
+    margin-left: 400px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+.back-button:hover {
+    background-color: #45a049;
+}
