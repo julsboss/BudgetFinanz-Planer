@@ -144,6 +144,8 @@ public class MonthlyReportImpl implements MonthlyReport {
     public List<Cashflow> getCashflowsVariableCosts() {
         return cashflowsVariableCosts;
     }
+
+
     public void setCashflowsVariableCostsCosts(int userID, String month, int year, String type){
         PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
         this.cashflowsVariableCosts = manager.getCashflowByMonthAndType(userID, month, year, type);
