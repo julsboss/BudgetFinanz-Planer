@@ -1,6 +1,9 @@
 package mosbach.dhbw.de.mymonthlybudget.controller;
 
 
+import mosbach.dhbw.de.mymonthlybudget.data.api.VerificationService;
+import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
+import mosbach.dhbw.de.mymonthlybudget.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,11 +31,11 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-   /*
+
     @Autowired
     private VerificationService verificationService;
 
-    */
+
 
 
     @PostMapping(path = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -50,14 +53,14 @@ public class AuthController {
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("User not found"), HttpStatus.UNAUTHORIZED);
         }
     }
-/*
-    @PostMapping( path = "/sign-in", consumes = {MediaType.APPLICATION_JSON_VALUE})
+
+    @PostMapping( path = "/sign-up", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> signIn(@RequestBody UserDTO userRequest){
         User user;
         if(userService.getUserByEmail(userRequest.getEmail()) == null){
-            if(userRequest.getPat() !=null) user= new User(userRequest.getFirstName(), userRequest.getFirstName(),
+            if(userRequest.getPat() !=null) user= new User(userRequest.getUserID(), userRequest.getFirstName(), userRequest.getFirstName(),
                     userRequest.getEmail(), userRequest.getPassword(), userRequest.getPat());
-            else user = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getEmail(), userRequest.getPassword(), userRequest.getPat());
+            else user = new User(userRequest.getUserID(), userRequest.getFirstName(), userRequest.getLastName(), userRequest.getEmail(), userRequest.getPassword(), userRequest.getPat());
             userService.addUser(user);
             String verificationToken = authService.generateVerificationToken(user);
             verificationService.sendVerificationEmail(user.getEmail(), "https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud///public/login-page/verify-email.html?token="+verificationToken);
@@ -67,7 +70,7 @@ public class AuthController {
             return new ResponseEntity<MessageReason>(new MessageReason("Mail already exists"), HttpStatus.BAD_REQUEST);
         }
     }
-*/
+
     @DeleteMapping
     public ResponseEntity<?> signOut(@RequestHeader("Authorization") String token) {
         if(authService.isTokenExpired(token)) return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong credentials"), HttpStatus.UNAUTHORIZED);
