@@ -2,7 +2,7 @@ package mosbach.dhbw.de.mymonthlybudget.data.api;
 
 public interface Cashflow {
 
-        Integer getID();
+        Integer getCashflowID();
         String getType();
         String getCategory();
         Double getAmount();

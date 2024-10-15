@@ -3,6 +3,7 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowImpl;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowManagerImpl;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.PostgresDBCashflowManagerImpl;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,29 @@ import java.util.logging.Logger;
 @RequestMapping("/api")
 public class MappingController {
 
-    CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
+  //  CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
     // private final PersonRepository personRepository;
+
+    //TODO: when ready for using database manager, switch to:
+  CashflowManager cashflowManager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
 
     public MappingController(
     ) {}
     @Autowired
     private UserService userService;
-   
+
+    @GetMapping("/create-task-table")
+    public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
+        Logger.getLogger("MappingController")
+                .log(Level.INFO,"MappingController create-task-table " + token);
+
+        // TODO:  Check token, this should be a very long, super secret token
+        // Usually this is done via a different, internal component, not the same component for all public REST access
+
+        cashflowManager.createCashflowTable();
+
+        return "ok";
+    }
 
     @PostMapping (
             path = "/cashflow",
@@ -38,7 +54,8 @@ public class MappingController {
 
         User user = userService.getUser(token);
         if(user != null) {
-            propertiesCashflowManager.addCashflow(new CashflowImpl(
+            cashflowManager.addCashflow(new CashflowImpl(
+                 //   request.getCashflow().getId(), //muss drüber geschaut werden
                     request.getCashflow().getType(),
                     request.getCashflow().getCategory(),
                     request.getCashflow().getAmount(),
@@ -58,7 +75,19 @@ public class MappingController {
         }
 
     }
+   /* wenn datenbank erfolgreich implementiert
+    @GetMapping("/create-task-table")
+    public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
+        Logger.getLogger("MappingController")
+                .log(Level.INFO,"MappingController create-task-table " + token);
 
+        // TODO:  Check token, this should be a very long, super secret token
+        // Usually this is done via a different, internal component, not the same component for all public REST access
+
+        cashflowManager.createTaskTable();
+
+        return "ok";
+    }*/
     @GetMapping("/cashflow")
     public CashflowResponse getAllCashflows(
             @RequestParam (value = "sortOrder", defaultValue = "date") String sortOrder,
@@ -71,8 +100,9 @@ public class MappingController {
                     .log(Level.INFO, "Get-Call-Ausführung");
             CashflowResponse answerCashflow = new CashflowResponse();
             List<mosbach.dhbw.de.mymonthlybudget.model.Cashflow> myCashflows = new ArrayList<>();
-            for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : propertiesCashflowManager.getAllCashflows())
+            for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : cashflowManager.getAllCashflows())
                 myCashflows.add(new mosbach.dhbw.de.mymonthlybudget.model.Cashflow(
+                        c.getCashflowID(),
                         c.getType(),
                         c.getCategory(),
                         c.getAmount(),
@@ -96,5 +126,27 @@ public class MappingController {
     }
 
     }
+    @DeleteMapping("/cashflow/{cashflowId}")
+    public ResponseEntity<?> deleteCashflow(
+            @PathVariable int cashflowId,
+            @RequestHeader("Authorization") String token) {
+        Logger logger = Logger.getLogger("CashflowController");
+        User user = userService.getUser(token);
+        if (user != null) {
+            logger.info("User authenticated. Attempting to delete cashflow with ID: " + cashflowId);
+            boolean removed = cashflowManager.removeCashflow(cashflowId);
+            if (removed) {
+                logger.info("Cashflow successfully deleted.");
+                return ResponseEntity.ok("Cashflow successfully deleted.");
+            } else {
+                logger.warning("Cashflow not found.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cashflow not found.");
+            }
+        } else {
+            logger.warning("Unauthorized access attempt.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        }
+    }
+    //TODO: ALEXA implementieren
 
 }

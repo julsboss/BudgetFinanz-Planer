@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 public class Cashflow {
-
+    @JsonProperty("id")
+    private Integer id;
     @JsonProperty("type")
     private String type;
     @JsonProperty("category")
@@ -49,8 +50,9 @@ public class Cashflow {
      * @param category
      * @param repetition
      */
-    public Cashflow(String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment) {
+    public Cashflow(Integer id, String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment) {
         super();
+        this.id = id;
         this.type = type;
         this.category = category;
         this.amount = amount;
@@ -139,5 +141,13 @@ public class Cashflow {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;  // Getter for ID
+    }
 
+    @JsonProperty("id")
+    public void setId(Integer id) {
+        this.id = id;  // Setter for ID
+    }
 }
