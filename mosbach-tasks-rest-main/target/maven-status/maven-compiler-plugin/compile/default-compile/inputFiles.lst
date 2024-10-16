@@ -16,6 +16,7 @@ C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-P
 C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\MonthConverter.java
 C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\MonthlyReportImpl.java
 C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBCashflowManagerImpl.java
+C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBMonthlyReportManagerImpl.java
 C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\TokenBlacklistImpl.java
 C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\data\impl\UserServiceImpl.java
 C:\Users\azureadmin\Documents\WebProgrammierung\My Monthly Budget\BudgetFinanz-Planer\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\dto\AuthMessage.java

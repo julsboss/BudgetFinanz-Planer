@@ -40,6 +40,28 @@ public class MonthlyReportImpl implements MonthlyReport {
         this.cashflowsVariableCosts = cashflowsVariableCosts;
     }
 
+    public MonthlyReportImpl(String token, String month, Integer year) {
+        UserService userService = new UserServiceImpl();
+        User user = userService.getUser(token);
+        this.userID = user.getUserID();
+        this.month = month;
+        this.year = year;
+
+        PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
+
+        // Retrieve cashflows
+        this.cashflowsIncome = manager.getCashflowByMonthAndType(userID, month, year, "Einkommen");
+        this.cashflowsFixedCosts = manager.getCashflowByMonthAndType(userID, month, year, "Fixe Kosten");
+        this.cashflowsVariableCosts = manager.getCashflowByMonthAndType(userID, month, year, "Variable Kosten");
+
+        // Calculate totals
+        setIncomeTotal(cashflowsIncome);
+        setFixedTotal(cashflowsFixedCosts);
+        setVariableTotal(cashflowsVariableCosts);
+        setExpensesTotal();
+        setDifferenceSummary();
+    }
+
     public MonthlyReportImpl(String month, Integer year) {
         this.month = month;
         this.year = year;
@@ -125,18 +147,18 @@ public class MonthlyReportImpl implements MonthlyReport {
     public List<Cashflow> getCashflowsIncome() {
         return cashflowsIncome;
     }
-    public void setCashflowsIncome(int userID, String month, int year, String type){
+    public void setCashflowsIncome(int userID, String month, int year){
         PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
-        this.cashflowsIncome = manager.getCashflowByMonthAndType(userID, month, year, type);
+        this.cashflowsIncome = manager.getCashflowByMonthAndType(userID, month, year, "Einkommen");
     }
 
     @Override
     public List<Cashflow> getCashflowsFixedCosts() {
         return cashflowsFixedCosts;
     }
-    public void setCashflowsFixedCosts(int userID, String month, int year, String type){
+    public void setCashflowsFixedCosts(int userID, String month, int year){
         PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
-        this.cashflowsFixedCosts = manager.getCashflowByMonthAndType(userID, month, year, type);
+        this.cashflowsFixedCosts = manager.getCashflowByMonthAndType(userID, month, year, "Fixe Kosten");
     }
 
 
@@ -146,9 +168,9 @@ public class MonthlyReportImpl implements MonthlyReport {
     }
 
 
-    public void setCashflowsVariableCostsCosts(int userID, String month, int year, String type){
+    public void setCashflowsVariableCosts(int userID, String month, int year){
         PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
-        this.cashflowsVariableCosts = manager.getCashflowByMonthAndType(userID, month, year, type);
+        this.cashflowsVariableCosts = manager.getCashflowByMonthAndType(userID, month, year, "Variable Kosten");
     }
 }
 

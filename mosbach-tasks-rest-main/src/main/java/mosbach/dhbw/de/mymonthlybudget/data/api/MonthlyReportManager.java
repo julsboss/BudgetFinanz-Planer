@@ -10,7 +10,7 @@ public interface MonthlyReportManager {
 
     MonthlyReport getMonthlyReport(String token, String month, Integer year);
 
-    boolean removeCashflow( int monthlyReportID );
+    boolean removeMonthlyReport( int monthlyReportID );
 
-    void createCashflowTable();
+    void createMonthlyReportTable();
 }
