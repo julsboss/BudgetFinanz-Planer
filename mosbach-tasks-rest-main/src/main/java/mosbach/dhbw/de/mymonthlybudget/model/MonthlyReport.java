@@ -6,13 +6,14 @@ package mosbach.dhbw.de.mymonthlybudget.model;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.MonthlyReportImpl;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
@@ -52,7 +53,20 @@ public class MonthlyReport {
      */
     public MonthlyReport() {
     }
-
+    public MonthlyReport (MonthlyReportImpl monthlyReport){
+        this.monthlyReportID = monthlyReport.getMonthlyReportID();
+        this.month = monthlyReport.getMonth();
+        this.year = monthlyReport.getYear();
+        this.userID = monthlyReport.getUserID();
+        this.incomeTotal = monthlyReport.getIncomeTotal();
+        this.fixedTotal = monthlyReport.getFixedTotal();
+        this.variableTotal = monthlyReport.getVariableTotal();
+        this.expensesTotal = monthlyReport.getExpensesTotal();
+        this.differenceSummary = monthlyReport.getDifferenceSummary();
+        this.cashflowsIncome = monthlyReport.getCashflowsIncome();
+        this.cashflowsFixedCosts = monthlyReport.getCashflowsFixedCosts();
+        this.cashflowsVariableCosts = monthlyReport.getCashflowsVariableCosts();
+    }
     public MonthlyReport(Integer monthlyReportID, String month, Integer year, Integer userID, Double incomeTotal, Double fixedTotal, Double variableTotal, Double expensesTotal, Double differenceSummary, List<Cashflow> cashflowsIncome, List<Cashflow> cashflowsFixedCosts, List<Cashflow> cashflowsVariableCosts) {
         super();
         this.monthlyReportID = monthlyReportID;

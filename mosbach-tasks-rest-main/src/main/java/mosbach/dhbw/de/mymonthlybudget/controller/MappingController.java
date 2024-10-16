@@ -1,9 +1,9 @@
 package mosbach.dhbw.de.mymonthlybudget.controller;
 
+import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReportManager;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
-import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowImpl;
-import mosbach.dhbw.de.mymonthlybudget.data.impl.CashflowManagerImpl;
-import mosbach.dhbw.de.mymonthlybudget.data.impl.PostgresDBCashflowManagerImpl;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.*;
+import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class MappingController {
 
     //TODO: when ready for using database manager, switch to:
   CashflowManager cashflowManager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
-
+  MonthlyReportManager monthlyReportManager = PostgresDBMonthlyReportManagerImpl.getPostgresDBMonthlyReportManagerImpl();
     public MappingController(
     ) {}
     @Autowired
@@ -125,6 +125,16 @@ public class MappingController {
     }
 
     }
+    @GetMapping("/cashflow/{userId}")
+    public ResponseEntity<?> getCashflowsByUserId(@PathVariable int userId) {
+        List<mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow> cashflows = cashflowManager.getCashflowsByUserID(userId);
+        if (cashflows.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(cashflows, HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/cashflow/{cashflowId}")
     public ResponseEntity<?> deleteCashflow(
             @PathVariable int cashflowId,
@@ -146,6 +156,39 @@ public class MappingController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
         }
     }
+
+    @PostMapping (
+            path = "/monthly-report",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    ) public ResponseEntity<?> createMonthlyReport(@RequestHeader ("Authorization") String token, @RequestBody MonthlyReport report) {
+        User user = userService.getUser(token);
+        if (user != null) {
+            MonthlyReportImpl monthlyReport = new MonthlyReportImpl(token, report.getMonth(), report.getYear());
+            monthlyReportManager.addMonthlyReport(monthlyReport);
+
+            return new ResponseEntity<MessageAnswer>(new MessageAnswer("MonthlyReport created"), HttpStatus.OK);
+        }
+        else{
+        return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
+    }
+    }
+    @GetMapping(
+            path = "/monthly-report",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    ) public ResponseEntity <?> getMonthlyReport (@RequestHeader ("Authorization") String token, @RequestParam String month, @RequestParam Integer year){
+        User user = userService.getUser(token);
+        if (user != null) {
+            MonthlyReport report = monthlyReportManager.getMonthlyReport(token, month, year);
+            if (report == null)
+                return new ResponseEntity<MessageReason>(new MessageReason("Monthly Report not found."), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<MonthlyReport>(report, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+
     //TODO: ALEXA implementieren
 
 }

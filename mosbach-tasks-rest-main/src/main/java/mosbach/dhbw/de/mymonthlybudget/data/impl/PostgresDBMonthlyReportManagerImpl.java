@@ -1,11 +1,15 @@
 package mosbach.dhbw.de.mymonthlybudget.data.impl;
 
+import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReportManager;
+import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
+import mosbach.dhbw.de.mymonthlybudget.model.User;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.List;
 
 public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
 
@@ -80,8 +84,46 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
             }
         }
     }
-
     @Override
+    public void addMonthlyReport(MonthlyReportImpl report) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+
+            // Check if a report already exists
+            if (checkExistingReport(report.getUserID(), report.getMonth(), report.getYear())) {
+                System.err.println("A report for this month and year already exists for the user.");
+                return;
+            }
+
+            String insertSQL = "INSERT INTO group21monthlyReport (month, year, user_id, total_income, total_fixed_costs, " +
+                    "total_variable_costs, total_expenses, total_differenceSummary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            pstmt = connection.prepareStatement(insertSQL);
+            pstmt.setInt(1, MonthConverter.monthNameToNumber(report.getMonth()));
+            pstmt.setInt(2, report.getYear());
+            pstmt.setInt(3, report.getUserID());
+            pstmt.setDouble(4, report.getIncomeTotal());
+            pstmt.setDouble(5, report.getFixedTotal());
+            pstmt.setDouble(6, report.getVariableTotal());
+            pstmt.setDouble(7, report.getExpensesTotal());
+            pstmt.setDouble(8, report.getDifferenceSummary());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL Exception occurred while adding the monthly report: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Failed to close resources: " + e.getMessage());
+            }
+        }
+    }
+
+    /*@Override
     public void addMonthlyReport(MonthlyReport report) {
         Connection connection = null;
         PreparedStatement pstmt = null;
@@ -111,11 +153,112 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
                 System.err.println("Failed to close resources: " + e.getMessage());
             }
         }
+    }*/
+
+    private boolean checkExistingReport(int userId, String month, int year) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int newMonth = MonthConverter.monthNameToNumber(month);
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+            String query = "SELECT COUNT(*) FROM group21monthlyReport WHERE user_id = ? AND month = ? AND year = ?";
+            pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, newMonth);
+            pstmt.setInt(3, year);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception occurred while checking existing report: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Failed to close resources: " + e.getMessage());
+            }
+        }
+
+        return false;
     }
 
     @Override
     public MonthlyReport getMonthlyReport(String token, String month, Integer year) {
-        return null;
+        UserService userService = new UserServiceImpl();
+        User user = userService.getUser(token);
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+        int userId = user.getUserID();
+
+        // Check if report exists
+        if (!checkExistingReport(userId, month, year)) {
+            throw new IllegalStateException("No report found for this month and year.");
+        }
+
+        // Initialize cashflow manager
+        PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
+
+        // Retrieve cashflows
+        List<Cashflow> cashflowsIncome = manager.getCashflowByMonthAndType(userId, month, year, "Einkommen");
+        List<Cashflow> cashflowsFixedCosts = manager.getCashflowByMonthAndType(userId, month, year, "Fixe Kosten");
+        List<Cashflow> cashflowsVariableCosts = manager.getCashflowByMonthAndType(userId, month, year, "Variable Kosten");
+
+        // Calculate totals
+        double incomeTotal = calculateTotal(cashflowsIncome);
+        double fixedTotal = calculateTotal(cashflowsFixedCosts);
+        double variableTotal = calculateTotal(cashflowsVariableCosts);
+        double expensesTotal = fixedTotal + variableTotal;
+        double differenceSummary = incomeTotal - expensesTotal;
+
+        // Update database with calculated totals
+        updateMonthlyReport(userId, month, year, incomeTotal, fixedTotal, variableTotal, expensesTotal, differenceSummary);
+
+        // Create and return the monthly report
+        return new MonthlyReport(new MonthlyReportImpl(token, month, year)) ;
+    }
+
+    private void updateMonthlyReport(int userId, String month, int year,
+                                     double incomeTotal, double fixedTotal,
+                                     double variableTotal, double expensesTotal,
+                                     double differenceSummary) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+            String updateSQL = "UPDATE group21monthlyReport SET total_income = ?, total_fixed_costs = ?, " +
+                    "total_variable_costs = ?, total_expenses = ?, total_differenceSummary = ? " +
+                    "WHERE user_id = ? AND month = ? AND year = ?";
+            pstmt = connection.prepareStatement(updateSQL);
+            pstmt.setDouble(1, incomeTotal);
+            pstmt.setDouble(2, fixedTotal);
+            pstmt.setDouble(3, variableTotal);
+            pstmt.setDouble(4, expensesTotal);
+            pstmt.setDouble(5, differenceSummary);
+            pstmt.setInt(6, userId);
+            pstmt.setInt(7, MonthConverter.monthNameToNumber(month));
+            pstmt.setInt(8, year);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL Exception occurred while updating the monthly report: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Failed to close resources: " + e.getMessage());
+            }
+        }
+    }
+    private double calculateTotal(List<Cashflow> cashflows) {
+        return cashflows.stream().mapToDouble(Cashflow::getAmount).sum();
     }
 
     @Override

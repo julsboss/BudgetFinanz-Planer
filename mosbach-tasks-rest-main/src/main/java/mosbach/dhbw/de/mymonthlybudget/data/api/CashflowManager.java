@@ -13,4 +13,7 @@ public interface CashflowManager {
     void createCashflowTable();
 
     List<Cashflow> getCashflowsByUser (String token);
+
+    List<Cashflow> getCashflowsByUserID(int user_ID);
+
 }

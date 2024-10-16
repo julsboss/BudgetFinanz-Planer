@@ -65,7 +65,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
                     "payment_method VARCHAR(50) NOT NULL, " +
                     "repetition VARCHAR(50), " +
                     "comment TEXT"+
-                    "user_id INT" +
+                    "user_id INT NOT NULL," +
                    // wichtig wenn User Tabelle klappt: FOREIGN KEY (user_id) REFERENCES Group21Users(user_id)" +
                     ")";
             stmt.executeUpdate(createTable);
@@ -300,6 +300,48 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
                 cashflows.add(cashflow);
             }
 
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "SQL Exception occurred: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "Failed to close resources: " + e.getMessage());
+            }
+        }
+
+        return cashflows;
+    }
+    public List<Cashflow> getCashflowsByUserID(int userId) {
+        final Logger logger = Logger.getLogger("GetCashflowsByUserIdLogger");
+        logger.log(Level.INFO, "Fetching cashflows for user ID: " + userId);
+
+        List<Cashflow> cashflows = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+            String sql = "SELECT * FROM group21cashflows WHERE user_id = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Cashflow cashflow = new CashflowImpl(
+                        rs.getInt("cashflow_id"),
+                        rs.getString("type"),
+                        rs.getString("category"),
+                        rs.getDouble("amount"),
+                        rs.getDate("date").toString(),
+                        rs.getString("payment_method"),
+                        rs.getString("repetition"),
+                        rs.getString("comment")
+                );
+                cashflows.add(cashflow);
+            }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "SQL Exception occurred: " + e.getMessage());
         } finally {

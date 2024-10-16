@@ -103,6 +103,11 @@ public class CashflowManagerImpl implements CashflowManager {
         return List.of();
     }
 
+    @Override
+    public List<Cashflow> getCashflowsByUserID(int user_ID) {
+        return List.of();
+    }
+
     public void setAllCashflows(List<Cashflow> cashflows){
 
         Properties properties = new Properties();
