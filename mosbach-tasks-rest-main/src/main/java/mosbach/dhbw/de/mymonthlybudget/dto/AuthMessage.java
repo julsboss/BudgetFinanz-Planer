@@ -19,6 +19,8 @@ public class AuthMessage {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
+    public AuthMessage() {
+    }
 
     public AuthMessage(String email, String password) {
         super();
@@ -47,11 +49,11 @@ public class AuthMessage {
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
+        return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(String name, String value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

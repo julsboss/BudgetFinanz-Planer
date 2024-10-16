@@ -13,12 +13,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.model.User;
+import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class PostgresDBUserServiceImpl implements UserService {
+public class PostgresDBUserServiceImpl implements UserService{
+    @Autowired
+    private AuthService authService;
+
     String databaseConnectionnUrl = "postgresql://mhartwig:BE1yEbCLMjy7r2ozFRGHZaE6jHZUx0fFadiuqgW7TtVs1k15XZVwPSBkPLZVTle6@b8b0e4b9-8325-4a3f-be73-74f20266cd1a.postgresql.eu01.onstackit.cloud:5432/stackit";
     URI dbUri;
     String username = "";
@@ -38,6 +46,11 @@ public class PostgresDBUserServiceImpl implements UserService {
         this.password = this.dbUri.getUserInfo().split(":")[1];
         String var10001 = this.dbUri.getHost();
         this.dbUrl = "jdbc:postgresql://" + var10001 + ":" + this.dbUri.getPort() + this.dbUri.getPath() + "?sslmode=require";
+    }
+    public static PostgresDBUserServiceImpl getUserServiceImpl() {
+        if (postgresDBUserService == null)
+            postgresDBUserService = new PostgresDBUserServiceImpl();
+        return postgresDBUserService;
     }
 
     public void createUserTable() {
@@ -77,6 +90,8 @@ public class PostgresDBUserServiceImpl implements UserService {
 
     }
 
+
+@Override
     public void addUser(User user) {
         Logger createUserLogger = Logger.getLogger("CreateUserLogger");
         createUserLogger.log(Level.INFO, "Start adding user with email" + user.getEmail());
@@ -85,12 +100,14 @@ public class PostgresDBUserServiceImpl implements UserService {
 
         try {
             connection = DriverManager.getConnection(this.dbUrl, this.username, this.password);
-            String insertSQL = "INSERT INTO users(firstName, lastName, email, password) VALUES (?,?,?,?)";
+            String insertSQL = "INSERT INTO group21Users(firstName, lastName, email, password, pat, isVerified) VALUES (?,?,?,?,?,?)";
             pstmt = connection.prepareStatement(insertSQL);
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
             pstmt.setString(3, user.getEmail());
             pstmt.setString(4, user.getPassword());
+            pstmt.setString(5, user.getPat());
+            pstmt.setBoolean(6, user.isVerified());
             pstmt.executeUpdate();
             createUserLogger.log(Level.INFO, "User added successfully: " + user.getEmail());
         } catch (SQLException var14) {
@@ -118,8 +135,8 @@ public class PostgresDBUserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         Logger getUserLogger = Logger.getLogger("GetUserLogger");
         getUserLogger.log(Level.INFO, "Start fetching user with email: " + email);
-        User foundUser = null;
-        String selectSQL = "SELECT user_id, firstName, lastName, email, password FROM users WHERE email = ?";
+        User user= null;
+        String selectSQL = "SELECT * FROM group21Users WHERE email = ?";
 
         try {
             Connection connection = DriverManager.getConnection(this.dbUrl, this.username, this.password);
@@ -131,8 +148,16 @@ public class PostgresDBUserServiceImpl implements UserService {
                     pstmt.setString(1, email);
                     ResultSet rs = pstmt.executeQuery();
                     if (rs.next()) {
-                        foundUser = new User(rs.getInt("user_id"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("email"), rs.getString("password"), rs.getString("pat"));
-                        getUserLogger.log(Level.INFO, "User found: " + foundUser.getEmail());
+                        user = new User();
+                        user.setUserID(rs.getInt("userID"));
+                        user.setFirstName(rs.getString("firstName"));
+                        user.setLastName(rs.getString("lastName"));
+                        user.setEmail(rs.getString("email"));
+                        user.setPassword(rs.getString("password"));
+                        user.setPat(rs.getString("pat"));
+                        user.setVerified(rs.getBoolean("isVerified"));
+                        getUserLogger.log(Level.INFO, "User found: " + user.getEmail());
+
                     } else {
                         getUserLogger.log(Level.WARNING, "User not found with email: " + email);
                     }
@@ -172,53 +197,18 @@ public class PostgresDBUserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
-        return foundUser;
+        return user;
     }
 
+    @Override
+    public boolean deleteUser(String email) {
+        return false;
+    }
+
+
+    @Override
     public User getUser(String token) {
-        Logger getUserLogger = Logger.getLogger("GetUserLogger");
-        getUserLogger.log(Level.INFO, "Start fetching user with token: " + token);
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        User foundUser = null;
-
-        try {
-            connection = DriverManager.getConnection(this.dbUrl, this.username, this.password);
-            String selectSQL = "SELECT firstName, lastName, email, password FROM users WHERE token = ?";
-            pstmt = connection.prepareStatement(selectSQL);
-            pstmt.setString(1, token);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                foundUser = new User(rs.getInt("user_id"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("email"), rs.getString("password"), rs.getString("pat"));
-                getUserLogger.log(Level.INFO, "User found: " + foundUser.getEmail());
-            } else {
-                getUserLogger.log(Level.WARNING, "User not found with token: " + token);
-            }
-        } catch (SQLException var16) {
-            SQLException e = var16;
-            getUserLogger.log(Level.SEVERE, "Error fetching user: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException var15) {
-                SQLException e = var15;
-                System.err.println("Failed to close resources: " + e.getMessage());
-            }
-
-        }
-
-        return foundUser;
+        return getUserByEmail(authService.extractEmail(token));
     }
 
     public User getUserByID(int userID) {
@@ -227,17 +217,26 @@ public class PostgresDBUserServiceImpl implements UserService {
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        User foundUser = null;
+        User user = null;
 
         try {
             connection = DriverManager.getConnection(this.dbUrl, this.username, this.password);
-            String selectSQL = "SELECT firstName, lastName, email, password FROM users WHERE user_id = ?";
+            String selectSQL = "SELECT * FROM group21Users WHERE user_id= ?";
+
             pstmt = connection.prepareStatement(selectSQL);
             pstmt.setInt(1, userID);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                foundUser = new User(rs.getInt("user_id"), rs.getString("firstName"), rs.getString("lastName"), rs.getString("email"), rs.getString("password"), rs.getString("pat"));
-                getUserLogger.log(Level.INFO, "User found: " + foundUser.getEmail());
+                user = new User();
+                user.setUserID(rs.getInt("userID"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setPat(rs.getString("pat"));
+                user.setVerified(rs.getBoolean("isVerified"));
+
+                getUserLogger.log(Level.INFO, "User found: " + user.getEmail());
             } else {
                 getUserLogger.log(Level.WARNING, "User not found with ID: " + userID);
             }
@@ -264,6 +263,70 @@ public class PostgresDBUserServiceImpl implements UserService {
 
         }
 
-        return foundUser;
+        return user;
     }
+
+    @Override
+    public String getUserPATbyID(int userID) {
+        return getUserByID(userID).getPat();
+    }
+
+
+    public List<User> getAllUsers() {
+        final Logger readUserLogger = Logger.getLogger("ReadAllUsers");
+        readUserLogger.log(Level.INFO, "Start reading users");
+
+        List<User> users = new ArrayList<>();
+        PreparedStatement pstmt = null;
+        Connection connection = null;
+        ResultSet rs = null;
+
+        try {
+            // Herstellung einer Verbindung zur Datenbank
+            connection = DriverManager.getConnection(this.dbUrl, this.username, this.password);
+            String selectSQL = "SELECT * FROM group21Users";
+            pstmt = connection.prepareStatement(selectSQL);
+
+            // Ausführen einer SQL-Abfrage, um alle Cashflows zu erhalten
+            rs = pstmt.executeQuery();
+            readUserLogger.log(Level.INFO, "SQL-Abfrage erfolgreich ausgeführt");
+            // Iteration über das ResultSet, um Cashflow-Objekte zu erstellen
+            while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("user_id"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setPat(rs.getString("pat"));
+                user.setVerified(rs.getBoolean("isVerified"));
+
+                users.add(user);
+                readUserLogger.log(Level.INFO, "User hinzugefügt: " + user.getEmail());
+            }
+
+
+        } catch (SQLException e) {
+            readUserLogger.log(Level.SEVERE, "Error fetching users: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                readUserLogger.log(Level.SEVERE, "Failed to close resources: " + e.getMessage());
+            }
+        }
+
+        return users;
+    }
+
+
 }

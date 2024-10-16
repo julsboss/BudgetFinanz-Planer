@@ -14,7 +14,11 @@ public class MessageToken {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
+    public MessageToken() {
+    }
+
     public MessageToken( String token) {
+        super();
         this.token = token;
     }
 
@@ -31,11 +35,11 @@ public class MessageToken {
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
+        return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 }

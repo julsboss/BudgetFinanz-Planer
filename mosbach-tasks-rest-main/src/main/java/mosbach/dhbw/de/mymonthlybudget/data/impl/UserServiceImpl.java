@@ -14,43 +14,75 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{ //hier habe ich das Interface Userservice entfernt
     private static List<User> users = new ArrayList();
     @Autowired
     private AuthService authService;
 
-    public UserServiceImpl() {
+    static {
+        users.add(new User("Mariam", "Kmayha", "mar.kmayha.23@lehre.mosbach.dhbw.de", "1234"));
+        ((User)users.get(0)).setVerified(true);
     }
+
 
     public void addUser(User user) {
         users.add(user);
     }
 
     public User getUserByEmail(String email) {
-        User foundUser = (User)users.stream().filter((user) -> {
-            return user.getEmail().equals(email);
-        }).findFirst().orElse((User) null);
-        if (foundUser == null) {
-            System.out.println("Benutzer nicht gefunden");
-        } else {
-            System.out.println("Benutzer gefunden" + foundUser.getEmail());
-        }
 
-        return foundUser;
+        return users
+                .stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean deleteUser(String email) {
+        User existingUser = getUserByEmail(email);
+        if (existingUser != null) {
+            users.remove(existingUser);
+            return true;
+        }
+        return false;
     }
 
     public User getUser(String token) {
-        return this.getUserByEmail(this.authService.extractUsername(token));
+        return this.getUserByEmail(this.authService.extractEmail(token));
     }
 
+    @Override
     public User getUserByID(int userID) {
-        return (User)users.stream().filter((user) -> {
-            return user.getUserID() == userID;
-        }).findFirst().orElse((User) null);
+        return null;
     }
 
-    static {
-        users.add(new User(1, "Mariam", "Kmayha", "mar.kmayha.23@lehre.mosbach.dhbw.de", "1234", "xd"));
-        ((User)users.get(0)).setVerified(true);
+    @Override
+    public void createUserTable() {
+
     }
-}
+
+    @Override
+    public List<User> getAllUsers() {
+        return List.of();
+    }
+
+
+    public String getUserPATbyID(int userID){
+        return users
+                .stream()
+                .filter(user -> user.getUserID() == userID)
+                .findFirst()
+                .map(User::getPat)
+                .orElse(null);
+    }
+
+    public User getUserById(int userID){
+        return users
+                .stream()
+                .filter(user -> user.getUserID() == userID)
+                .findFirst()
+                .orElse(null);
+    }
+    }
+
+
