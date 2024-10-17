@@ -1,11 +1,26 @@
 package mosbach.dhbw.de.mymonthlybudget.data.api;
 
+import mosbach.dhbw.de.mymonthlybudget.model.User;
+
 import java.util.List;
 
 public interface UserManager {
 
-   void addUser(UserService newUser);
+    public boolean deleteUser (String email);
 
-    List<UserService> getAllUser();
+    //void addUser(UserService newUser);
+
+    List<User> getAllUser();
+
+    public void createUserTable();
+
+
+    public void addUser(User user);
+
+    public User getUserByEmail(String email);
+
+    public User getUser(String token);
+
+    public User getUserByID(int userID);
 
 }

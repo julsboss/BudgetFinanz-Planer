@@ -24,27 +24,34 @@ public class UserDTO {
     @JsonProperty("password")
     private String password;
 
-    @JsonProperty("pat")
-    private String pat;
+   // @JsonProperty("pat")
+    //private String pat;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
+    public UserDTO(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
 
-    public UserDTO(String firstName, String lastName, String email, String password, String pat) {
+    }
+
+   /* public UserDTO(String firstName, String lastName, String email, String password, String pat) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.pat = pat;
 
-    }
+    }*/
     public UserDTO(User user){
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email =user.getEmail();
-        this.password ="";
-        this.pat = user.getPat();
+        this.password =user.getPassword();
+        //this.pat = "";
 
     }
 
@@ -85,14 +92,14 @@ public class UserDTO {
         this.password = password;
     }
 
-    @JsonProperty("pat")
+   /* @JsonProperty("pat")
     public String getPat() {
         return pat;
     }
     @JsonProperty("pat")
     public void setPat(String pat) {
         this.pat = pat;
-    }
+    }*/
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

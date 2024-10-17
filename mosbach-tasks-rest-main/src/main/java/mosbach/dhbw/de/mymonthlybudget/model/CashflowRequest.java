@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
@@ -18,7 +17,7 @@ public class CashflowRequest {
     @JsonProperty("token")
     private String token;
     @JsonProperty("cashflow")
-    private Cashflow cashflow;
+    private CashflowDTO cashflowDTO;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -31,13 +30,13 @@ public class CashflowRequest {
 
     /**
      * 
-     * @param cashflow
+     * @param cashflowDTO
      * @param token
      */
-    public CashflowRequest(String token, Cashflow cashflow) {
+    public CashflowRequest(String token, CashflowDTO cashflowDTO) {
         super();
         this.token = token;
-        this.cashflow = cashflow;
+        this.cashflowDTO = cashflowDTO;
     }
 
     @JsonProperty("token")
@@ -51,13 +50,13 @@ public class CashflowRequest {
     }
 
     @JsonProperty("cashflow")
-    public Cashflow getCashflow() {
-        return cashflow;
+    public CashflowDTO getCashflow() {
+        return cashflowDTO;
     }
 
     @JsonProperty("cashflow")
-    public void setCashflow(Cashflow cashflow) {
-        this.cashflow = cashflow;
+    public void setCashflow(CashflowDTO cashflowDTO) {
+        this.cashflowDTO = cashflowDTO;
     }
 
     @JsonAnyGetter

@@ -33,10 +33,10 @@ public class MappingController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/create-task-table")
+    @GetMapping("/create-cashflow-table")
     public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
         Logger.getLogger("MappingController")
-                .log(Level.INFO,"MappingController create-task-table " + token);
+                .log(Level.INFO,"MappingController create-cashflow-table " + token);
 
         // TODO:  Check token, this should be a very long, super secret token
         // Usually this is done via a different, internal component, not the same component for all public REST access
@@ -99,9 +99,9 @@ public class MappingController {
                     .getLogger("MappingController")
                     .log(Level.INFO, "Get-Call-Ausführung");
             CashflowResponse answerCashflow = new CashflowResponse();
-            List<mosbach.dhbw.de.mymonthlybudget.model.Cashflow> myCashflows = new ArrayList<>();
+            List<CashflowDTO> myCashflowDTOS = new ArrayList<>();
             for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : cashflowManager.getAllCashflows())
-                myCashflows.add(new mosbach.dhbw.de.mymonthlybudget.model.Cashflow(
+                myCashflowDTOS.add(new CashflowDTO(
                         c.getCashflowID(),
                         c.getType(),
                         c.getCategory(),
@@ -116,7 +116,7 @@ public class MappingController {
                     .getLogger("MappingController")
                     .log(Level.INFO, "Cashflows from file");
 
-            answerCashflow.setCashflow( myCashflows);
+            answerCashflow.setCashflow(myCashflowDTOS);
             return
                     answerCashflow;
         }

@@ -1,5 +1,6 @@
 package mosbach.dhbw.de.mymonthlybudget.model;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,6 +21,18 @@ public class User {
     private boolean isVerified;
     public static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
+
+    public User(int userID, String firstName, String lastName, String email, String password) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = passwordEncoder.encode(password);
+        this.isVerified= false;
+        this.pat = "";
+    }
+    public User() {
+    }
 
     public User(String firstName, String lastName, String email, String password) {
         this.userID = User.userIDCounter++;
@@ -107,8 +120,14 @@ public class User {
         return !pat.isEmpty();
     }
     public boolean checkPassword(String password){
+
         return passwordEncoder.matches(password, this.password);
     }
+
+ /*   public boolean checkPassword(String rawPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(rawPassword, this.password);
+    }*/
 
 
 }
