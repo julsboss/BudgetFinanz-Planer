@@ -21,6 +21,7 @@
             </ul>
         </nav>
     </header>
+    <div id="contentToPrint">
     <header>
         <h1>Mein Monatsbudget</h1>
         <nav class="month-nav">
@@ -61,7 +62,8 @@
             <h2>Fix Kosten</h2>
             <div class="content">Gesamt: €0.00</div>
         </section>
-
+    </div>
+    <button onclick="convertHTMLToPDF()">Als PDF speichern</button>
         <!-- Add more sections as needed -->
     </main>
 
@@ -69,6 +71,7 @@
     <!--
     <script src="../js/script.js"></script> 
     -->
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../js/MonthlyReport.js"></script>
 </body>
 </html>
