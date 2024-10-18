@@ -5,6 +5,7 @@ $(document).ready(function() {
         var loginData = {
             email: $("#email").val(),
             password: $("#password").val()
+
         };
 
         // Einfacher Validierungscheck

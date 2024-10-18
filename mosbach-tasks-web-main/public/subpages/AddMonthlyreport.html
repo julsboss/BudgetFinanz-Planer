@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monatsbericht erstellen</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styleAddCashflow.css">
+  
+    <title>Monatsbericht erstellen</title>
 </head>
 <body>
     <header>
+        <div class="container-fluid"></div>
         <nav class="navbar">
             <div class="logo">
                 <img src="../../ressources/logo.jpg" alt="Logo" />
@@ -20,7 +23,8 @@
             </ul>
         </nav>
     </header>
-    <button type="button" class="back-button" >Zurück</button>
+    <button type="button" class="btn btn-secondary back-button" onclick="goBack()">Zurück</button>
+
 
     <div class="container">
         <h1>Monatsbericht erstellen</h1>
@@ -49,7 +53,8 @@
                 <input type="number" id="year" placeholder="2024" required min="2000" max="2100">
             </div>
 
-            <button type="submit">Bericht erstellen</button>
+           <!--  <button type="submit">Bericht erstellen</button>-->
+            <button type="button" onclick="window.location.href='MonthlyReport.html'">Bericht erstellen</button>
         </form>
 
         <!-- Optional: Add a section to display the report -->

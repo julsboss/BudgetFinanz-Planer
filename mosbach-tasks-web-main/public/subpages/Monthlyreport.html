@@ -4,28 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monatsbericht</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styleAddCashflow.css">
 </head>
 <body>
-    <header id="navbar">
+    <header>
+        <div class="container-fluid"></div>
         <nav class="navbar">
             <div class="logo">
                 <img src="../../ressources/logo.jpg" alt="Logo" />
             </div>
             <ul class="nav-links">
-                <li><a href="Homepage.html">Home</a></li>
-                <li><a href="#features">Funktionen</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
                 <li><a href="#about">Über uns</a></li>
                 <li><a href="#contact">Kontakt</a></li>
-                <li><a href="LoginPage.html" class="login-icon">Abmelden</a></li>
             </ul>
         </nav>
     </header>
-    <div id="contentToPrint">
+    <div id="contentToPrint" class="container mt-4">
     <header>
-        <h1>Mein Monatsbudget</h1>
+        <h1 class="text-center">Mein Monatsbudget</h1>
+        <nav class="d-flex justify-content-center"></nav>
         <nav class="month-nav">
-            <select id="month">
+            <select id="month" class="form-select w-auto me-2">
                 <option>JAN</option>
                 <option>FEB</option>
                 <option>MÄR</option>
@@ -39,7 +41,7 @@
                 <option>NOV</option>
                 <option>DEZ</option>
             </select>
-            <select id="year">
+            <select id="year" class="form-select w-auto">
                 <option>2023</option>
                 <option>2024</option>
                 <option>2025</option>
@@ -47,23 +49,24 @@
         </nav>
     </header>
 
-    <main class="report-container">
-        <section class="income">
+    <main class="report-container mt-4">
+        <section class="income report-section">
             <h2>Einnahmen</h2>
-            <div class="content">Gesamt: €0.00</div>
+            <div class="content">Gesamt: €<span id="total-income-report">0.00</span></div>
         </section>
 
-        <section class="variable-costs">
-            <h2>Variable Kosten</h2>
-            <div class="content">Quelle und Menge...</div>
+        <section class="expenses report-section">
+            <h2>Ausgaben</h2>
+            <div class="content">Gesamt: €<span id="total-expenses-report">0.00</span></div>
         </section>
 
-        <section class="fixed-costs">
-            <h2>Fix Kosten</h2>
-            <div class="content">Gesamt: €0.00</div>
-        </section>
     </div>
-    <button onclick="convertHTMLToPDF()">Als PDF speichern</button>
+    <div class="text-center mt-4">
+
+    <button class="btn custom-full-width" onclick="convertHTMLToPDF()">Als PDF speichern</button>
+</div>
+
+</div>
         <!-- Add more sections as needed -->
     </main>
 

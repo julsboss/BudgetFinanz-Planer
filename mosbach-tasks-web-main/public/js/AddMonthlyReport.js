@@ -26,3 +26,7 @@ document.getElementById('monthlyReportForm').addEventListener('submit', function
             console.error('There was a problem with the fetch operation:', error);
         });
 });
+
+function goBack() {
+    window.location.href = '../Startpage.html';
+}

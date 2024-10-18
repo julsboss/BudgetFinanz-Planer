@@ -81,6 +81,10 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
+.custom-full-width {
+    width: 40%; /* Setzt die Breite des Buttons auf 100% des übergeordneten Elements */
+    max-width: none; /* Entfernt jegliche Einschränkungen der maximalen Breite */
+}
 
 button:hover {
     background-color: #218838;
@@ -144,9 +148,10 @@ button.back-button:hover {
 }
 
 .report-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    display: flex; /* Ändern Sie das Layout auf Flexbox */
+    flex-direction: column; /* Elemente in einer Spalte anordnen */
+    align-items: center; /* Zentriere die Elemente */
+    gap: 20px; /* Abstand zwischen den Abschnitten */
     padding: 20px;
 }
 
@@ -163,6 +168,32 @@ h2 {
 
 .content {
     margin-top: 10px;
+}
+.report-section {
+    border: 1px solid #ccc; /* Rahmen für jeden Bereich */
+    border-radius: 5px; /* Abgerundete Ecken */
+    padding: 15px; /* Innenabstand */
+    margin-bottom: 15px; /* Abstand zwischen den Abschnitten */
+    background-color: #f8f9fa; /* Heller Hintergrund */
+    text-align: center;
+    max-width: 400px; /* Maximale Breite der Sektionen */
+    width: 100%; 
+}
+
+.report-section h2 {
+    margin-top: 0; /* Abstand oben entfernen */
+    font-weight: bold;
+}
+
+@media (max-width: 576px) {
+    .month-nav {
+        flex-direction: column; /* Dropdowns untereinander anordnen */
+        align-items: center; /* Zentrale Ausrichtung */
+    }
+    .month-nav select {
+        margin-bottom: 10px; /* Abstand zwischen den Dropdowns */
+        width: 100%; /* Breite auf 100% setzen */
+    }
 }
 
 .month-nav {
