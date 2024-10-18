@@ -5,6 +5,7 @@ $(document).ready(function() {
         var loginData = {
             email: $("#email").val(),
             password: $("#password").val()
+
         };
 
         // Einfacher Validierungscheck
@@ -25,7 +26,7 @@ $(document).ready(function() {
                 if (data.token) {
                     localStorage.setItem('authToken', data.token); // Token speichern
                     console.log('Login erfolgreich', data);
-                    window.location.href = '../Homepage.html'; // Weiterleitung auf die Dashboard-Seite
+                    window.location.href = '../Startpage.html'; // Weiterleitung auf die Dashboard-Seite
                 } else {
                     console.log('Login fehlgeschlagen: Kein Token erhalten');
                     alert('Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.');

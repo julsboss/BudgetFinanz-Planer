@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/styleAddCashflow.css">
+    
+    <title>Finanz- und Budgetplaner</title>
+
+</head>
+<body>
+    <header>
+        <div class="container-fluid"></div>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../ressources/logo.jpg" alt="Logo" />
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">Über uns</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+    </nav>
+    </header>
+    <button type="button" class="back-button" onclick="goBack()">Zurück</button>
+    
+    <div class="container">
+        <h1>Finanzen hinzufügen</h1>
+        <form id="transaction-form">
+            <div class="input-group">
+                <label for="type">Typ:</label>
+                <select id="type" required>
+                    <option value="">Wählen...</option>
+                    <option value="income">Einkommen</option>
+                    <option value="fix costs">Fixe Kosten</option>
+                    <option value="variable costs">Variable Kosten</option>
+
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="category">Kategorie:</label>
+                <select id="category" required>
+                    <!-- Add categories here -->
+                    <option value="">Wählen...</option>
+                    <option value="salary">Gehalt</option>
+                    <option value="groceries">Lebensmittel</option>
+                    <option value="gas">Tanken<-/option>
+                    <option value="rent">Miete</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="groceries">Lebensmittel</option>
+                    <!-- Add more categories as needed -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="amount">Betrag (€):</label>
+                <input type="number" id="amount" placeholder="0.00" required step="0.01" min="0">
+            </div>
+            <div class="input-group">
+                <label for="date">Datum:</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="payment-method">Zahlmethode:</label>
+                <select id="payment-method" required>
+                    <option value="">Wählen...</option>
+                    <!-- Add categories here -->
+                    <option value="cash">Bargeld</option>
+                    <option value="card">Bankkonto</option>
+                    <option value="paypal">Paypal</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="repetition">Wiederholung:</label>
+                <select id="repetition">
+                    <option value="" disabled selected>Wählen...</option>
+                    <option value="none">Keine Option</option>
+                    <option value="monthly">Jährlich</option>
+                    <option value="monthly">Monatlich</option>
+                    <option value="weekly">Wöchentlich</option>
+                    <option value="daily">Täglich</option>
+                </select>
+            </div>
+            <div class="input-group">
+            <label for="comments">Anmerkungen:</label>
+            <textarea id="comments" placeholder="Optional"></textarea>
+        </div>
+            <button type="submit">Transaktion hinzufügen</button>
+        </form>
+        
+        <div id="transactions-list">
+            <h2>Transaktionen</h2>
+            <div id="transactions-container">
+                <!-- Transaktionen werden hier hinzugefügt -->
+            </div>
+        </div>
+
+        <div class="summary">
+            <p><strong>Gesamteinkommen:</strong> €<span id="total-income">0.00</span></p>
+            <p><strong>Gesamtausgaben:</strong> €<span id="total-expenses">0.00</span></p>
+        </div>
+    </div>
+
+    <script src="../js/AddCashflowV2.js"></script>
+</body>
+</html>
