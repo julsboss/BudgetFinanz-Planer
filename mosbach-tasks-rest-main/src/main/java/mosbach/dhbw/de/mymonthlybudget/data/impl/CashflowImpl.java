@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
+import mosbach.dhbw.de.mymonthlybudget.model.CashflowDTO;
 import mosbach.dhbw.de.mymonthlybudget.model.User;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -43,6 +44,31 @@ public class CashflowImpl implements Cashflow {
 
     }
     public CashflowImpl(int id, String type, String category, Double amount, String date,
+                        String paymentMethod, String repetition, String comments, int user_id) {
+        this.cashflowID = id; // Setze die ID beim Abrufen aus der Datenbank
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+        this.paymentMethod = paymentMethod;
+        this.repetition = repetition;
+        this.comments = comments;
+        this.user_id = user_id;
+
+    }
+    public CashflowImpl(CashflowDTO cashflowDTO) {
+        this.cashflowID = cashflowDTO.getId(); // Setze die ID beim Abrufen aus der Datenbank
+        this.type = cashflowDTO.getType();
+        this.category = cashflowDTO.getCategory();
+        this.amount = cashflowDTO.getAmount();
+        this.date = cashflowDTO.getDate();
+        this.paymentMethod = cashflowDTO.getPaymentMethod();
+        this.repetition = cashflowDTO.getRepetition();
+        this.comments = cashflowDTO.getComment();
+        this.user_id = cashflowDTO.getUserId();
+
+    }
+    public CashflowImpl(int id, String type, String category, Double amount, String date,
                         String paymentMethod, String repetition, String comments, @RequestHeader String token) {
         this.cashflowID = id; // Setze die ID beim Abrufen aus der Datenbank
         this.type = type;
@@ -57,6 +83,8 @@ public class CashflowImpl implements Cashflow {
         this.user_id = user.getUserID();
 
     }
+
+
 
     @Override
     public Integer getCashflowID() {

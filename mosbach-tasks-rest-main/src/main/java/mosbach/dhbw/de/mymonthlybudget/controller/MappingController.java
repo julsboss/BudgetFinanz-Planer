@@ -1,16 +1,15 @@
 package mosbach.dhbw.de.mymonthlybudget.controller;
 
-import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReportManager;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
+import mosbach.dhbw.de.mymonthlybudget.data.api.*;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.*;
 import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
+import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import mosbach.dhbw.de.mymonthlybudget.data.api.CashflowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,20 +22,22 @@ import java.util.logging.Logger;
 public class MappingController {
 
   //  CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
-    // private final PersonRepository personRepository;
+//  AuthService authService = AuthServiceImpl.getAuthServiceImpl();
 
-    //TODO: when ready for using database manager, switch to:
+    @Autowired
+            AuthService authService;
+
   CashflowManager cashflowManager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
   MonthlyReportManager monthlyReportManager = PostgresDBMonthlyReportManagerImpl.getPostgresDBMonthlyReportManagerImpl();
     public MappingController(
     ) {}
     @Autowired
-    private UserService userService;
+    private UserManager userManager;
 
     @GetMapping("/create-cashflow-table")
     public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
         Logger.getLogger("MappingController")
-                .log(Level.INFO,"MappingController create-cashflow-table " + token);
+                .log(Level.INFO, "MappingController create-cashflow-table " + token);
 
         // TODO:  Check token, this should be a very long, super secret token
         // Usually this is done via a different, internal component, not the same component for all public REST access
@@ -50,28 +51,28 @@ public class MappingController {
             path = "/cashflow",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public MessageAnswer createCashflow(@RequestHeader ("Authorization") String token, @RequestBody  CashflowRequest request) {
-
-        User user = userService.getUser(token);
+    public ResponseEntity<?> createCashflow(@RequestHeader ("Authorization") String token, @RequestBody  CashflowRequest request) {
+        final Logger logger = Logger.getLogger("CashflowLogger");
+        logger.log(Level.INFO, "Received request to create cashflow with token: " + token);
+        User user = userManager.getUser(token);
         if(user != null) {
-            cashflowManager.addCashflow(new CashflowImpl(
-                 //   request.getCashflow().getId(), //muss drüber geschaut werden
-                    request.getCashflow().getType(),
+            logger.log(Level.INFO, "User found for token: " + token);
+            CashflowImpl cashflow = new CashflowImpl( request.getCashflow().getType(),
                     request.getCashflow().getCategory(),
                     request.getCashflow().getAmount(),
-                    // Double.parseDouble(tokenTask.getTask().getGrade()),
                     request.getCashflow().getDate(),
                     request.getCashflow().getPaymentMethod(),
                     request.getCashflow().getRepetition(),
-                    request.getCashflow().getComment()
-
-            ));
-
+                    request.getCashflow().getComment());
+                    //cashflow.setUserID(token);
+            cashflowManager.addCashflow(cashflow, user.getUserID());
+            logger.log(Level.INFO, "Cashflow added successfully for user ID: " + user.getUserID());
             return
-                    new MessageAnswer("Cashflow added to your Cashflowlist.");
+                    new ResponseEntity<MessageAnswer>(new MessageAnswer("Cashflow added to your Cashflowlist."), HttpStatus.CREATED);
         }
         else {
-            return new MessageAnswer("Wrong Credentials");
+            logger.log(Level.WARNING, "Invalid token: " + token);
+            return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong token"), HttpStatus.UNAUTHORIZED);
         }
 
     }
@@ -93,7 +94,7 @@ public class MappingController {
             @RequestParam (value = "sortOrder", defaultValue = "date") String sortOrder,
             @RequestHeader ("Authorization") String token
     ) {
-        User user = userService.getUser(token);
+        User user = userManager.getUser(token);
         if(user != null){
             Logger
                     .getLogger("MappingController")
@@ -125,14 +126,25 @@ public class MappingController {
     }
 
     }
-    @GetMapping("/cashflow/{userId}")
-    public ResponseEntity<?> getCashflowsByUserId(@PathVariable int userId) {
-        List<mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow> cashflows = cashflowManager.getCashflowsByUserID(userId);
-        if (cashflows.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(cashflows, HttpStatus.OK);
+
+    @GetMapping("/cashflow/user")
+    public ResponseEntity<?> getAllCashflowsByUser(@RequestHeader ("Authorization") String token){
+        final Logger logger = Logger.getLogger("CashflowLogger");
+        logger.log(Level.INFO, "Received request to create cashflow with token: " + token);
+        User user = userManager.getUser(token);
+        if(user != null) {
+            int userId = user.getUserID();
+            List<mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow> cashflows = cashflowManager.getCashflowsByUserID(userId);
+            if (cashflows.isEmpty()) {
+                return new ResponseEntity<MessageAnswer>(new MessageAnswer("There are no cashflows for this user"), HttpStatus.NOT_FOUND);
+            }   List<CashflowDTO> cashflowDTO = new ArrayList<>();
+                for(mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow c : cashflows){
+                    cashflowDTO.add(new CashflowDTO(c));
+                }
+            return new ResponseEntity<CashflowResponse>(new CashflowResponse("Cashflows of User: "+ user.getFirstName(), cashflowDTO), HttpStatus.OK);
+        }   return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong token"), HttpStatus.UNAUTHORIZED);
     }
+
 
 
     @DeleteMapping("/cashflow/{cashflowId}")
@@ -140,7 +152,7 @@ public class MappingController {
             @PathVariable int cashflowId,
             @RequestHeader("Authorization") String token) {
         Logger logger = Logger.getLogger("CashflowController");
-        User user = userService.getUser(token);
+        User user = userManager.getUser(token);
         if (user != null) {
             logger.info("User authenticated. Attempting to delete cashflow with ID: " + cashflowId);
             boolean removed = cashflowManager.removeCashflow(cashflowId);
@@ -157,11 +169,44 @@ public class MappingController {
         }
     }
 
+    @PutMapping(
+            path = "/cashflow/{cashflowID}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<?> updateCashflow(
+            @PathVariable int cashflowID,
+            @RequestBody CashflowDTO updatedCashflow,
+            @RequestHeader("Authorization") String token
+    ) {
+        final Logger logger = Logger.getLogger("CashflowLogger");
+        logger.log(Level.INFO, "Received request to update cashflow with ID: " + cashflowID);
+
+        User user = userManager.getUser(token);
+        if (user == null) {
+            return new ResponseEntity<>(new MessageAnswer("Invalid token"), HttpStatus.UNAUTHORIZED);
+        }
+
+        mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow existingCashflow = cashflowManager.getCashflowById(cashflowID);
+        logger.log(Level.INFO, "Authenticated user ID: " + user.getUserID());
+        logger.log(Level.INFO, "Cashflow user ID: " + existingCashflow.getUserID());
+        updatedCashflow.setId(cashflowID);
+        updatedCashflow.setUserId(user.getUserID());
+        if ((existingCashflow.getCashflowID()!= updatedCashflow.getId().intValue()) || (existingCashflow.getUserID() != user.getUserID())) {
+            return new ResponseEntity<>(new MessageAnswer("Cashflow not found or unauthorized"), HttpStatus.NOT_FOUND);
+        }
+
+        cashflowManager.updateCashflow(new CashflowImpl(updatedCashflow), user.getUserID());
+
+        return new ResponseEntity<>(new MessageAnswer("Cashflow updated successfully"), HttpStatus.OK);
+    }
+
+
+
     @PostMapping (
             path = "/monthly-report",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     ) public ResponseEntity<?> createMonthlyReport(@RequestHeader ("Authorization") String token, @RequestBody MonthlyReport report) {
-        User user = userService.getUser(token);
+        User user = userManager.getUser(token);
         if (user != null) {
             MonthlyReportImpl monthlyReport = new MonthlyReportImpl(token, report.getMonth(), report.getYear());
             monthlyReportManager.addMonthlyReport(monthlyReport);
@@ -176,7 +221,7 @@ public class MappingController {
             path = "/monthly-report",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     ) public ResponseEntity <?> getMonthlyReport (@RequestHeader ("Authorization") String token, @RequestParam String month, @RequestParam Integer year){
-        User user = userService.getUser(token);
+        User user = userManager.getUser(token);
         if (user != null) {
             MonthlyReport report = monthlyReportManager.getMonthlyReport(token, month, year);
             if (report == null)

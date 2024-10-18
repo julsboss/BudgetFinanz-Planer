@@ -20,6 +20,15 @@ import java.util.function.Function;
 @Service
 public class AuthServiceImpl implements AuthService {
 
+   /* private static AuthServiceImpl authServiceImpl = null;
+
+    private AuthServiceImpl(){};
+
+    public static AuthServiceImpl getAuthServiceImpl(){
+        if(authServiceImpl == null) authServiceImpl = new AuthServiceImpl();
+        return authServiceImpl;
+    }*/
+
     @Autowired
     private TokenBlacklistImpl tokenBlacklist;
 

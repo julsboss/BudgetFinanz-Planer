@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
@@ -51,7 +52,7 @@ public class CashflowDTO {
      * @param category
      * @param repetition
      */
-    public CashflowDTO(Integer id, String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment, Integer user_id) {
+   /* public CashflowDTO(Integer id, String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment, Integer user_id) {
         super();
         this.id = id;
         this.type = type;
@@ -62,7 +63,7 @@ public class CashflowDTO {
         this.repetition = repetition;
         this.comment = comment;
         this.user_id = user_id;
-    }
+    }*/
     public CashflowDTO(Integer id, String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment) {
         super();
         this.id = id;
@@ -74,6 +75,27 @@ public class CashflowDTO {
         this.repetition = repetition;
         this.comment = comment;
             }
+    public CashflowDTO(String type, String category, Double amount, String date, String paymentMethod, String repetition, String comment) {
+        super();
+        this.type = type;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+        this.paymentMethod = paymentMethod;
+        this.repetition = repetition;
+        this.comment = comment;
+    }
+
+    public CashflowDTO(Cashflow cashflow){
+        this.id = cashflow.getCashflowID();
+        this.type = cashflow.getType();
+        this.category = cashflow.getCategory();
+        this.amount = cashflow.getAmount();
+        this.date = cashflow.getDate();
+        this.paymentMethod = cashflow.getPaymentMethod();
+        this.repetition = cashflow.getRepetition();
+        this.comment = cashflow.getComment();
+    }
 
     @JsonProperty("type")
     public String getType() {

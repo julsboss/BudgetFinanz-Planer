@@ -25,11 +25,16 @@ public class CashflowManagerImpl implements CashflowManager {
         return cashflowManagerImpl;
     }
 
-    @Override
+
     public void addCashflow(Cashflow newCashflow) {
             List<Cashflow> temp = getAllCashflows();
             temp.add(newCashflow);
             setAllCashflows(temp);
+    }
+
+    @Override
+    public void addCashflow(Cashflow newCashflow, int userid) {
+
     }
 
     @Override
@@ -106,6 +111,16 @@ public class CashflowManagerImpl implements CashflowManager {
     @Override
     public List<Cashflow> getCashflowsByUserID(int user_ID) {
         return List.of();
+    }
+
+    @Override
+    public void updateCashflow(Cashflow cashflow, int user_ID) {
+
+    }
+
+    @Override
+    public Cashflow getCashflowById(int cashflowID) {
+        return null;
     }
 
     public void setAllCashflows(List<Cashflow> cashflows){
