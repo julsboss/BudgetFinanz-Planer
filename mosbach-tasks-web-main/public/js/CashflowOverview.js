@@ -1,8 +1,31 @@
 
         document.addEventListener("DOMContentLoaded", function () {
+            const token = localStorage.getItem('authToken');
+
+            
+            var transactions = []
+            // Cashflows vom Server abrufen
+    $.ajax({
+        url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/user', // Endpunkt für das Abrufen der Cashflows
+        type: 'GET',
+        dataType: 'json',
+        headers: {
+            'Authorization': token // Authorization Header hinzufügen
+        },
+        success: function (data) {
+            transactions = data.cashflows || []; // Cashflows dem Array zuweisen
+            localStorage.setItem('transactions', JSON.stringify(transactions)); // Optional: Cashflows im LocalStorage speichern
+            displayTransactions(); // Transaktionen anzeigen
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log('Fehler beim Abrufen der Cashflows:', xhr.status, thrownError);
+            alert('Fehler beim Abrufen der Cashflows. Bitte erneut versuchen.');
+        }
+    });
+
+
             const cashflowList = document.getElementById('cashflow-list');
 
-            var transactions = []
 
             // Funktion zum Rendern der Transaktionen
             renderTransactions();

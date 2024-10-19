@@ -130,8 +130,6 @@ $(document).ready(function() {
         event.preventDefault(); // Verhindert das Standardverhalten des Formulars
 
         var cashflowData = {
-            token: localStorage.getItem('authToken'),
-            cashflow:{
             type: $("#type").val(),
             category: $("#category").val(),
             amount: parseFloat($("#amount").val()),
@@ -139,8 +137,10 @@ $(document).ready(function() {
             paymentMethod: $("#paymentMethod").val(),
             repetition: $("#repetition").val(),
             comment: $("#comment").val() || "none"
-            }
+        
         };
+
+        const token = localStorage.getItem('authToken'); // Token aus LocalStorage holen
 
         // Einfacher Validierungscheck
         if (!cashflowData.type || !cashflowData.category || isNaN(cashflowData.amount) || !cashflowData.date || !cashflowData.paymentMethod || !cashflowData.repetition) {
@@ -155,6 +155,9 @@ $(document).ready(function() {
             type: 'post',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Authorization': token // Authorization Header hinzufügen
+            },
             data: JSON.stringify(cashflowData),
             success: function(data) {
                 console.log('Finanzfluss erfolgreich hinzugefügt', data);
