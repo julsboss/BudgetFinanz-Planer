@@ -1,0 +1,53 @@
+
+/* Cashflow Tabelle */
+.cashflow-table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cashflow-table table {
+    width: 100%;
+    border-collapse: collapse; /* Setze die Zellen auf ein klassisches Layout */
+    text-align: left;
+}
+
+.cashflow-table th, .cashflow-table td {
+    padding: 12px;
+    border: 1px solid #4CAF50; /* Klassischer Rand zwischen den Zellen */
+}
+
+/* Tabellenkopf */
+.cashflow-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Zellen */
+.cashflow-table td {
+    background-color: #fff;
+}
+
+/* Aktions-Buttons */
+.cashflow-table .edit-button, .cashflow-table .delete-button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.cashflow-table .edit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cashflow-table .delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Zusammenfassungsbereich */
+.summary {
+    margin-top: 30px;
+    font-size: 18px;
+    text-align: left;
+}

@@ -46,6 +46,17 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+.container-CashlowOverview{
+
+    max-width: 1400px; /* Breiter Container */
+    margin: 0;
+    padding: 30px;
+    display: flex; /* Ändern Sie das Layout auf Flexbox */
+    flex-direction: column; /* Elemente in einer Spalte anordnen */
+    align-items: center; /* Zentriere die Elemente */
+    gap: 20px; /* Abstand zwischen den Abschnitten */
+ 
+}
 
 h1 {
     text-align: center;
@@ -73,13 +84,21 @@ h1 {
 }
 
 button {
-    width: 100%;
+    width: auto;
     padding: 10px;
     background-color: darkseagreen;
     color: white;
     border: none;
+    padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Platzierung der Buttons auf gegenüberliegenden Seiten */
+    margin-top: 20px;
+    padding: 0 20px; 
 }
 .custom-full-width {
     width: 40%; /* Setzt die Breite des Buttons auf 100% des übergeordneten Elements */
@@ -123,20 +142,34 @@ button:hover {
     color:#ccc ;
 
 }
-button.back-button {
-    background-color: #f8f8f8;
-    color: #4CAF50;
-    border: 1px solid #4CAF50;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-button.back-button:hover {
+.back-button {
     background-color: #4CAF50;
     color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
 }
+
+.back-button:hover {
+    background-color: #45a049;
+}
+
+.next-button {
+    background-color: #4CAF50; /* Gleiche Farbe wie der "Zurück"-Button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+.next-button:hover {
+    background-color: #45a049;
+}
+
 .month-nav ul {
     list-style-type: none;
     padding: 0;
@@ -169,6 +202,8 @@ h2 {
 .content {
     margin-top: 10px;
 }
+
+
 .report-section {
     border: 1px solid #ccc; /* Rahmen für jeden Bereich */
     border-radius: 5px; /* Abgerundete Ecken */
