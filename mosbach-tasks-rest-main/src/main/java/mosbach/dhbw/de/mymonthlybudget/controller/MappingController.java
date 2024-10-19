@@ -46,6 +46,18 @@ public class MappingController {
 
         return "ok";
     }
+    @GetMapping("/create-monthlyReport-table")
+    public String createMonthlyReportTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
+        Logger.getLogger("MappingController")
+                .log(Level.INFO, "MappingController create-monthlyReport-table " + token);
+
+        // TODO:  Check token, this should be a very long, super secret token
+        // Usually this is done via a different, internal component, not the same component for all public REST access
+
+        monthlyReportManager.createMonthlyReportTable();
+
+        return "ok";
+    }
 
     @PostMapping (
             path = "/cashflow",
@@ -210,10 +222,10 @@ public class MappingController {
     @PostMapping (
             path = "/monthly-report",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
-    ) public ResponseEntity<?> createMonthlyReport(@RequestHeader ("Authorization") String token, @RequestBody MonthlyReport report) {
+    ) public ResponseEntity<?> createMonthlyReport(@RequestHeader ("Authorization") String token, @RequestBody MonthlyReportRequest request) {
         User user = userManager.getUser(token);
         if (user != null) {
-            MonthlyReportImpl monthlyReport = new MonthlyReportImpl(token, report.getMonth(), report.getYear());
+            MonthlyReportImpl monthlyReport = new MonthlyReportImpl(user.getUserID(), request.getMonth(), request.getYear());
             monthlyReportManager.addMonthlyReport(monthlyReport);
 
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("MonthlyReport created"), HttpStatus.OK);
@@ -225,10 +237,10 @@ public class MappingController {
     @GetMapping(
             path = "/monthly-report",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
-    ) public ResponseEntity <?> getMonthlyReport (@RequestHeader ("Authorization") String token, @RequestParam String month, @RequestParam Integer year){
+    ) public ResponseEntity <?> getMonthlyReport (@RequestHeader ("Authorization") String token, @RequestBody MonthlyReportRequest request){
         User user = userManager.getUser(token);
         if (user != null) {
-            MonthlyReport report = monthlyReportManager.getMonthlyReport(token, month, year);
+            MonthlyReport report = monthlyReportManager.getMonthlyReport(user.getUserID(), request.getMonth(), request.getYear());
             if (report == null)
                 return new ResponseEntity<MessageReason>(new MessageReason("Monthly Report not found."), HttpStatus.NOT_FOUND);
             return new ResponseEntity<MonthlyReport>(report, HttpStatus.OK);

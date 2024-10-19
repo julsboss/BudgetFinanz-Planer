@@ -40,10 +40,10 @@ public class MonthlyReportImpl implements MonthlyReport {
         this.cashflowsVariableCosts = cashflowsVariableCosts;
     }
 
-    public MonthlyReportImpl(String token, String month, Integer year) {
-        UserService userService = new UserServiceImpl();
-        User user = userService.getUser(token);
-        this.userID = user.getUserID();
+    public MonthlyReportImpl(int userID, String month, Integer year) {
+        /*UserService userService = new UserServiceImpl();
+        User user = userService.getUser(token);*/
+        this.userID = userID;
         this.month = month;
         this.year = year;
 

@@ -64,8 +64,7 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
                     "total_variable_costs DECIMAL(10, 2) NOT NULL, " +
                     "total_expenses DECIMAL(10, 2) NOT NULL, " +
                     "total_differenceSummary DECIMAL(10, 2) NOT NULL, " +
-                    // Ensure the users table exists and has a user_id column
-                   // "FOREIGN KEY (user_id) REFERENCES Group21Users(user_id)" +
+                    "FOREIGN KEY (user_id) REFERENCES group21Users(user_id)" +
                     ")";
             stmt.executeUpdate(createTable);
             stmt.close();
@@ -188,16 +187,9 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
     }
 
     @Override
-    public MonthlyReport getMonthlyReport(String token, String month, Integer year) {
-        UserService userService = new UserServiceImpl();
-        User user = userService.getUser(token);
-        if (user == null) {
-            throw new IllegalArgumentException("Invalid token");
-        }
-        int userId = user.getUserID();
+    public MonthlyReport getMonthlyReport(int userID, String month, Integer year) {
 
-        // Check if report exists
-        if (!checkExistingReport(userId, month, year)) {
+        if (!checkExistingReport(userID, month, year)) {
             throw new IllegalStateException("No report found for this month and year.");
         }
 
@@ -205,9 +197,9 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
         PostgresDBCashflowManagerImpl manager = PostgresDBCashflowManagerImpl.getCashflowManagerImpl();
 
         // Retrieve cashflows
-        List<Cashflow> cashflowsIncome = manager.getCashflowByMonthAndType(userId, month, year, "Einkommen");
-        List<Cashflow> cashflowsFixedCosts = manager.getCashflowByMonthAndType(userId, month, year, "Fixe Kosten");
-        List<Cashflow> cashflowsVariableCosts = manager.getCashflowByMonthAndType(userId, month, year, "Variable Kosten");
+        List<Cashflow> cashflowsIncome = manager.getCashflowByMonthAndType(userID, month, year, "Einkommen");
+        List<Cashflow> cashflowsFixedCosts = manager.getCashflowByMonthAndType(userID, month, year, "Fixe Kosten");
+        List<Cashflow> cashflowsVariableCosts = manager.getCashflowByMonthAndType(userID, month, year, "Variable Kosten");
 
         // Calculate totals
         double incomeTotal = calculateTotal(cashflowsIncome);
@@ -217,10 +209,10 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
         double differenceSummary = incomeTotal - expensesTotal;
 
         // Update database with calculated totals
-        updateMonthlyReport(userId, month, year, incomeTotal, fixedTotal, variableTotal, expensesTotal, differenceSummary);
+        updateMonthlyReport(userID, month, year, incomeTotal, fixedTotal, variableTotal, expensesTotal, differenceSummary);
 
         // Create and return the monthly report
-        return new MonthlyReport(new MonthlyReportImpl(token, month, year)) ;
+        return new MonthlyReport(new MonthlyReportImpl(userID, month, year)) ;
     }
 
     private void updateMonthlyReport(int userId, String month, int year,

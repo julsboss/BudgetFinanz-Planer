@@ -1,6 +1,7 @@
 
 package mosbach.dhbw.de.mymonthlybudget.model;
 
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class MonthlyReportRequest {
 
-    @JsonProperty("token")
-    private String token;
-    @JsonProperty("monthly-report")
-    private MonthlyReport monthlyReport;
+    @JsonProperty("month")
+    private String month;
+    @JsonProperty("year")
+    private Integer year;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -29,30 +30,30 @@ public class MonthlyReportRequest {
     public MonthlyReportRequest() {
     }
 
-    public MonthlyReportRequest(String token, MonthlyReport monthlyReport) {
+    public MonthlyReportRequest(String month, Integer year) {
         super();
-        this.token = token;
-        this.monthlyReport = monthlyReport;
+        this.month = month;
+        this.year = year;
     }
 
-    @JsonProperty("token")
-    public String getToken() {
-        return token;
+    @JsonProperty("month")
+    public String getMonth() {
+        return month;
     }
 
-    @JsonProperty("token")
-    public void setToken(String token) {
-        this.token = token;
+    @JsonProperty("month")
+    public void setMonth(String month) {
+        this.month = month;
     }
 
-    @JsonProperty("monthly-report")
-    public MonthlyReport getMonthlyReport() {
-        return monthlyReport;
+    @JsonProperty("year")
+    public Integer getYear() {
+        return year;
     }
 
-    @JsonProperty("monthly-report")
-    public void setMonthlyReport(MonthlyReport monthlyReport) {
-        this.monthlyReport = monthlyReport;
+    @JsonProperty("year")
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     @JsonAnyGetter

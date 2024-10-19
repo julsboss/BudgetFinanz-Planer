@@ -10,7 +10,7 @@ public interface MonthlyReportManager {
 
     void addMonthlyReport(MonthlyReportImpl report);
 
-    MonthlyReport getMonthlyReport(String token, String month, Integer year);
+    MonthlyReport getMonthlyReport(int userID, String month, Integer year);
 
     boolean removeMonthlyReport( int monthlyReportID );
 

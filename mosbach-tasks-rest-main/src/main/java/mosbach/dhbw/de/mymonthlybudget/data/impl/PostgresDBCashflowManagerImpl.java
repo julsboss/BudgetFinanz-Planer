@@ -232,7 +232,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
         try {
             connection = DriverManager.getConnection(dbUrl, username, password);
 
-            String sql = "SELECT * FROM group21cashflows WHERE user_id = ? AND ((repetition = 'monthly') OR (MONTH(date) = ? AND YEAR(date) = ?)) AND type = ?";
+            String sql = "SELECT * FROM group21cashflows WHERE user_id = ? AND ((repetition = 'Monatlich') OR (EXTRACT(MONTH FROM date) = ? AND EXTRACT(YEAR FROM date) = ?)) AND type = ?";;
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, userID);
             pstmt.setInt(2, monthNumber);
@@ -268,52 +268,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
 
         return cashflows;
     }
-    public List<Cashflow> getCashflowByMonth(int userID, int month, int year) {
-        final Logger logger = Logger.getLogger("GetCashflowByMonthLogger");
-        logger.log(Level.INFO, "Fetching cashflows for user ID: " + userID + " for month: " + month + "/" + year);
 
-        List<Cashflow> cashflows = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            connection = DriverManager.getConnection(dbUrl, username, password);
-
-            String sql = "SELECT * FROM group21cashflows WHERE user_id = ? AND MONTH(date) = ? AND YEAR(date) = ?";
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, userID);
-            pstmt.setInt(2, month);
-            pstmt.setInt(3, year);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Cashflow cashflow = new CashflowImpl(
-                        rs.getInt("cashflow_id"),
-                        rs.getString("type"),
-                        rs.getString("category"),
-                        rs.getDouble("amount"),
-                        rs.getDate("date").toString(),
-                        rs.getString("payment_method"),
-                        rs.getString("repetition"),
-                        rs.getString("comment")
-                );
-                cashflows.add(cashflow);
-            }
-
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "SQL Exception occurred: " + e.getMessage());
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                logger.log(Level.SEVERE, "Failed to close resources: " + e.getMessage());
-            }
-        }
-
-        return cashflows;
-    }
     public List<Cashflow> getCashflowsByUserID(int userId) {
         final Logger logger = Logger.getLogger("GetCashflowsByUserIdLogger");
         logger.log(Level.INFO, "Fetching cashflows for user ID: " + userId);
