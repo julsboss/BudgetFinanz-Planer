@@ -95,6 +95,9 @@ function updateSummary(type, amount) {
     saveCashflowData(year, month, totalIncome, totalExpenses);
 }
 
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Gesamteinkommen aus localStorage abrufen
     const totalIncome = localStorage.getItem('totalIncome') || '0.00';
@@ -117,6 +120,9 @@ function deleteTransaction(index) {
 
 function goBack() {
     window.location.href = '../Startpage.html';
+}
+function goToNextPage() {
+    window.location.href = 'CashflowOverview.html'; // Ersetze 'nextpage.html' mit dem Zielpfad
 }
 
 $(document).ready(function() {

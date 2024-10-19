@@ -76,10 +76,7 @@
                 <select id="repetition">
                     <option value="" disabled selected>Wählen...</option>
                     <option value="none">Keine Option</option>
-                    <option value="monthly">Jährlich</option>
                     <option value="monthly">Monatlich</option>
-                    <option value="weekly">Wöchentlich</option>
-                    <option value="daily">Täglich</option>
                 </select>
             </div>
             <div class="input-group">
@@ -88,6 +85,10 @@
         </div>
             <button type="submit">Transaktion hinzufügen</button>
         </form>
+
+        <div class="button-container">
+            <button class="next-button" onclick="goToNextPage()">Weiter</button>
+        </div>
         
         <div id="transactions-list">
             <h2>Transaktionen</h2>
