@@ -23,4 +23,6 @@ public interface UserManager {
 
     public User getUserByID(int userID);
 
+    public boolean updateUser(User user);
+
 }

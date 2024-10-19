@@ -79,6 +79,39 @@ public class PostgresDBUserManagerImpl implements UserManager {
     }
 
 
+    public boolean updateUser(User user) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        boolean isUpdated = false;
+
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+            String updateSQL = "UPDATE group21Users SET firstName = ?, lastName = ?, passwort = ? WHERE email = ?";
+            pstmt = connection.prepareStatement(updateSQL);
+            pstmt.setString(1, user.getFirstName());
+            pstmt.setString(2, user.getLastName());
+            pstmt.setString(3, user.getPassword());
+            pstmt.setString(4, user.getEmail());
+
+            int affectedRows = pstmt.executeUpdate();
+            isUpdated = (affectedRows > 0);
+
+        } catch (SQLException e) {
+            System.err.println("SQL Exception occurred while updating user: " + e.getMessage());
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Failed to close resources: " + e.getMessage());
+            }
+        }
+
+        return isUpdated;
+    }
+
+
+
     @Override
     public boolean deleteUser(String email) {
         Connection connection = null;
@@ -178,44 +211,6 @@ public class PostgresDBUserManagerImpl implements UserManager {
             }
         }
     }
-
-    /*public User getUserByEmail(String email) {
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        User user = null;
-
-        try {
-            connection = DriverManager.getConnection(dbUrl, username, password);
-            String query = "SELECT * FROM group21Users WHERE email = ?";
-            pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, email);
-
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                user = new User(
-                        rs.getInt("user_id"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("email"),
-                        rs.getString("passwort")
-                );
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL Exception occurred while retrieving user: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                System.err.println("Failed to close resources: " + e.getMessage());
-            }
-        }
-
-        return user;
-    }*/
 
 
     public User getUserByEmail(String email) {
