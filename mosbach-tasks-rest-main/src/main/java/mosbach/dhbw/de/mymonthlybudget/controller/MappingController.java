@@ -112,7 +112,7 @@ public class MappingController {
                         c.getRepetition(),
                         c.getComment()
                 ));
-            answerCashflow.setSortOrder("NOT YET SORTED");
+            answerCashflow.setSortOrder("ALL CASHFLOWS BY ALL USERS");
             Logger
                     .getLogger("MappingController")
                     .log(Level.INFO, "Cashflows from file");
@@ -200,6 +200,23 @@ public class MappingController {
         return new ResponseEntity<>(new MessageAnswer("Cashflow updated successfully"), HttpStatus.OK);
     }
 
+    @GetMapping("/cashflow/{cashflowId}")
+    public ResponseEntity<?> getCashflowByCashflowId(
+            @PathVariable int cashflowId,
+            @RequestHeader("Authorization") String token){
+        User user = userManager.getUser(token);
+        if (user != null) {
+            CashflowDTO cashflow = new CashflowDTO(cashflowManager.getCashflowById(cashflowId));
+            if (cashflow != null) {
+                return new ResponseEntity<>(cashflow, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new MessageAnswer("Cashflow not found"), HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>(new MessageAnswer("Unauthorized access."), HttpStatus.UNAUTHORIZED);
+        }
+
+    }
 
 
     @PostMapping (

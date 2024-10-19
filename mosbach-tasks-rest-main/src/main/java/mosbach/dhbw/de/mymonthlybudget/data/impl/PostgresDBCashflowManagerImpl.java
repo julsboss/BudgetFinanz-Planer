@@ -430,7 +430,8 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
                         rs.getDate("date").toString(),
                         rs.getString("payment_method"),
                         rs.getString("repetition"),
-                        rs.getString("comment")
+                        rs.getString("comment"),
+                        rs.getInt("user_id")
                 );
                 logger.log(Level.INFO, "Cashflow found: " + cashflowID);
             } else {
