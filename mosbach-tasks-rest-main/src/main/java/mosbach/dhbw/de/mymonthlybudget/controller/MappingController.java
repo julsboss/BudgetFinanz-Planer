@@ -51,19 +51,19 @@ public class MappingController {
             path = "/cashflow",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<?> createCashflow(@RequestHeader ("Authorization") String token, @RequestBody  CashflowRequest request) {
+    public ResponseEntity<?> createCashflow(@RequestHeader ("Authorization") String token, @RequestBody  CashflowDTO request) {
         final Logger logger = Logger.getLogger("CashflowLogger");
         logger.log(Level.INFO, "Received request to create cashflow with token: " + token);
         User user = userManager.getUser(token);
         if(user != null) {
             logger.log(Level.INFO, "User found for token: " + token);
-            CashflowImpl cashflow = new CashflowImpl( request.getCashflow().getType(),
-                    request.getCashflow().getCategory(),
-                    request.getCashflow().getAmount(),
-                    request.getCashflow().getDate(),
-                    request.getCashflow().getPaymentMethod(),
-                    request.getCashflow().getRepetition(),
-                    request.getCashflow().getComment());
+            CashflowImpl cashflow = new CashflowImpl( request.getType(),
+                    request.getCategory(),
+                    request.getAmount(),
+                    request.getDate(),
+                    request.getPaymentMethod(),
+                    request.getRepetition(),
+                    request.getComment());
                     //cashflow.setUserID(token);
             cashflowManager.addCashflow(cashflow, user.getUserID());
             logger.log(Level.INFO, "Cashflow added successfully for user ID: " + user.getUserID());
@@ -76,19 +76,7 @@ public class MappingController {
         }
 
     }
-   /* wenn datenbank erfolgreich implementiert
-    @GetMapping("/create-task-table")
-    public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
-        Logger.getLogger("MappingController")
-                .log(Level.INFO,"MappingController create-task-table " + token);
 
-        // TODO:  Check token, this should be a very long, super secret token
-        // Usually this is done via a different, internal component, not the same component for all public REST access
-
-        cashflowManager.createTaskTable();
-
-        return "ok";
-    }*/
     @GetMapping("/cashflow")
     public CashflowResponse getAllCashflows(
             @RequestParam (value = "sortOrder", defaultValue = "date") String sortOrder,
