@@ -231,7 +231,7 @@ public class MappingController {
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("MonthlyReport created"), HttpStatus.OK);
         }
         else{
-        return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<MessageReason>(new MessageReason("Wrong token"), HttpStatus.UNAUTHORIZED);
     }
     }
     @GetMapping(
