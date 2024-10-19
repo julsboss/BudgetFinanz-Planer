@@ -2,8 +2,6 @@
         document.addEventListener("DOMContentLoaded", function () {
             const cashflowList = document.getElementById('cashflow-list');
 
-
-
             var transactions = []
 
             // Funktion zum Rendern der Transaktionen
@@ -89,7 +87,10 @@
                     type: 'PUT',
                     dataType: 'JSON',
                     contentType: 'application/json',
-                    data: JSON.stringify(transactionData),
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken') // Token aus dem localStorage
+                    },
+                    data: JSON.stringify({ token: localStorage.getItem('authToken'), cashflow: transactionData }),
                     processData: false,
                     success: function(data) {
                         $("#serverAnswer").html(data.message);
@@ -106,6 +107,9 @@
                 $.ajax({
                     url: `https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}`, // URL zum Delete-Endpoint
                     type: 'DELETE',
+                    headers: {
+                        'Authorization': localStorage.getItem('authToken') // Token aus dem localStorage
+                    },
                     success: function(data) {
                         $("#serverAnswer").html(data.message);
                         alert('Transaktion erfolgreich gelöscht!');

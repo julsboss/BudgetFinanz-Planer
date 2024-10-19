@@ -130,13 +130,16 @@ $(document).ready(function() {
         event.preventDefault(); // Verhindert das Standardverhalten des Formulars
 
         var cashflowData = {
+            token: localStorage.getItem('authToken'),
+            cashflow:{
             type: $("#type").val(),
             category: $("#category").val(),
             amount: parseFloat($("#amount").val()),
             date: $("#date").val(),
             paymentMethod: $("#paymentMethod").val(),
             repetition: $("#repetition").val(),
-            comment: $("#comment").val()
+            comment: $("#comment").val() || "none"
+            }
         };
 
         // Einfacher Validierungscheck
@@ -152,9 +155,6 @@ $(document).ready(function() {
             type: 'post',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            headers: {
-                'Authorization': localStorage.getItem('authToken') // Token aus dem lokalen Speicher
-            },
             data: JSON.stringify(cashflowData),
             success: function(data) {
                 console.log('Finanzfluss erfolgreich hinzugefügt', data);
