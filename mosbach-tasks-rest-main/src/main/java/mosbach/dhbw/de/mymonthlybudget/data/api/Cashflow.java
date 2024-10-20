@@ -10,4 +10,5 @@ public interface Cashflow {
         String getPaymentMethod();
         String getRepetition();
         String getComment();
+        Integer getUserID();
 }

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
@@ -19,7 +18,7 @@ public class CashflowResponse {
     @JsonProperty("sort-order")
     private String sortOrder;
     @JsonProperty("cashflow")
-    private List<Cashflow> cashflow;
+    private List<CashflowDTO> cashflowDTO;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -32,13 +31,13 @@ public class CashflowResponse {
 
     /**
      * 
-     * @param cashflow
+     * @param cashflowDTO
      * @param sortOrder
      */
-    public CashflowResponse(String sortOrder, List<Cashflow> cashflow) {
+    public CashflowResponse(String sortOrder, List<CashflowDTO> cashflowDTO) {
         super();
         this.sortOrder = sortOrder;
-        this.cashflow = cashflow;
+        this.cashflowDTO = cashflowDTO;
     }
 
     @JsonProperty("sort-order")
@@ -52,13 +51,13 @@ public class CashflowResponse {
     }
 
     @JsonProperty("cashflow")
-    public List<Cashflow> getCashflow() {
-        return cashflow;
+    public List<CashflowDTO> getCashflow() {
+        return cashflowDTO;
     }
 
     @JsonProperty("cashflow")
-    public void setCashflow(List<Cashflow> cashflow) {
-        this.cashflow = cashflow;
+    public void setCashflow(List<CashflowDTO> cashflowDTO) {
+        this.cashflowDTO = cashflowDTO;
     }
 
     @JsonAnyGetter

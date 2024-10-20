@@ -6,7 +6,7 @@ import mosbach.dhbw.de.mymonthlybudget.model.User;
 public interface AuthService {
 
 
-    public String extractEmail(String token);
+    public String extractUsername(String token);
     public boolean isTokenExpired(String token);
     public String generateVerificationToken(User user);
     public String generateToken(User userDetails);
