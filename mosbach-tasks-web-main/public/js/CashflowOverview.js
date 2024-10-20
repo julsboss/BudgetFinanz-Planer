@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        }
         },
         error: function (xhr, ajaxOptions, thrownError) {
+
             console.log('Fehler beim Abrufen der Cashflows:', xhr.status, thrownError);
             alert('Fehler beim Abrufen der Cashflows. Bitte erneut versuchen.');
         }

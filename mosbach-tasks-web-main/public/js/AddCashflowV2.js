@@ -46,6 +46,7 @@ document.getElementById('transaction-form').addEventListener('submit', function(
             console.log('Fehler: ' + xhr.status + ' ' + thrownError);
             alert('Ein Fehler ist beim Hinzufügen der Finanzen aufgetreten. Bitte versuche es erneut.');
         }
+
     });
 
 });
