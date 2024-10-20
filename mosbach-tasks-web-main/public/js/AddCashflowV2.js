@@ -9,13 +9,13 @@ document.getElementById('transaction-form').addEventListener('submit', function(
         category: $("#category").val(),
         amount: parseFloat($("#amount").val()),
         date: $("#date").val(),
-        paymentMethod: $("#payment-method").val(),
+        payment_method: $("#payment-method").val(),
         repetition: $("#repetition").val(),
-        comment: $("#comment").val()
+        comment: $("#comments").val()
     };
     
     // Einfacher Validierungscheck
-    if (!cashflowData.type || !cashflowData.category || isNaN(cashflowData.amount) || !cashflowData.date || !cashflowData.paymentMethod || !cashflowData.repetition) {
+    if (!cashflowData.type || !cashflowData.category || isNaN(cashflowData.amount) || !cashflowData.date || !cashflowData.payment_method || !cashflowData.repetition) {
         alert('Bitte alle erforderlichen Felder ausfüllen.');
         return;
     }
