@@ -13,7 +13,10 @@ document.getElementById('transaction-form').addEventListener('submit', function(
         repetition: $("#repetition").val(),
         comment: $("#comments").val()
     };
-    
+
+
+
+
     // Einfacher Validierungscheck
     if (!cashflowData.type || !cashflowData.category || isNaN(cashflowData.amount) || !cashflowData.date || !cashflowData.payment_method || !cashflowData.repetition) {
         alert('Bitte alle erforderlichen Felder ausfüllen.');
