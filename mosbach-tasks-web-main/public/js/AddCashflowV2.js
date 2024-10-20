@@ -1,29 +1,65 @@
 
-
 document.getElementById('transaction-form').addEventListener('submit', function(e) {
     e.preventDefault();
-  
+
+  var username = localStorage.getItem('username') || 'Unbekannt';
+
+      // Validierung des Betrags
+var amountInput = $("#amount").val();
+
+ var cashflowData = {
+            "sort-order": `Cashflows of User: ${username}`, // Hier den Benutzernamen dynamisch einsetzen, falls erforderlich
+            "cashflow": [
+                {
+
+                    "type": $("#type").val(),
+                    "category": $("#category").val(),
+                    "amount": parseFloat(amountInput),
+                    "date": $("#date").val(),
+                    "paymentMethod": $("#payment_method").val(),
+                    "repetition": $("#repetition").val(),
+                    "comment": $("#comment").val()
+                }
+            ]
+        };
+
+
+
+/*
+var amountInput = $("#amount").val();
+console.log("Eingegebener Betrag:", amountInput);
 
     var cashflowData = {
         type: $("#type").val(),
         category: $("#category").val(),
-        amount: parseFloat($("#amount").val()),
+        amount: parseFloat(amountInput),
         date: $("#date").val(),
-        paymentMethod: $("#payment-method").val(),
+        paymentMethod: $("#payment_method").val(),
         repetition: $("#repetition").val(),
         comment: $("#comment").val()
+
     };
-    
+
+    */
+     if (isNaN(cashflowData.amount) || cashflowData.amount <= 0) {
+        alert('Bitte geben Sie einen gültigen Betrag ein.');
+        return;
+     }
+
+   // console.log("Cashflow-Daten:", cashflowData);
+
     // Einfacher Validierungscheck
-    if (!cashflowData.type || !cashflowData.category || isNaN(cashflowData.amount) || !cashflowData.date || !cashflowData.paymentMethod || !cashflowData.repetition) {
+    if (!cashflowData.cashflow[0].type || !cashflowData.cashflow[0].category || isNaN(cashflowData.cashflow[0].amount) || !cashflowData.cashflow[0].date) {
         alert('Bitte alle erforderlichen Felder ausfüllen.');
         return;
     }
 
-    //addTransactionToLocal(cashflowData);
+    console.log("Cashflow-Daten vor der API-Anfrage:", JSON.stringify(cashflowData));
+
+    addTransactionToLocal(cashflowData);
 
 
-    console.log("Cashflow-Daten:", cashflowData);
+
    // addTransaction();
 
     $.ajax({
@@ -37,6 +73,7 @@ document.getElementById('transaction-form').addEventListener('submit', function(
         data: JSON.stringify(cashflowData),
         success: function(data) {
             console.log('Finanzfluss erfolgreich hinzugefügt', data);
+            addTransactionToLocal(cashflowData);
             alert('Finanzfluss erfolgreich hinzugefügt.');
             // Optional: Seite neu laden oder Formular zurücksetzen
             location.reload();
@@ -49,15 +86,22 @@ document.getElementById('transaction-form').addEventListener('submit', function(
 
 });
 
-/*
+
 function addTransactionToLocal(transaction) {
+
+// Überprüfe, ob amount definiert und eine Zahl ist
+    if (typeof transaction.cashflow[0].amount === 'undefined' || isNaN(transaction.cashflow[0].amount)) {
+        console.error('Transaction amount is invalid:', transaction);
+        return; // Verlasse die Funktion, wenn der Betrag ungültig ist
+    }
+
     let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
     transactions.push(transaction); // Füge die Transaktion hinzu
     localStorage.setItem('transactions', JSON.stringify(transactions)); // Speichere die Liste
     displayTransactions(); // Zeige die Transaktionen an
-    updateSummary(transaction.type, transaction.amount); // Update die Zusammenfassung
+    updateSummary(transaction..cashflow[0]type, transaction.cashflow[0].amount); // Update die Zusammenfassung
 }
-    */
+
 
 function updateSummary(type, amount) {
     let totalIncome = parseFloat(document.getElementById('total-income').textContent);
@@ -105,6 +149,7 @@ function displayTransactions() {
     transactionsContainer.innerHTML = '';
     
     transactions.forEach((transaction, index) => {
+     if (transaction.amount !== undefined) {
         const transactionDiv = document.createElement('div');
         transactionDiv.classList.add('transaction-item');
         transactionDiv.innerHTML = `
@@ -117,6 +162,11 @@ function displayTransactions() {
             </button>
         `;
         transactionsContainer.appendChild(transactionDiv);
+        } else {
+                    console.error('Transaction has undefined amount:', transaction);
+                }
+
+
     });
 }
 
@@ -144,6 +194,12 @@ function displayTransactions() {
     }
 
     */
+function deleteTransaction(index) {
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    transactions.splice(index, 1);
+    localStorage.setItem('transactions', JSON.stringify(transactions));  // Speichere die Änderungen
+    displayTransactions();  // Zeigt die aktualisierten Transaktionen an
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Gesamteinkommen aus localStorage abrufen
@@ -161,19 +217,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date').value = today;
     */
 });
-/*
+
 function deleteTransaction(index) {
     transactions.splice(index, 1);
     displayTransactions();
 }
-    */
 
-function deleteTransaction(index) {
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-    transactions.splice(index, 1);
-    localStorage.setItem('transactions', JSON.stringify(transactions));  // Speichere die Änderungen
-    displayTransactions();  // Zeigt die aktualisierten Transaktionen an
-}
+
+
 
 function goBack() {
     window.location.href = '../Startpage.html';
