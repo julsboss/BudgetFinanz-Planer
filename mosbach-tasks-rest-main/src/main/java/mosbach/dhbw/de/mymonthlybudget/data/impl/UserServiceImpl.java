@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{ //hier habe ich das Interfa
     }
 
     public User getUser(String token) {
-        return this.getUserByEmail(this.authService.extractEmail(token));
+        return this.getUserByEmail(this.authService.extractUsername(token));
     }
 
     @Override
