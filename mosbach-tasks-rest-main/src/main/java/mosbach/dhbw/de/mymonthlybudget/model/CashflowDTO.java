@@ -24,7 +24,7 @@ public class CashflowDTO {
     private Double amount;
     @JsonProperty("date")
     private String date;
-    @JsonProperty("payment-method")
+    @JsonProperty("payment_method")
     private String paymentMethod;
     @JsonProperty("repetition")
     private String repetition;
@@ -137,12 +137,12 @@ public class CashflowDTO {
         this.date = date;
     }
 
-    @JsonProperty("payment-method")
+    @JsonProperty("payment_method")
     public String getPaymentMethod() {
         return paymentMethod;
     }
 
-    @JsonProperty("payment-method")
+    @JsonProperty("payment_method")
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }

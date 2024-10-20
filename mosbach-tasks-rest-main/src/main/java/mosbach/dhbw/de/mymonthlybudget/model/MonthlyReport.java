@@ -20,7 +20,7 @@ import mosbach.dhbw.de.mymonthlybudget.data.impl.MonthlyReportImpl;
 
 public class MonthlyReport {
 
-    @JsonProperty("monthly-report_ID")
+    @JsonProperty("monthly_report_ID")
     private Integer monthlyReportID;
     @JsonProperty("month")
     private String month;
@@ -99,12 +99,12 @@ public class MonthlyReport {
         this.cashflowsVariableCosts = cashflowsVariableCosts;*/
     }
 
-    @JsonProperty("monthly-report_ID")
+    @JsonProperty("monthly_report_ID")
     public Integer getMonthlyReportID() {
         return monthlyReportID;
     }
 
-    @JsonProperty("monthly-report_ID")
+    @JsonProperty("monthly_report_ID")
     public void setMonthlyReportID(Integer monthlyReportID) {
         this.monthlyReportID = monthlyReportID;
     }
