@@ -44,6 +44,7 @@ console.log("Eingegebener Betrag:", amountInput);
      if (isNaN(cashflowData.amount) || cashflowData.amount <= 0) {
         alert('Bitte geben Sie einen gültigen Betrag ein.');
         return;
+
      }
 
    // console.log("Cashflow-Daten:", cashflowData);
