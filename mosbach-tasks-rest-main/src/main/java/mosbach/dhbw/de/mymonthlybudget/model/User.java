@@ -5,30 +5,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+
+@Entity
 public class User {
-    private static int userIDCounter = 1;
-    public boolean checkPassword;
-
-
     @Id
     private int userID;
-    private String pat; //Personal Access Token
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private String pat;
     private boolean isVerified;
-    public static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-
+    /**
+     * Constructor
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param password
+     */
     public User(String firstName, String lastName, String email, String password) {
-        this.userID = User.userIDCounter++;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = passwordEncoder.encode(password);
-        this.isVerified= false;
         this.pat = "";
+        this.isVerified = false;
     }
 
     public User(String firstName, String lastName, String email, String password, String pat) {
@@ -36,18 +39,10 @@ public class User {
         this.pat = pat;
     }
 
-    //Getter Setter
-
-    public int getUserID() {
-        return userID;
+    public User() {
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-
-
+    // Getter and Setter
     public String getFirstName() {
         return firstName;
     }
@@ -55,7 +50,6 @@ public class User {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
 
     public String getLastName() {
         return lastName;
@@ -65,7 +59,6 @@ public class User {
         this.lastName = lastName;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -74,20 +67,9 @@ public class User {
         this.email = email;
     }
 
-
     public void setPassword(String password) {
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
     }
-
-    public boolean isVerified() {
-        return isVerified;
-    }
-
-
-    public void setVerified(boolean verified) {
-        isVerified = verified;
-    }
-
 
     public String getPassword() {
         return password;
@@ -101,14 +83,39 @@ public class User {
         this.pat = pat;
     }
 
-    //Functions
+    public int getUserID() {
+        return userID;
+    }
 
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    //Functions
+    /**
+     * Check if the user is verified
+     *
+     * @return true if the user is verified, false otherwise
+     */
     public boolean checkToken(){
         return !pat.isEmpty();
     }
-    public boolean checkPassword(String password){
+
+    /**
+     * Check if the password is correct
+     *
+     * @param password the password to check
+     * @return true if the password is correct, false otherwise
+     */
+    public boolean checkPassword(String password) {
         return passwordEncoder.matches(password, this.password);
     }
-
-
 }

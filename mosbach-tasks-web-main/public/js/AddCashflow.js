@@ -1,3 +1,4 @@
+/*
 document.getElementById('transaction-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -19,6 +20,8 @@ document.getElementById('transaction-form').addEventListener('submit', function(
     transactionItem.textContent = `${category}: €${amount.toFixed(2)} (${type})`;
     
     transactionList.appendChild(transactionItem);*/
+
+/*
 
     updateSummary(type, amount);  
     addTransaction(type, category, amount, date, comments);
@@ -57,3 +60,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+*/
