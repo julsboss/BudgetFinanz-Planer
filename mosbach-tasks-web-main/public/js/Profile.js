@@ -19,6 +19,8 @@ $(document).ready(function() {
         });
     }
 
+
+
     // Update user profile
     $('#profileForm').submit(function(event) {
         event.preventDefault();
