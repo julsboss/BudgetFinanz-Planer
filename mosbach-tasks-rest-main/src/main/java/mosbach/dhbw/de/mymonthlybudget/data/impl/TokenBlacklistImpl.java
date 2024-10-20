@@ -20,6 +20,7 @@ public class TokenBlacklistImpl implements TokenBlacklist {
 
     @Override
     public boolean isTokenBlacklisted(String token) {
+
         return blacklist.contains(token);
     }
 }

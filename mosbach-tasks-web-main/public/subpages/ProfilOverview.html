@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Monthly Report - Profilübersicht</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styleAddCashflow.css">
+</head>
+<body>
+    <div class="container-fluid"></div>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../../ressources/logo.jpg" alt="Logo" />
+            </div>
+            <ul class="nav-links">
+                <li><a href="../Startpage.html">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">Über uns</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+    <button type="button" class="btn btn-secondary back-button" onclick="goBack()">Zurück</button>
+    <div class="container mt-5">
+        <h2>Profilübersicht</h2>
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="firstName">Vorname</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Nachname</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" readonly>
+            </div>
+            <div class="form-group">
+                <label for="password">Passwort</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="updateProfile">Profil aktualisieren</button>
+            <button type="button" class="btn btn-danger" id="deleteProfile">Profil löschen</button>
+        </form>
+    </div>
+
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+    <script src="../js/Profile.js"></script> <!-- Your JavaScript file -->
+</body>
+</html>

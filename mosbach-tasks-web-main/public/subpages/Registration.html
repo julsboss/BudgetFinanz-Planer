@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/registration.css">
+    <link rel="stylesheet" href="../css/registration.css">
+    <script src="../js/jquery-3.6.0.min.js"></script>
     <title>Registrierung</title>
 </head>
 <body>
     <div class="header">
-        <img src="../ressources/logo.jpg" alt="Mein Monatsbudget Logo" class="logo">
+        <img src="../../ressources/logo.jpg" alt="Mein Monatsbudget Logo" class="logo">
     </div>
     
     <div class="register-container">
         <h1>Registrieren</h1>
-        <form action="#">
+        <form action="#" id="registrationForm">
             <label for="vorname">Vorname</label>
             <input type="text" id="vorname" name="vorname" required>
 
@@ -34,9 +35,11 @@
                 <label for="agb">Ich akzeptiere die <a href="#">AGBs</a></label>
             </div>
 
-            <button type="submit">Registrieren</button>
+            <button type="submit" id="submit">Registrieren</button>
         </form>
         <p>Sie haben ein Konto? <a href="LoginPage.html">  Einloggen</a></p>
     </div>
+
+    <script src="../js/Registration.js"></script> 
 </body>
 </html>

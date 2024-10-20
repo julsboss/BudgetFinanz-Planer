@@ -36,17 +36,40 @@ public class AuthServiceImpl implements AuthService {
 
     private final long jwtExpiration = 1000 * 60 * 60 * 2;
 
-    @Override
-    public String extractUsername(String token) {
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    private Date extractExpiration(String token){
-        return extractClaim(token, Claims::getExpiration);
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extratcAllClaims(token);
+        return claimsResolver.apply(claims);
     }
-    private Key getSignInKey(){
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+
+    @Override
+    public String generateToken(User userDetails) {
+
+        return generateToken(new HashMap<>(), userDetails);
+    }
+
+    private String generateToken(HashMap<String,Object> extraClaims, User userDetails) {
+        return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+
+    private String buildToken(
+            Map<String, Object> extraClaims,
+            User userDetails,
+            long expiration
+    ){
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getEmail())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+
     }
 
     @Override
@@ -61,8 +84,26 @@ public class AuthServiceImpl implements AuthService {
             return true;
         }
     }
-    public void invalidateToken(String token){
-        tokenBlacklist.blacklistToken(token);
+
+    private Date extractExpiration(String token){
+
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+
+    private Claims extratcAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+
+    private Key getSignInKey(){
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     @Override
@@ -76,10 +117,15 @@ public class AuthServiceImpl implements AuthService {
                 .compact();
     }
 
-    @Override
-    public String generateToken(User userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+
+    public void invalidateToken(String token){
+
+        tokenBlacklist.blacklistToken(token);
     }
+
+
+
+
 
     @Override
     public void invalidDateToken(String token) {
@@ -87,39 +133,12 @@ public class AuthServiceImpl implements AuthService {
 
     }
 
-    private String generateToken(HashMap<String,Object> extraClaims, User userDetails) {
-        return buildToken(extraClaims, userDetails);
-    }
+
     
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extratcAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extratcAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 
 
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            User userDetails
-    ){
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getEmail())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 7200000L))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
 
-    }
+
 
 
 }

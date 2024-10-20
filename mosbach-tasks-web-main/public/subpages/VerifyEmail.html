@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/login.css">
+    <title>E-Mail-Verifizierung</title>
+</head>
+<body>
+    <div class="header">
+        <img src="../../ressources/logo.jpg" alt="Mein Monatsbudget Logo" class="logo">
+    </div>
+    <div class="verification-container">
+        <h1>E-Mail-Verifizierung</h1>
+        <p class="message" id="message">Verifiziere deine E-Mail...</p>
+        <div id="verified" style="display: none;">
+            <p class="message">E-Mail erfolgreich verifiziert!</p>
+            <div class="button-container">
+                <a href="LoginPage.html" class="btn btn-primary">Zur Anmeldung</a>
+            </div>
+        </div>
+        <div id="verification-error" style="display: none;">
+            <p class="message text-danger">Fehler bei der Verifizierung. Bitte versuche es erneut.</p>
+        </div>
+    </div>
+
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../../public/js/verify.js"></script>
+</body>
+</html>

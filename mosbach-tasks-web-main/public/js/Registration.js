@@ -1,58 +1,67 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const registrationForm = document.querySelector('form');
+$("#submit").click(function(event) {
 
-    registrationForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Verhindert das Standardverhalten (Seiten-Reload)
+    // Verhindert das Standardverhalten des Buttons
+    event.preventDefault(); 
 
-        // Eingabewerte abrufen
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+    var registrationData = {
+        firstName: $("#vorname").val(),
+        lastName: $("#nachname").val(),
+        email: $("#email").val(),
+        password: $("#password").val()
+    };
 
-        // Einfacher Validierungscheck
-        if (!firstName || !lastName || !email || !password) {
-            alert('Bitte alle Felder ausfüllen.');
-            return;
-        }
+    // Ausgabe in einer bestimmten Reihenfolge
+console.log([
+    { key: 'firstName', value: registrationData.firstName },
+    { key: 'lastName', value: registrationData.lastName },
+    { key: 'email', value: registrationData.email },
+    { key: 'password', value: registrationData.password }
+]);
 
-        // Passwortstärke überprüfen (mindestens 6 Zeichen)
-        if (password.length < 6) {
-            alert('Das Passwort muss mindestens 6 Zeichen lang sein.');
-            return;
-        }
+    // Einfacher Validierungscheck
+    if (!registrationData.firstName || !registrationData.lastName || !registrationData.email || !registrationData.password) {
+        alert('Bitte alle Felder ausfüllen.');
+        return;
+    }
 
-        // JSON-Payload für den Server erstellen
-        const signUpData = {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password
-        };
+    // Passwortstärke überprüfen (mindestens 6 Zeichen)
+    if (registrationData.password.length < 6) {
+        alert('Das Passwort muss mindestens 6 Zeichen lang sein.');
+        return;
+    }
 
-        // AJAX-Anfrage zur Registrierung
-        fetch('https://deine-api-url/api/auth/sign-up', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(signUpData)
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Registrierung fehlgeschlagen');
-            }
-        })
-        .then(data => {
-            console.log('Registrierung erfolgreich:', data);
+    console.log(registrationData);
+
+    $.ajax({
+        url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/auth/sign-up',
+        type: 'POST',
+        dataType: 'JSON',
+        contentType: 'application/json',
+        data: JSON.stringify(registrationData),
+        processData: false,
+        success: function(data) {
+            $("#serverAnswer").html(data.message);
             alert('Registrierung erfolgreich! Bitte prüfe deine E-Mails, um das Konto zu bestätigen.');
             window.location.href = 'login.html'; // Weiterleitung auf die Login-Seite
-        })
-        .catch(error => {
-            console.error('Fehler:', error);
-            alert('Registrierung fehlgeschlagen. Bitte überprüfe deine Eingaben und versuche es erneut.');
-        });
+        },
+        
+        error: function(xhr, ajaxOptions, thrownError) {
+            // Wenn der Server eine Antwort zurücksendet
+            if (xhr.responseText) {
+                try {
+                    const response = JSON.parse(xhr.responseText); // Versuche, die Antwort zu parsen
+                    console.log("Response Text: ", response); // Antwort für Debugging ausgeben
+                    alert('Fehler: ' + (response.message || 'Unbekannter Fehler'));
+                } catch (e) {
+                    // Fehler beim Parsen der Antwort
+                    console.error("Parsing error:", e);
+                    alert('Fehler: Die Antwort konnte nicht verarbeitet werden. ' + thrownError);
+                }
+            } else {
+                // Wenn keine Antwort vom Server erhalten wurde
+                alert('Fehler: Keine Antwort vom Server erhalten.');
+            }
+        }
     });
 });
+

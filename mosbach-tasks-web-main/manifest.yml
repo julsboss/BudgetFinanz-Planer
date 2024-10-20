@@ -1,11 +1,11 @@
 ---
 applications:
-- name: TasksFrontend
+- name: BudgetFrontend
   instances: 1
-  host: TasksFrontend{random-word}
+  host: BudgetFrontend{random-word}
   path: .
   buildpacks:
     - php_buildpack
   random-route: true
-  memory: 1G
+  memory: 800M
 # buildpack: https://github.com/dmikusa-pivotal/cf-php-apache-buildpack.git
