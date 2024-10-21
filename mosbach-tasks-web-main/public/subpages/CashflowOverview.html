@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styleAddCashflow.css">
     <link rel="stylesheet" href="../css/CashlowOverview.css">
     <title>Übersicht - Finanzen & Budget</title>
@@ -18,7 +19,7 @@
                 <li><a href="subpages/CashflowOverview.html">Finanzfluss</a></li>
                 <li><a href="subpages/Monthlyreport.html">Monatsbericht</a></li>
                 <li><a href="subpages/ProfilOverview.html">Profil</a></li>
-                <li><a href="subpages/LoginPage.html" class="login-icon">Abmelden</a></li>
+                <li><a href="LoginPage.html" id="logout" class="login-icon">Abmelden</a></li>
             </ul>
         </nav>
     </header>
@@ -26,7 +27,7 @@
     <button type="button" class="back-button" onclick="goBack()">Zurück</button>
 
 
-    <div class="container-CashlowOverview">
+    <div class="container-CashflowOverview">
 
     <table class="cashflow-table">
         <thead >
@@ -88,5 +89,7 @@
 
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/CashflowOverview.js"></script>
-
+    <script src="../js/Navibar.js"></script>
+</body>
+</html>
     
