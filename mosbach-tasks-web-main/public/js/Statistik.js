@@ -59,21 +59,18 @@ function updateChart() {
   chart.draw(data, options);
 }
 
-$(document).ready(function() {
-    $('#year').on('change', function() {
-        const year = $(this).val();
-        fetchStatistikReport(year);
-    });
-
-function fetchStatistikReport(year) {
-    $.ajax({
+$('#yearButton').on('click', function() {
+    const year = $('#year').val();
+    if (year) {
+        $.ajax({
         url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/statistik',
         method: 'GET',
         headers: {
             'Authorization': localStorage.getItem('authToken')
         },
-        data: JSON.stringify({ year: year }),
         contentType: 'application/json',
+        data: JSON.stringify({ year: year }),
+
         success: function(response) {
             console.log('Statistik Report:', response);
             // Process and display the response data
