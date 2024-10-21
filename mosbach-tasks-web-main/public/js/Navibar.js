@@ -1,15 +1,16 @@
 function logout() {
     if (confirm('Möchten Sie sich wirklich abmelden?')) {
         $.ajax({
-            url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/auth', // Replace with your actual logout endpoint
-            method: 'DELETE', // Use POST for logout, adjust if your API requires DELETE or another method
+            url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/auth',
+            method: 'DELETE',
             headers: {
-                'Authorization': localStorage.getItem('authToken') // Include the auth token if needed
+                'Authorization': localStorage.getItem('authToken')
             },
             success: function(response) {
+                localStorage.removeItem('authToken');
                 console.log('Erfolgreich abgemeldet:', response);
                 localStorage.removeItem('authToken'); // Remove token from storage
-                window.location.href = '../LoginPage.html'; // Redirect to login page
+                window.location.href = 'LoginPage.html'; // Redirect to login page
             },
             error: function(error) {
                 console.error('Fehler beim Abmelden:', error);
@@ -23,5 +24,5 @@ function logout() {
 document.getElementById('logout').addEventListener('click', logout);
 
 function goBack() {
-    window.location.href = '../Startpage.html';
+    window.location.href = 'Startpage.html';
 }

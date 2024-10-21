@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - My Monthly Budget</title>
-    <link rel="stylesheet" href="css/styleStartpage.css">
+    <link rel="stylesheet" href="../css/styleStartpage.css">
   <!--  <script src="js/"></script>-->
 </head>
 <body>
     <header id="navbar">
         <nav class="navbar">
             <div class="logo">
-                <img src="../ressources/logo.jpg" alt="Logo" />
+                <img src="../../ressources/logo.jpg" alt="Logo" />
             </div>
             <ul class="nav-links">
-                <li><a href="../Startpage.html">Home</a></li>
-                <li><a href="subpages/CashflowOverview.html">Finanzfluss</a></li>
-                <li><a href="subpages/Monthlyreport.html">Monatsbericht</a></li>
-                <li><a href="subpages/ProfilOverview.html">Profil</a></li>
-                <li><a href="subpages/LoginPage.html" class="login-icon">Abmelden</a></li>
+                <li><a href="Startpage.html">Home</a></li>
+                <li><a href="CashflowOverview.html">Finanzfluss</a></li>
+                <li><a href="Monthlyreport.html">Monatsbericht</a></li>
+                <li><a href="ProfilOverview.html">Profil</a></li>
+                <li><a href="LoginPage.html" id="logout" class="login-icon">Abmelden</a></li>
             </ul>
         </nav>
     </header>
@@ -27,8 +27,8 @@
         <section id="dashboard">
             <h1>Willkommen zurück, [Benutzername]!</h1>
             <div class="button-container">
-               <a href="./subpages/AddCashflow.html"> <button  class="btn btn-primary">Finanzstrom hinzufügen</button></a>
-               <a href="./subpages/AddMonthlyreport.html"> <button  class="btn btn-primary">Monatsbericht hinzufügen</button></a>
+               <a href="AddCashflow.html"> <button class="btn btn-primary">Finanzstrom hinzufügen</button></a>
+               <a href="AddMonthlyreport.html"> <button class="btn btn-primary">Monatsbericht hinzufügen</button></a>
                 <button class="btn btn-secondary">Statistik anzeigen</button>
                 <!-- Weitere Buttons hinzufügen -->
             </div>
@@ -49,6 +49,7 @@
                 map.src = `https://www.google.com/maps?q=${location}+Geldautomat&output=embed`;
             });
         </script>
+        <script src="../js/jquery-3.6.0.min.js"> </script>
         <script src="../js/Navibar.js"></script>
        
         

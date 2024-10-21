@@ -41,8 +41,8 @@ console.log([
         processData: false,
         success: function(data) {
             $("#serverAnswer").html(data.message);
-            alert('Registrierung erfolgreich! Bitte prüfe deine E-Mails, um das Konto zu bestätigen.');
-            window.location.href = 'login.html'; // Weiterleitung auf die Login-Seite
+            alert('Registrierung erfolgreich! ');
+            window.location.href = 'LoginPage.html'; // Weiterleitung auf die Login-Seite
         },
         
         error: function(xhr, ajaxOptions, thrownError) {
@@ -64,4 +64,6 @@ console.log([
         }
     });
 });
-
+function goBack() {
+    window.location.href = '../Homepage.html';
+}
