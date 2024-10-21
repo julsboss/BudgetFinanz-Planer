@@ -4,11 +4,13 @@ import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReportManager;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
+import mosbach.dhbw.de.mymonthlybudget.model.StatistikDTO;
 import mosbach.dhbw.de.mymonthlybudget.model.User;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
@@ -258,5 +260,56 @@ public class PostgresDBMonthlyReportManagerImpl implements MonthlyReportManager{
         return false;
     }
 
+    public List<StatistikDTO> getStatistikByYear(int userId, int year) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<StatistikDTO> statistikList = new ArrayList<>();
+
+        try {
+            connection = DriverManager.getConnection(dbUrl, username, password);
+            String query = "SELECT month, total_income, total_expenses, total_differenceSummary " +
+                    "FROM group21monthlyReport WHERE user_id = ? AND year = ? ORDER BY month ASC";
+            pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, year);
+
+            rs = pstmt.executeQuery();
+            double cumulativeWealth = 0;
+
+            while (rs.next()) {
+                StatistikDTO statistik = new StatistikDTO();
+                String monthName = getMonthName(rs.getInt("month"));
+                double incomeTotal = rs.getDouble("total_income");
+                double expensesTotal = rs.getDouble("total_expenses");
+                double differenceSummary = rs.getDouble("total_differenceSummary");
+                cumulativeWealth += differenceSummary;
+
+                statistik.setMonth(monthName);
+                statistik.setIncomeTotal(incomeTotal);
+                statistik.setExpensesTotal(expensesTotal);
+                statistik.setDifferenceSummary(differenceSummary);
+                statistik.setWealth(cumulativeWealth);
+
+                statistikList.add(statistik);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception occurred: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Failed to close resources: " + e.getMessage());
+            }
+        }
+
+        return statistikList;
+    }
+
+    private String getMonthName(int monthNumber) {
+        return new java.text.DateFormatSymbols().getMonths()[monthNumber - 1];
+    }
 
 }
