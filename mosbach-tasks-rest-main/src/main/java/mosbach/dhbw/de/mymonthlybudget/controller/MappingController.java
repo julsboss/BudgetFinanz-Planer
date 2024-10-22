@@ -236,11 +236,14 @@ public class MappingController {
     }
     @GetMapping(
             path = "/monthly-report",
-            consumes = {MediaType.APPLICATION_JSON_VALUE}
-    ) public ResponseEntity <?> getMonthlyReport (@RequestHeader ("Authorization") String token, @RequestBody MonthlyReportRequest request){
+            produces = MediaType.APPLICATION_JSON_VALUE
+    ) public ResponseEntity <?> getMonthlyReport (@RequestHeader ("Authorization") String token, @RequestParam String month, @RequestParam int year){
+        final Logger logger = Logger.getLogger("MonthlyReportLogger");
+        logger.log(Level.INFO, "Received request for monthly report: month={}, year={}" , month);
         User user = userManager.getUser(token);
         if (user != null) {
-            MonthlyReport report = monthlyReportManager.getMonthlyReport(user.getUserID(), request.getMonth(), request.getYear());
+            logger.log(Level.INFO, "User found: {}", user.getUserID());
+            MonthlyReport report = monthlyReportManager.getMonthlyReport(user.getUserID(), month, year);
             if (report == null)
                 return new ResponseEntity<MessageReason>(new MessageReason("Monthly Report not found."), HttpStatus.NOT_FOUND);
             return new ResponseEntity<MonthlyReport>(report, HttpStatus.OK);
@@ -249,18 +252,7 @@ public class MappingController {
             return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
         }
     }
-    /*@GetMapping(
-            path = "/statistik",
-            consumes = {MediaType.APPLICATION_JSON_VALUE}
-    ) public ResponseEntity <?> getStatistikReport (@RequestHeader ("Authorization") String token, @RequestBody StatistikRequest request){
-        User user = userManager.getUser(token);
-        if (user != null) {
-            List<StatistikDTO> statistikList = monthlyReportManager.getStatistikByYear(user.getUserID(), request.getYear() );
-            return new ResponseEntity<StatistikResponse>(new StatistikResponse(statistikList), HttpStatus.OK);
-        }  else{
-            return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
-        }
-    }*/
+
     @GetMapping(path = "/statistik", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getStatistikReport(@RequestHeader("Authorization") String token, @RequestParam int year) {
         User user = userManager.getUser(token);
