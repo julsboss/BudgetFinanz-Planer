@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Monthly Budget - Ihr persönlicher Budgetplaner</title>
+    <link rel="stylesheet" href="../css/styleAddCashflow.css">
     <link rel="stylesheet" href="css/styleHomepage.css">
+
 </head>
 <body>
     <header>
+        <div class="container-fluid"></div>
         <nav class="navbar">
             <div class="logo">
-                <img src="../ressources/logo.jpg" alt="My Monthly Budget Logo" />
+                <img src="../ressources/logo.jpg" alt="Logo" />
             </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Funktionen</a></li>
-                <li><a href="#about">Über uns</a></li>
-                <li><a href="#contact">Kontakt</a></li>
-                <li><a href="./subpages/LoginPage.html" class="login-icon">Anmelden</a>
+            <div class="hamburger" id="hamburger">☰</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="./subpages/Startpage.html">Home</a></li>
+                <li><a href="./subpages/CashflowOverview.html">Finanzfluss</a></li>
+                <li><a href="./subpages/Startpage.html">Über uns</a></li>
+                <li><a href="#">Kontakt</a></li>
+                <li><a href="./subpages/LoginPage.html" class="login-icon">Anmelden</a></li>
             </ul>
         </nav>
-    
     </header>
 
     <main>
@@ -70,5 +73,8 @@
     <footer>
         <p>&copy; 2024 My Monthly Budget. Alle Rechte vorbehalten.</p>
     </footer>
+
+<script src="js/Homepage.js"></script>
+    <script src="../js/Navibar.js"></script>
 </body>
 </html>
