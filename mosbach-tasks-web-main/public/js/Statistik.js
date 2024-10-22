@@ -58,7 +58,33 @@ function addData(monat, einkommen, ausgaben, differenz, average) {
 function updateChart() {
   chart.draw(data, options);
 }
-
+$('#yearButton').on('click', function() {
+    const year = $('#year').val();
+    if (year) {
+        $.ajax({
+            url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/statistik',
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('authToken')
+            },
+            data: { year: year }, // Send as query parameter
+            success: function(response) {
+                console.log('Statistik Report:', response);
+                // Process and display the response data
+                response.statistik.forEach(function(item) {
+                    addData(item.month, item.income_total, item.expenses_total, item.difference_summary, item.wealth);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching report:', error);
+                alert('Fehler beim Abrufen des Berichts.');
+            }
+        });
+    } else {
+        alert('Bitte geben Sie ein gültiges Jahr ein.');
+    }
+});
+/*
 $('#yearButton').on('click', function() {
     const year = $('#year').val();
     if (year) {
@@ -84,4 +110,4 @@ $('#yearButton').on('click', function() {
         }
     });
 }
-});
+});*/

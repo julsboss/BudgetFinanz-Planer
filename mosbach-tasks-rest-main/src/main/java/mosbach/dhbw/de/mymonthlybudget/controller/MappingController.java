@@ -249,7 +249,7 @@ public class MappingController {
             return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
         }
     }
-    @GetMapping(
+    /*@GetMapping(
             path = "/statistik",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     ) public ResponseEntity <?> getStatistikReport (@RequestHeader ("Authorization") String token, @RequestBody StatistikRequest request){
@@ -260,8 +260,17 @@ public class MappingController {
         }  else{
             return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
         }
+    }*/
+    @GetMapping(path = "/statistik", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getStatistikReport(@RequestHeader("Authorization") String token, @RequestParam int year) {
+        User user = userManager.getUser(token);
+        if (user != null) {
+            List<StatistikDTO> statistikList = monthlyReportManager.getStatistikByYear(user.getUserID(), year);
+            return new ResponseEntity<>(new StatistikResponse(statistikList), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
+        }
     }
-
     //TODO: ALEXA implementieren
 
 }
