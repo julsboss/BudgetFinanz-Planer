@@ -312,3 +312,33 @@ h2 {
         height: 300px;
     }
 }
+.report-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+.report-summary {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #8FBC8F; /* Use the same color as the navigation bar */
+    border-color: #8FBC8F; /* Match border color */
+}
+
+.btn-primary:hover {
+    background-color: #7DA67D; /* Slightly darker shade for hover effect */
+    border-color: #7DA67D;
+}
+
+.cashflow-item {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}

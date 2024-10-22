@@ -16,72 +16,84 @@
         <ul class="nav-links">
             <li><a href="Startpage.html">Home</a></li>
             <li><a href="CashflowOverview.html">Finanzfluss</a></li>
-            <li><a href="Monthlyreport.html">Monatsbericht</a></li>
+            <li><a href="MonthlyReportFinal.html">Monatsbericht</a></li>
             <li><a href="ProfilOverview.html">Profil</a></li>
             <li><a href="LoginPage.html" id="logout" class="login-icon">Abmelden</a></li>
         </ul>
     </nav>
 </header>
-<header>
-    <h1 class="text-center">Mein Monatsbudget</h1>
-    <nav class="d-flex justify-content-center"></nav>
-    <nav class="month-nav">
-        <select id="month" class="form-select w-auto me-2">
-            <option>JAN</option>
-            <option>FEB</option>
-            <option>MÄR</option>
-            <option>APR</option>
-            <option>MAI</option>
-            <option>JUN</option>
-            <option>JUL</option>
-            <option>AUG</option>
-            <option>SEP</option>
-            <option>OKT</option>
-            <option>NOV</option>
-            <option>DEZ</option>
-        </select>
-        <!-- Year input field -->
-        <input type="number" id="year" class="form-control w-auto" placeholder="2024" min="2000" max="2100">
-        <!-- Confirmation button -->
-        <button type="button" id="confirmButton" class="btn btn-primary ms-2">Bestätigen</button>
-    </nav>
-</header>
-<div class="container mt-4">
-    <h1 class="text-center">Monatsbericht</h1>
 
-    <section class="report-section income">
-        <h2>Einnahmen</h2>
-        <ul id="income-list"></ul>
-        <div>Gesamt: €<span id="income-total">1000.00</span></div>
-    </section>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Monatsbericht</h1>
+        <div class="d-flex justify-content-center mb-3">
+            <select id="month" class="form-select w-auto me-2">
+                <option>JAN</option>
+                <option>FEB</option>
+                <option>MÄR</option>
+                <option>APR</option>
+                <option>MAI</option>
+                <option>JUN</option>
+                <option>JUL</option>
+                <option>AUG</option>
+                <option>SEP</option>
+                <option>OKT</option>
+                <option>NOV</option>
+                <option>DEZ</option>
+            </select>
+            <input type="number" id="year" class="form-control w-auto" placeholder="2024" min="2000" max="2100">
+            <button type="button" id="confirmButton" class="btn btn-primary ms-2">Bestätigen</button>
+        </div>
 
-    <section class="report-section fixed-costs">
-        <h2>Fixkosten</h2>
-        <ul id="fixed-costs-list"></ul>
-        <div>Gesamt: €<span id="fixed-total">1000.00</span></div>
-    </section>
+        <!-- Einnahmen Section -->
+        <div class="row mt-4">
+            <div class="col">
+                <section class="report-section income">
+                    <h2>Einnahmen</h2>
+                    <ul id="income-list"></ul>
+                    <div>Gesamt: €<span id="income-total">0.00</span></div>
+                </section>
+            </div>
+        </div>
 
-    <section class="report-section variable-costs">
-        <h2>Variable Kosten</h2>
-        <ul id="variable-costs-list"></ul>
-        <div>Gesamt: €<span id="variable-total">50.00</span></div>
-    </section>
+        <!-- Fixkosten and Variable Kosten Sections -->
+        <div class="row">
+            
+            <div class="col-md-6">
+                <section class="report-section fixed-costs">
+                    <h2>Fixkosten</h2>
+                    <ul id="fixed-costs-list"></ul>
+                    <div>Gesamt: €<span id="fixed-total">0.00</span></div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="report-section variable-costs">
+                    <h2>Variable Kosten</h2>
+                    <ul id="variable-costs-list"></ul>
+                    <div>Gesamt: €<span id="variable-total">0.00</span></div>
+                </section>
+            </div>
+        </div>
 
-    <section class="report-summary">
-        <h2>Zusammenfassung</h2>
-        <p>Gesamtausgaben: €<span id="expenses-total">1000.00</span></p>
-        <p>Bilanz: €<span id="difference-summary">1000.00</span></p>
-    </section>
+        <!-- Summary Section -->
+        <div class="row mt-4">
+            <div class="col">
+                <section class="report-summary">
+                    <p>Gesamteinnahmen: €<span id="income-total">0.00</span></p>
+                    <p>Gesamtausgaben: €<span id="expenses-total">0.00</span></p>
+                    <p>Differenz: €<span id="difference-summary">0.00</span></p>
+                </section>
+            </div>
+        </div>
+
 
     <button class="btn btn-primary mt-4" onclick="convertHTMLToPDF()">Als PDF speichern</button>
 </div>
 
-<!-- Include JavaScript -->
-<!--
-<script src="../js/script.js"></script>
--->
-<script src="../js/jquery-3.6.0.min.js"></script>
-<!-- Add script to populate data here -->
 
+
+<script src="../js/jquery-3.6.0.min.js"> </script>
+    <script src="../js/MonthlyReport.js"></script>
+    <script src="../js/Navibar.js"></script>
 </body>
 </html>
