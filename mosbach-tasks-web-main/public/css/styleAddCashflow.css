@@ -236,7 +236,7 @@ h2 {
                 background-color: #8FBC8F; /* Hintergrundfarbe */
                 width: 100%; /* Vollbreite */
                 padding: 10px 0; /* Padding */
-                 z-index: 1; /* Z-Index auf niedrigerem Wert als das Hamburger-Icon */
+                z-index: 1; /* Z-Index auf niedrigerem Wert als das Hamburger-Icon */
 
     }
         .nav-links.active {

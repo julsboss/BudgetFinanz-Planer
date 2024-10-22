@@ -92,6 +92,8 @@
     z-index: 999; /* Über anderen Inhalten */
 }
 
+
+
 /* Medienabfrage für mobile Geräte */
 @media (max-width: 768px) {
     .cashflow-table {

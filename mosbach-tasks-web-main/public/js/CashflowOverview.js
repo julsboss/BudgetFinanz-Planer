@@ -6,7 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 hamburger.addEventListener("click", () => {
                     navLinks.classList.toggle("active"); // Toggle-Klasse hinzufügen/entfernen
                 });
-            }
+            } else {
+                    console.error("Hamburger oder NavLinks nicht gefunden");
+                }
         });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -186,6 +188,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.history.back();
             };
 
+            function getTransactionById(transactionId) {
+                $.ajax({
+                    url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}', // URL zum Abrufen der Transaktion
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    headers: {
+                        'Authorization': token // Token für die Authentifizierung
+                    },
+                    success: function (data) {
+                        console.log('Transaktionsdaten:', data);
+                        // Hier kannst du die Daten der Transaktion im UI anzeigen oder weiterverarbeiten
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log('Fehler beim Abrufen der Transaktion:', thrownError);
+                    }
+                });
+            }
+
     function updateTransaction(transactionId, transactionData) {
           $.ajax({
                     url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}', // URL zum Update-Endpoint
@@ -220,11 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         $("#serverAnswer").html(data.message);
                         alert('Transaktion erfolgreich gelöscht!');
                         displayTransactions();
-
-                        } else {
-                                        console.log('Unerwartete Serverantwort:', data);
-                                        alert('Fehler: Unerwartete Antwort vom Server.');
-                                    }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         handleAjaxError(xhr, thrownError);
