@@ -9,26 +9,26 @@
     <title>Übersicht - Finanzen & Budget</title>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="../../ressources/logo.jpg" alt="Logo" />
-            </div>
-            <ul class="nav-links">
-                <li><a href="Startpage.html">Home</a></li>
-                <li><a href="CashflowOverview.html">Finanzfluss</a></li>
-                <li><a href="Monthlyreport.html">Monatsbericht</a></li>
-                <li><a href="ProfilOverview.html">Profil</a></li>
-                <li><a href="LoginPage.html" id="logout" class="login-icon">Abmelden</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <button type="button" class="back-button" onclick="goBack()">Zurück</button>
+<header>
+    <div class="container-fluid"></div>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../ressources/logo.jpg" alt="Logo" />
+        </div>
+        <div class="hamburger" id="hamburger">☰</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="Startpage.html">Home</a></li>
+            <li><a href="CashflowOverview.html">Finanzfluss</a></li>
+            <li><a href="Monthlyreport.html">Monatsbericht</a></li>
+            <li><a href="ProfilOverview.html">Profil</a></li>
+            <li><a href="LoginPage.html" id="logout" class="login-icon">Abmelden</a></li>
+        </ul>
+    </nav>
+</header>
+<button type="button" class="back-button" onclick="goBack()">Zurück</button>
 
 
     <div class="container-CashflowOverview">
-
     <table class="cashflow-table">
         <thead >
             <tr>
@@ -52,7 +52,7 @@
         <div class="modal-content">
             <h2>Transaktion bearbeiten</h2>
             <form id="edit-transaction-form">
-                <input type="hidden" id="edit-index" />
+                <input type="hidden" id="edit-transaction-id" />
                 <div class="input-group">
                     <label for="edit-date">Datum:</label>
                     <input type="date" id="edit-date" required>
@@ -92,4 +92,4 @@
     <script src="../js/Navibar.js"></script>
 </body>
 </html>
-    
+

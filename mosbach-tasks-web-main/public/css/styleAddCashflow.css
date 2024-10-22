@@ -6,11 +6,19 @@ body {
 }
 .navbar {
     display: flex;
+    flex-direction: row; /* Horizontale Anordnung */
     justify-content: space-between;
     align-items: center;
     background-color: #8FBC8F;
     padding: 20px 40px;
+
     
+}
+/* Hamburger Icon */
+.hamburger {
+    display: none; /* Standardmäßig verstecken */
+    cursor: pointer; /* Zeiger anzeigen */
+    font-size: 28px; /* Größe des Icons */
 }
 
 .logo img {
@@ -21,6 +29,9 @@ body {
 .nav-links {
     list-style-type: none;
     display: flex;
+   /*flex-wrap: wrap; /* Umbruch bei kleinen Bildschirmen */
+    padding: 0;
+    margin: 0;
   
 }
 
@@ -46,17 +57,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
-.container-CashlowOverview{
 
-    max-width: 1400px; /* Breiter Container */
-    margin: 0;
-    padding: 30px;
-    display: flex; /* Ändern Sie das Layout auf Flexbox */
-    flex-direction: column; /* Elemente in einer Spalte anordnen */
-    align-items: center; /* Zentriere die Elemente */
-    gap: 20px; /* Abstand zwischen den Abschnitten */
- 
-}
 
 h1 {
     text-align: center;
@@ -143,7 +144,7 @@ button:hover {
     color:#ccc ;
 
 }
-.back-button {
+.back-button, .next-button {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -153,24 +154,17 @@ button:hover {
     width: auto;
 }
 
-.back-button:hover {
+.back-button:hover, .next-button:hover  {
     background-color: #45a049;
 }
 
-.next-button {
-    background-color: #4CAF50; /* Gleiche Farbe wie der "Zurück"-Button */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
+.month-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    margin: 20px 0;
 }
-
-.next-button:hover {
-    background-color: #45a049;
-}
-
 .month-nav ul {
     list-style-type: none;
     padding: 0;
@@ -221,24 +215,39 @@ h2 {
     font-weight: bold;
 }
 
-@media (max-width: 576px) {
-    .month-nav {
-        flex-direction: column; /* Dropdowns untereinander anordnen */
-        align-items: center; /* Zentrale Ausrichtung */
+@media (max-width: 768px) {
+   .hamburger {
+        display: block; /* Hamburger-Icon anzeigen */
+         cursor: pointer; /* Zeigerzeiger hinzufügen */
+         position: relative; /* relative Position */
+                 z-index: 2;
     }
-    .month-nav select {
-        margin-bottom: 10px; /* Abstand zwischen den Dropdowns */
-        width: 100%; /* Breite auf 100% setzen */
+    .navbar {
+        flex-direction: column; /* Vertikale Anordnung auf kleinen Bildschirmen */
+        align-items: flex-start; /* Links ausrichten */
+         position: relative; /* Positionierung für Navbar */
+    }
+    .nav-links {
+                display: none; /* Links ausblenden */
+                flex-direction: column; /* Vertikale Anordnung */
+                position: absolute; /* Positionieren */
+                top: 0px; /* Abstand von oben */
+                left: 0; /* Links ausrichten */
+                background-color: #8FBC8F; /* Hintergrundfarbe */
+                width: 100%; /* Vollbreite */
+                padding: 10px 0; /* Padding */
+                 z-index: 1; /* Z-Index auf niedrigerem Wert als das Hamburger-Icon */
+
+    }
+        .nav-links.active {
+            display: flex; /* Links anzeigen, wenn aktiv */
+        }
+    .nav-links li {
+        margin: 10px 0; /* Abstand zwischen den Links */
+        text-align: center; /* Zentrierung */
     }
 }
 
-.month-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2em;
-    margin: 20px 0;
-}
 
 .month-nav select {
     margin: 0 10px;

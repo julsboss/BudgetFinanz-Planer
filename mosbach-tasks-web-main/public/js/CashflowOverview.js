@@ -1,10 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+            const hamburger = document.getElementById("hamburger");
+            const navLinks = document.getElementById("navLinks");
+
+            if (hamburger) { // Überprüfen, ob das Element existiert
+                hamburger.addEventListener("click", () => {
+                    navLinks.classList.toggle("active"); // Toggle-Klasse hinzufügen/entfernen
+                });
+            }
+        });
+
+document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('authToken');
+    /*
     if (!token) {
         alert('Nicht authentifiziert. Bitte einloggen.');
         window.location.href = 'login.html'; // Weiterleitung zur Login-Seite
     }
+    */
     let transactions = []
+
+
 
             
 
@@ -112,9 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
             */
 
             // Funktion für das Bearbeiten von Transaktionen
-            window.editTransaction = function (index) {
-                const transaction = transactions[index];
-                document.getElementById('edit-index').value = index;
+            window.editTransaction = function (transactionId) {
+                const transaction = transactions.find(t => t.id === transactionId);  // Transaktion anhand der ID finden
+                if (transaction) {
                 document.getElementById('edit-date').value = transaction.date;
                 document.getElementById('edit-type').value = transaction.type;
                 document.getElementById('edit-category').value = transaction.category;
@@ -122,6 +137,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('edit-payment_method').value = transaction.payment_method;
                 document.getElementById('edit-comments').value = transaction.comments;
                 document.getElementById('editModal').style.display = 'block';
+
+                 // Verstecktes Feld, um die Transaktions-ID zu speichern
+                        document.getElementById('edit-transaction-id').value = transaction.id;
+
+                        // Das Bearbeiten-Modal anzeigen
+                        document.getElementById('editModal').style.display = 'block';
+                    } else {
+                        alert('Transaktion nicht gefunden.');
+                    }
             };
 
             // Funktion zum Schließen des Modals
@@ -129,11 +153,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('editModal').style.display = 'none';
             };
 
+
             // Formular zur Bearbeitung der Transaktion absenden
             document.getElementById('edit-transaction-form').addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                const index = document.getElementById('edit-index').value;
+                const transactionId = document.getElementById('edit-transaction-id').value;
                 const updatedTransaction = {
                     date: document.getElementById('edit-date').value,
                     type: document.getElementById('edit-type').value,
@@ -144,18 +169,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
             // Rufe die AJAX-Funktion auf, um die Transaktion zu aktualisieren
-             updateTransaction(transactions[index].id, updatedTransaction);
+             updateTransaction(transactionId, updatedTransaction);
 
                 closeModal();
             });
 
-            // Funktion zum Löschen von Transaktionen
-           window.deleteTransaction = function (index) {
-                const transactionId = transactions[index].id;
-                transactions.splice(index, 1);
-                deleteTransaction(transactionId);
-                displayTransactions();
-            };
+       // Funktion zum Löschen von Transaktionen
+       window.deleteTransaction = function (transactionId) {
+           deleteTransaction(transactionId);
+           transactions = transactions.filter(t => t.id !== transactionId);
+           displayTransactions();
+       };
 
             // Funktion zum Zurückgehen
             window.goBack = function () {
@@ -164,18 +188,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateTransaction(transactionId, transactionData) {
           $.ajax({
-                    url: `https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}`, // URL zum Update-Endpoint
+                    url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}', // URL zum Update-Endpoint
                     type: 'PUT',
                     dataType: 'JSON',
                     contentType: 'application/json',
                     headers: {
                         'Authorization': token // Token aus dem localStorage
                     },
-                    data: JSON.stringify({ cashflow: transactionData }),
+                    data: JSON.stringify(transactionData),
                     processData: false,
                     success: function(data) {
                         $("#serverAnswer").html(data.message);
                         alert('Transaktion erfolgreich aktualisiert!');
+
                         displayTransactions(); // Aktualisiere die Anzeige der Transaktionen
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -186,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
            function deleteTransaction(transactionId) {
                 $.ajax({
-                    url: `https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}`, // URL zum Delete-Endpoint
+                    url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}', // URL zum Delete-Endpoint
                     type: 'DELETE',
                     headers: {
                         'Authorization': token // Token aus dem localStorage
@@ -195,6 +220,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         $("#serverAnswer").html(data.message);
                         alert('Transaktion erfolgreich gelöscht!');
                         displayTransactions();
+
+                        } else {
+                                        console.log('Unerwartete Serverantwort:', data);
+                                        alert('Fehler: Unerwartete Antwort vom Server.');
+                                    }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         handleAjaxError(xhr, thrownError);
@@ -227,5 +257,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         });
+
+
+
 
  

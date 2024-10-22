@@ -1,8 +1,23 @@
 
 /* Cashflow Tabelle */
+
+.container-CashlowOverview{
+
+    max-width: 1400px; /* Breiter Container */
+    margin: 0;
+    padding: 30px;
+    display: flex; /* Ändern Sie das Layout auf Flexbox */
+    flex-direction: column; /* Elemente in einer Spalte anordnen */
+    align-items: center; /* Zentriere die Elemente */
+    gap: 20px; /* Abstand zwischen den Abschnitten */
+    overflow-x: auto; /* Ermöglicht horizontales Scrollen auf kleinen Bildschirmen */
+
+}
+
 .cashflow-table {
     width: 100%;
     margin-top: 20px;
+     border-collapse: collapse; /* Reduziert den Abstand zwischen den Zellen */
 }
 
 .cashflow-table table {
@@ -14,6 +29,7 @@
 .cashflow-table th, .cashflow-table td {
     padding: 12px;
     border: 1px solid #4CAF50; /* Klassischer Rand zwischen den Zellen */
+    text-align: left; /* Text linksbündig */
 }
 
 /* Tabellenkopf */
@@ -74,4 +90,18 @@
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4); /* Schwarz mit 0.4 Transparenz */
     z-index: 999; /* Über anderen Inhalten */
+}
+
+/* Medienabfrage für mobile Geräte */
+@media (max-width: 768px) {
+    .cashflow-table {
+        display: block; /* Macht die Tabelle blockierend */
+        overflow-x: auto; /* Fügt horizontales Scrollen hinzu */
+        white-space: nowrap; /* Verhindert Zeilenumbruch */
+    }
+
+    .cashflow-table th, .cashflow-table td {
+        display: inline-block; /* Stellt sicher, dass die Zellen nebeneinander angezeigt werden */
+        min-width: 120px; /* Gibt jeder Zelle eine Mindestbreite */
+    }
 }
