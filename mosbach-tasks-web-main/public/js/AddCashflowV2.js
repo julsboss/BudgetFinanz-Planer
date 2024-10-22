@@ -183,10 +183,3 @@ function goBack() {
 function goToNextPage(){
     window.location.href= './CashflowOverview.html'
 }
-
-const hamburger = document.getElementById("hamburger");
-const navLinks = document.getElementById("navLinks");
-
-hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("active"); // Toggle-Klasse hinzufügen/entfernen
-});

@@ -152,10 +152,20 @@ button:hover {
     border-radius: 5px;
     cursor: pointer;
     width: auto;
+    margin-left:0; /* Zentriert den Button */
 }
 
 .back-button:hover, .next-button:hover  {
     background-color: #45a049;
+}
+
+/* Media Queries für kleinere Geräte */
+@media (max-width: 768px) {
+    .back-button, .next-button {
+        width: 100%; /* Button nimmt die volle Breite des Containers ein */
+        padding: 12px 0; /* Mehr vertikaler Platz und keine horizontale Füllung */
+        font-size: 1rem; /* Passt die Schriftgröße an */
+    }
 }
 
 .month-nav {
