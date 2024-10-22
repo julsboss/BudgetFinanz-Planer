@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monatsbericht Statistik</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/styleAddCashflow.css" rel="stylesheet">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container-fluid">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="../../ressources/logo.jpg" alt="Logo" />
+                </div>
+                <ul class="nav-links">
+                    <li><a href="Startpage.html">Home</a></li>
+                    <li><a href="CashflowOverview.html">Finanzfluss</a></li>
+                    <li><a href="Monthlyreport.html">Monatsbericht</a></li>
+                    <li><a href="ProfilOverview.html">Profil</a></li>
+                    <li><a href="LoginPage.html" id="logout" class="login-icon">Abmelden</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    
+        <button type="button" class="back-button" onclick="goBack()">Zurück</button>
+   
+
+        <div class="container mt-4">
+            <div class="input-container mb-4">
+                <div class="input-group">
+                    <label for="year">Jahr:</label>
+                    <input type="number" id="year" placeholder="2024" required min="2000" max="2100">
+                </div>
+                <button type="button" id="yearButton">Bericht erstellen</button>
+                </form>
+            </div>
+    
+    
+            <div class="chart-container">
+                <h2 class="text-center">Monatsbericht Statistik</h2>
+                <div id="chart_div"></div>
+            </div>
+        </div>
+
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/Statistik.js"></script>
+    <script src="../js/Navibar.js"></script>
+</body>
+</html>

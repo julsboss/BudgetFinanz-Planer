@@ -6,10 +6,13 @@ mosbach\dhbw\de\TasksBackendApplication.class
 mosbach\dhbw\de\mymonthlybudget\model\CashflowDTO.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\MonthConverter.class
 mosbach\dhbw\de\mymonthlybudget\data\api\UserService.class
+mosbach\dhbw\de\mymonthlybudget\model\StatistikRequest.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBMonthlyReportManagerImpl.class
 mosbach\dhbw\de\mymonthlybudget\controller\AuthController.class
 mosbach\dhbw\de\mymonthlybudget\dto\AuthMessage.class
 mosbach\dhbw\de\mymonthlybudget\data\api\MonthlyReportManager.class
+mosbach\dhbw\de\mymonthlybudget\model\StatistikResponse.class
+mosbach\dhbw\de\mymonthlybudget\model\StatistikDTO.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBUserManagerImpl.class
 mosbach\dhbw\de\mymonthlybudget\model\User.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBCashflowManagerImpl.class
