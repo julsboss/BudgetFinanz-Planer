@@ -200,6 +200,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     success: function (data) {
                         console.log('Transaktionsdaten:', data);
                         // Hier kannst du die Daten der Transaktion im UI anzeigen oder weiterverarbeiten
+                        // Überprüfung, ob jede Transaktion eine ID hat
+                                    if (data.cashflow && data.cashflow.every(transaction => transaction.id)) {
+                                        transactions = data.cashflow; // Cashflows dem Array zuweisen
+                                        console.log('Transaktionen:', transactions);
+                                        displayTransactions(); // Transaktionen anzeigen
+                                    } else {
+                                        console.error('Eine oder mehrere Transaktionen haben keine ID.');
+                                    }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log('Fehler beim Abrufen der Transaktion:', thrownError);
@@ -209,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateTransaction(transactionId, transactionData) {
           $.ajax({
-                    url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}', // URL zum Update-Endpoint
+                    url: `https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}`, // URL zum Update-Endpoint
                     type: 'PUT',
                     dataType: 'JSON',
                     contentType: 'application/json',
@@ -232,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
            function deleteTransaction(transactionId) {
                 $.ajax({
-                    url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}', // URL zum Delete-Endpoint
+                    url: `https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/cashflow/${transactionId}`, // URL zum Delete-Endpoint
                     type: 'DELETE',
                     headers: {
                         'Authorization': token // Token aus dem localStorage
