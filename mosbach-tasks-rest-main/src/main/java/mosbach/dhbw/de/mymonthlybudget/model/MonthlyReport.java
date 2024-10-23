@@ -40,9 +40,9 @@ public class MonthlyReport {
     private Double differenceSummary;
     @JsonProperty("cashflows_income")
     private List<Cashflow> cashflowsIncome;
-    @JsonProperty("cashflows_fixed-costs")
+    @JsonProperty("cashflows_fixed_costs")
     private List<Cashflow> cashflowsFixedCosts;
-    @JsonProperty("cashflows_variable-costs")
+    @JsonProperty("cashflows_variable_costs")
     private List<Cashflow> cashflowsVariableCosts;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -199,22 +199,22 @@ public class MonthlyReport {
         this.cashflowsIncome = cashflowsIncome;
     }
 
-    @JsonProperty("cashflows_fixed-costs")
+    @JsonProperty("cashflows_fixed_costs")
     public List<Cashflow> getCashflowsFixedCosts() {
         return cashflowsFixedCosts;
     }
 
-    @JsonProperty("cashflows_fixed-costs")
+    @JsonProperty("cashflows_fixed_costs")
     public void setCashflowsFixedCosts(List<Cashflow> cashflowsFixedCosts) {
         this.cashflowsFixedCosts = cashflowsFixedCosts;
     }
 
-    @JsonProperty("cashflows_variable-costs")
+    @JsonProperty("cashflows_variable_costs")
     public List<Cashflow> getCashflowsVariableCosts() {
         return cashflowsVariableCosts;
     }
 
-    @JsonProperty("cashflows_variable-costs")
+    @JsonProperty("cashflows_variable_costs")
     public void setCashflowsVariableCosts(List<Cashflow> cashflowsVariableCosts) {
         this.cashflowsVariableCosts = cashflowsVariableCosts;
     }

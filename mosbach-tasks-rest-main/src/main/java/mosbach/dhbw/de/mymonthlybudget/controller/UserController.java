@@ -26,7 +26,10 @@ public class UserController {
     public ResponseEntity<?> getUser(@RequestHeader("Authorization") String token){
         User user = userManager.getUser(token);
         if(user != null){
-            return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
+            UserDTO userDTO = new UserDTO(user);
+            userDTO.setUserID(user.getUserID());
+
+            return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
             //return new ResponseEntity<User>(new UserDTO(user), HttpStatus.OK);
         }
         else{

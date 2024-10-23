@@ -8,6 +8,7 @@ $(document).ready(function() {
                 'Authorization': localStorage.getItem('authToken')
             },
             success: function(data) {
+                $('#id').val(data.userID);
                 $('#firstName').val(data.firstName);
                 $('#lastName').val(data.lastName);
                 $('#email').val(data.email);
@@ -38,7 +39,7 @@ $(document).ready(function() {
             data: JSON.stringify(updatedUser),
             contentType: 'application/json',
             success: function(response) {
-                console.log(`User erfolgreich aktualisiert:`, response);
+                alert(`User erfolgreich aktualisiert:`, response);
                 
             },
             error: function(error) {

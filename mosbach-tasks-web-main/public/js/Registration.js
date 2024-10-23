@@ -30,6 +30,11 @@ console.log([
         return;
     }
 
+    if (!/^\d+$/.test(registrationData.password)) {
+        alert('Das Passwort darf nur Zahlen enthalten.');
+        return;
+    }
+
     console.log(registrationData);
 
     $.ajax({

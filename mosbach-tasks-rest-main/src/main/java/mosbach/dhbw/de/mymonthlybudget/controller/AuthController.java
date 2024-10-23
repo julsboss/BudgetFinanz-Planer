@@ -38,11 +38,7 @@ public class AuthController {
     @Autowired
     private UserManager userManager;
 
-   /*
-    @Autowired
-    private VerificationService verificationService;
 
-    */
 
     @GetMapping("/create-user-table")
     public String createDBTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
@@ -96,7 +92,6 @@ public class AuthController {
         if(userManager.getUserByEmail(userRequest.getEmail()) == null){
            user = new User(userRequest.getFirstName(), userRequest.getLastName(), userRequest.getEmail(), userRequest.getPassword());
             userManager.addUser(user);
-            //String verificationToken = authService.generateVerificationToken(user);//TODO: Change URL
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("Account created"), HttpStatus.OK);
         }
         else{

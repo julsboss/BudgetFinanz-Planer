@@ -1,14 +1,17 @@
 package mosbach.dhbw.de.mymonthlybudget.dto;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import mosbach.dhbw.de.mymonthlybudget.model.User;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class UserDTO {
 
@@ -24,8 +27,6 @@ public class UserDTO {
     @JsonProperty("password")
     private String password;
 
-   // @JsonProperty("pat")
-    //private String pat;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -38,14 +39,14 @@ public class UserDTO {
 
     }
 
-   /* public UserDTO(String firstName, String lastName, String email, String password, String pat) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.pat = pat;
+    /* public UserDTO(String firstName, String lastName, String email, String password, String pat) {
+         this.firstName = firstName;
+         this.lastName = lastName;
+         this.email = email;
+         this.password = password;
+         this.pat = pat;
 
-    }*/
+     }*/
     public UserDTO(User user){
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
