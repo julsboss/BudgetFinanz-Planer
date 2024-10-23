@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

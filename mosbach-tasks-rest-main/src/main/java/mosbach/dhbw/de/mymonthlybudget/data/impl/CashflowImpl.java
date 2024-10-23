@@ -5,7 +5,6 @@ import jakarta.persistence.Id;
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.model.CashflowDTO;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @Entity

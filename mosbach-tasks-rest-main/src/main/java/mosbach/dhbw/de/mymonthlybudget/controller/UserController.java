@@ -2,16 +2,15 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
-import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
-import mosbach.dhbw.de.mymonthlybudget.dto.UserDTO;
+import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
+import mosbach.dhbw.de.mymonthlybudget.model.UserDTO;
 import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.User;
+import mosbach.dhbw.de.mymonthlybudget.model.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", allowedHeaders = "*")
@@ -26,10 +25,10 @@ public class UserController {
     public ResponseEntity<?> getUser(@RequestHeader("Authorization") String token){
         User user = userManager.getUser(token);
         if(user != null){
-            UserDTO userDTO = new UserDTO(user);
-            userDTO.setUserID(user.getUserID());
+           // UserDTO userDTO = new UserDTO(user);
+           // userDTO.setUserID(user.getUserID());
 
-            return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+            return new ResponseEntity<UserResponse>(new UserResponse(user), HttpStatus.OK);
             //return new ResponseEntity<User>(new UserDTO(user), HttpStatus.OK);
         }
         else{

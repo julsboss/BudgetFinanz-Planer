@@ -2,10 +2,8 @@ package mosbach.dhbw.de.mymonthlybudget.data.impl;
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReportManager;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
 import mosbach.dhbw.de.mymonthlybudget.model.StatistikDTO;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -2,9 +2,8 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
-import mosbach.dhbw.de.mymonthlybudget.data.impl.PostgresDBUserManagerImpl;
-import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
-import mosbach.dhbw.de.mymonthlybudget.dto.UserDTO;
+import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
+import mosbach.dhbw.de.mymonthlybudget.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,14 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
-import mosbach.dhbw.de.mymonthlybudget.dto.AuthMessage;
-import mosbach.dhbw.de.mymonthlybudget.dto.MessageToken;
+import mosbach.dhbw.de.mymonthlybudget.model.AuthMessage;
+import mosbach.dhbw.de.mymonthlybudget.model.MessageToken;
 import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.User;
 
-import javax.print.attribute.standard.Media;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

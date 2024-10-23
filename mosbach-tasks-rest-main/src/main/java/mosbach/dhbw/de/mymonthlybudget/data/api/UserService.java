@@ -1,7 +1,7 @@
 package mosbach.dhbw.de.mymonthlybudget.data.api;
 
 
-import mosbach.dhbw.de.mymonthlybudget.model.User;
+import mosbach.dhbw.de.mymonthlybudget.data.impl.User;
 
 import java.util.List;
 

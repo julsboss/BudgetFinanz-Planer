@@ -2,7 +2,7 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.*;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.*;
-import mosbach.dhbw.de.mymonthlybudget.dto.MessageReason;
+import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
 import org.springframework.beans.factory.annotation.Autowired;

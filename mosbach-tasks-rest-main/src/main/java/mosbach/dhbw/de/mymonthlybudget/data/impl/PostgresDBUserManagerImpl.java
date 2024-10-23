@@ -2,8 +2,6 @@ package mosbach.dhbw.de.mymonthlybudget.data.impl;
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
-import mosbach.dhbw.de.mymonthlybudget.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
