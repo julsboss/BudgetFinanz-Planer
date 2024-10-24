@@ -5,6 +5,9 @@ import mosbach.dhbw.de.mymonthlybudget.data.impl.*;
 import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
+import mosbach.dhbw.de.mymonthlybudget.model.alexa.AlexaRO;
+import mosbach.dhbw.de.mymonthlybudget.model.alexa.OutputSpeechRO;
+import mosbach.dhbw.de.mymonthlybudget.model.alexa.ResponseRO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -264,5 +267,50 @@ public class MappingController {
         }
     }
     //TODO: ALEXA implementieren
+
+   /* @PostMapping(
+            path = "/alexa",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public AlexaRO monthlyBudgetAlexa(@RequestBody AlexaRO alexaRO) {
+
+        StringBuilder myAnswer = new StringBuilder();
+        if (alexaRO.getRequest().getType().equalsIgnoreCase("LaunchRequest")) {
+            myAnswer.append("Willkommen bei My Monthly Report. " +
+                    "Bitte melde dich mit dem Stichwort 'Login', gefolgt von deiner user ID und deinem Passwort an. ");
+        } else {
+            if (alexaRO.getRequest().getType().equals("IntentRequest")) {
+
+                if (alexaRO.getSession().getAttributes().isEmpty() &&
+                        !alexaRO.getRequest().getIntent().getName().equals("Login")){
+                    myAnswer.append("Um dich anzumelden, sprich zuerst das Stichwort 'Login', " +
+                            "und nenne anschließend deine User ID und dein Passwort jeweils mit den Stichwörtern davor. ");
+                } else if (alexaRO.getRequest().getIntent().getName().equals("login")) {
+
+                    if ()
+                }
+
+
+                }
+        }
+        // TODO: Act on other intents
+
+        return
+                prepareResponse(alexaRO, myAnswer, true);
+    }
+
+
+    private AlexaRO prepareResponse(AlexaRO alexaRO, String outText, boolean shouldEndSession) {
+
+        alexaRO.setRequest(null);
+        alexaRO.setContext(null);
+        alexaRO.setSession(null);
+        OutputSpeechRO outputSpeechRO = new OutputSpeechRO();
+        outputSpeechRO.setType("PlainText");
+        outputSpeechRO.setText(outText);
+        ResponseRO response = new ResponseRO(outputSpeechRO, shouldEndSession);
+        alexaRO.setResponse(response);
+        return alexaRO;
+    }*/
 
 }
