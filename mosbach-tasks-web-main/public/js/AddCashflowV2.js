@@ -38,7 +38,7 @@ document.getElementById('transaction-form').addEventListener('submit', function(
         data: JSON.stringify(cashflowData),
         success: function(data) {
             console.log('Finanzfluss erfolgreich hinzugefügt', data);
-            alert('Finanzfluss erfolgreich hinzugefügt.');
+            alert(data.message);
             // Optional: Seite neu laden oder Formular zurücksetzen
             location.reload();
         },

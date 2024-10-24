@@ -8,7 +8,7 @@ $(document).ready(function() {
                 'Authorization': localStorage.getItem('authToken')
             },
             success: function(data) {
-                $('#id').val(data.userID);
+                $('#id').val(data.id);
                 $('#firstName').val(data.firstName);
                 $('#lastName').val(data.lastName);
                 $('#email').val(data.email);
