@@ -273,14 +273,15 @@ public class PostgresDBUserManagerImpl implements UserManager {
 
             rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                user = new User(
-                        rs.getInt("user_id"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("email"),
-                        rs.getString("passwort")
-                );
+
+                if (rs.next()) {
+                    user = new User();
+                    user.setUserID(rs.getInt("user_id"));
+                    user.setFirstName(rs.getString("firstName"));
+                    user.setLastName(rs.getString("lastName"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("passwort"));
+                ;
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception occurred while retrieving user: " + e.getMessage());

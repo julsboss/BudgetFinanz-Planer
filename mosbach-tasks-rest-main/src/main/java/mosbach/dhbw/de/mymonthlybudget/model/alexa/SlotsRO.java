@@ -1,5 +1,6 @@
 package mosbach.dhbw.de.mymonthlybudget.model.alexa;
 
+import java.time.Year;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -22,6 +23,10 @@ public class SlotsRO {
     private PasswordRO password;
     @JsonProperty("id")
     private UserIDRO id;
+    @JsonProperty("month")
+    private MonthRO month;
+    @JsonProperty("year")
+    private YearRO year;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -56,6 +61,26 @@ public class SlotsRO {
     @JsonProperty("id")
     public void setId(UserIDRO id) {
         this.id = id;
+    }
+
+    @JsonProperty("month")
+    public MonthRO getMonth() {
+        return month;
+    }
+
+    @JsonProperty("month")
+    public void setMonth(MonthRO month) {
+        this.month = month;
+    }
+
+    @JsonProperty("year")
+    public YearRO getYear() {
+        return year;
+    }
+
+    @JsonProperty("year")
+    public void setYear(YearRO year) {
+        this.year = year;
     }
 
     @JsonAnyGetter

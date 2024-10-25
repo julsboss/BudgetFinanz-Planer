@@ -12,9 +12,11 @@ mosbach\dhbw\de\mymonthlybudget\controller\AuthController.class
 mosbach\dhbw\de\mymonthlybudget\model\alexa\RequestRO.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\User.class
 mosbach\dhbw\de\mymonthlybudget\data\api\MonthlyReportManager.class
+mosbach\dhbw\de\mymonthlybudget\model\alexa\YearRO.class
 mosbach\dhbw\de\mymonthlybudget\model\StatistikDTO.class
 mosbach\dhbw\de\mymonthlybudget\model\alexa\ContextRO.class
 mosbach\dhbw\de\mymonthlybudget\model\MonthlyReport.class
+mosbach\dhbw\de\mymonthlybudget\model\alexa\MonthRO.class
 mosbach\dhbw\de\mymonthlybudget\model\alexa\OutputSpeechRO.class
 mosbach\dhbw\de\mymonthlybudget\model\alexa\SlotsRO.class
 mosbach\dhbw\de\mymonthlybudget\model\alexa\AlexaRO.class

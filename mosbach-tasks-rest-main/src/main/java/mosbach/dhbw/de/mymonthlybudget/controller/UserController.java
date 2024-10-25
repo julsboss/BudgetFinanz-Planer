@@ -36,6 +36,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserByID(@PathVariable int id) {
+        User user = userManager.getUserByID(id);
+        if (user != null) {
+            // Convert User to UserResponse or UserDTO if needed
+            return new ResponseEntity<>(new UserResponse(user), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new MessageReason("User not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String token) {
         User user = userManager.getUser(token);

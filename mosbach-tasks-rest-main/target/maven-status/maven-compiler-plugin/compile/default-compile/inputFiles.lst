@@ -23,6 +23,7 @@ C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\j
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\AlexaRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\ContextRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\IntentRO.java
+C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\MonthRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\OutputSpeechRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\PasswordRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\RequestRO.java
@@ -31,6 +32,7 @@ C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\j
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\SessionRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\SlotsRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\UserIDRO.java
+C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\alexa\YearRO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\AuthMessage.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\CashflowDTO.java
 C:\Users\azureadmin\Documents\Finales Projekt\mosbach-tasks-rest-main\src\main\java\mosbach\dhbw\de\mymonthlybudget\model\CashflowRequest.java

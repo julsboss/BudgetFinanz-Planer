@@ -8,6 +8,7 @@ import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
 import mosbach.dhbw.de.mymonthlybudget.model.alexa.AlexaRO;
 import mosbach.dhbw.de.mymonthlybudget.model.alexa.OutputSpeechRO;
 import mosbach.dhbw.de.mymonthlybudget.model.alexa.ResponseRO;
+import mosbach.dhbw.de.mymonthlybudget.model.alexa.SessionRO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,11 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@CrossOrigin(origins = "https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", allowedHeaders = "*")
+@CrossOrigin(origins = {"https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", "*"}, allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class MappingController {
@@ -267,50 +269,119 @@ public class MappingController {
         }
     }
     //TODO: ALEXA implementieren
-
-   /* @PostMapping(
+    @PostMapping(
             path = "/alexa",
-            consumes = {MediaType.APPLICATION_JSON_VALUE}
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public AlexaRO monthlyBudgetAlexa(@RequestBody AlexaRO alexaRO) {
+    public AlexaRO financialPlannerAlexaController(@RequestBody AlexaRO alexaRO) {
 
-        StringBuilder myAnswer = new StringBuilder();
+        final Logger logger = Logger.getLogger("AlexaLogger");
+        StringBuilder outText = new StringBuilder();
+
         if (alexaRO.getRequest().getType().equalsIgnoreCase("LaunchRequest")) {
-            myAnswer.append("Willkommen bei My Monthly Report. " +
-                    "Bitte melde dich mit dem Stichwort 'Login', gefolgt von deiner user ID und deinem Passwort an. ");
+            outText.append("Willkommen im My Monthly Budget Finanzplaner. Um dich anzumelden, sprich zuerst das Stichwort 'Login',und nenne anschließend deine User ID und dein Passwort jeweils mit den Stichwörtern davor.");
+        } else if (alexaRO.getRequest().getType().equals("IntentRequest")) {
+
+            // Check if user is logged in
+            if (alexaRO.getSession().getAttributes().isEmpty() && !alexaRO.getRequest().getIntent().getName().equals("Login")) {
+                outText.append("Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
+            } else if (alexaRO.getRequest().getIntent().getName().equals("Login")) {
+
+                // Extract email and password from slots
+                int id = Integer.parseInt(alexaRO.getRequest().getIntent().getSlotsRO().getId().getValue());
+                String rawPassword = alexaRO.getRequest().getIntent().getSlotsRO().getPassword().getValue();
+                String processedPassword = processPassword(rawPassword);
+
+                // Fetch user by email
+                User user = userManager.getUserByID(id);
+                if (user != null) {
+                    logger.log(Level.INFO, "User ID" + user.getUserID());
+                    logger.log(Level.INFO, "User Email" + user.getEmail());
+                    logger.log(Level.INFO, "Input password: " + processedPassword);
+                    logger.log(Level.INFO, "Stored (hashed) password: " + user.getPassword());
+
+                    // Validate password
+                    if (user.checkPassword(processedPassword)) {
+                        alexaRO.getSession().setAttributes(null);
+                        HashMap<String, String> userCredentials = new HashMap<>();
+                        userCredentials.put("id", String.valueOf(id));
+                        SessionRO session = new SessionRO();
+                        session.setAttributes(userCredentials);
+                        alexaRO.setSession(session);
+                        outText.append("Die Anmeldung war erfolgreich. Du bist nun angemeldet. ");
+                    } else {
+                        outText.append("Anmeldung fehlgeschlagen. Bitte überprüfe dein Passwort. Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
+                    }
+                }else{
+                        outText.append("Benutzer nicht gefunden. Bitte überprüfe deine UserID in deiner Profilverwaltung.");
+                    }
+            } /* else if (alexaRO.getRequest().getIntent().getName().equals("Logout")) {
+                outText.append("Du wurdest erfolgreich abgemeldet. ");
+                alexaRO.getSession().setAttributes(null);
+                return prepareResponse(alexaRO, outText.toString(), true);
+            }*/
+            else if (!alexaRO.getSession().getAttributes().isEmpty()) {
+
+                // Handle monatsberichtabfrage intent
+                if (alexaRO.getRequest().getIntent().getName().equals("monatsberichtabfrage")) {
+                    String month = alexaRO.getRequest().getIntent().getSlotsRO().getMonth().getValue();
+                    int year = Integer.parseInt(alexaRO.getRequest().getIntent().getSlotsRO().getYear().getValue());
+
+                    outText.append(getMonthlyReportAlexa(alexaRO, month, year));
+                } else {
+                    outText.append("Diese Funktion ist im Finanzplaner nicht verfügbar.");
+                }
+            }
         } else {
-            if (alexaRO.getRequest().getType().equals("IntentRequest")) {
-
-                if (alexaRO.getSession().getAttributes().isEmpty() &&
-                        !alexaRO.getRequest().getIntent().getName().equals("Login")){
-                    myAnswer.append("Um dich anzumelden, sprich zuerst das Stichwort 'Login', " +
-                            "und nenne anschließend deine User ID und dein Passwort jeweils mit den Stichwörtern davor. ");
-                } else if (alexaRO.getRequest().getIntent().getName().equals("login")) {
-
-                    if ()
-                }
-
-
-                }
+            outText.append("Diese Funktion des Monthly Budget Finanzplaners existiert nicht.");
         }
-        // TODO: Act on other intents
 
-        return
-                prepareResponse(alexaRO, myAnswer, true);
+        return prepareResponse(alexaRO, outText.toString(), false);
     }
 
+    private String getMonthlyReportAlexa(AlexaRO alexaRO, String month, int year) {
+        User user = userManager.getUserByID(Integer.parseInt(alexaRO.getSession().getAttributes().get("id")));
+        if(user != null){
+            MonthlyReport monthlyReport = monthlyReportManager.getMonthlyReport(user.getUserID(), month,  year);
+
+            String answer = "Dein Monatsbericht für den Monat " + month + " und das Jahr "+ year +
+                    " lautet: Dein Gesamteinkommen für den Monat sind: "+ monthlyReport.getIncomeTotal() +
+                    " Euro , Deine gesamten Fixen Kosten für den Monat sind: " + monthlyReport.getFixedTotal() +
+                    " Euro , Deine gesamten variablen Kosten für den Monat sind: " + monthlyReport.getVariableTotal() +
+                    " Euro , Deine gesamten Ausgaben für den Monat sind: " + monthlyReport.getExpensesTotal() +
+                    " Euro, deine Differenz für den Monat beträgt: " + monthlyReport.getDifferenceSummary();
+                return answer;
+        }
+
+
+
+        return String.format("Leider konnte ich keinen Monatsbericht für den Monat " + month +" und das Jahr "+ year +
+                "finden. Gehe in die Webseite und lege den Monatsbericht an oder wähle einen anderen Monat und ein anderes Jahr.");
+    }
 
     private AlexaRO prepareResponse(AlexaRO alexaRO, String outText, boolean shouldEndSession) {
-
         alexaRO.setRequest(null);
-        alexaRO.setContext(null);
         alexaRO.setSession(null);
+        alexaRO.setContext(null);
+
         OutputSpeechRO outputSpeechRO = new OutputSpeechRO();
         outputSpeechRO.setType("PlainText");
         outputSpeechRO.setText(outText);
+
         ResponseRO response = new ResponseRO(outputSpeechRO, shouldEndSession);
         alexaRO.setResponse(response);
+
         return alexaRO;
-    }*/
+    }
+    public String processPassword(String password) {
+        if (password == null) {
+            return "";
+        }
+        // Remove dots from the password
+        return password.replace(".", "");
+    }
+
+
 
 }
