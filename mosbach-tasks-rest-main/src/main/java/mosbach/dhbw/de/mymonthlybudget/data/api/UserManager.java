@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface UserManager {
 
-    public boolean deleteUser (String email);
+    //public boolean deleteUser (String email);
+    public boolean deleteUser (int userid);
 
     //void addUser(UserService newUser);
 

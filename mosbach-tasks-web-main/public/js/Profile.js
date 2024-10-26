@@ -27,7 +27,7 @@ $(document).ready(function() {
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val(),
             email : $('#email').val(),
-            passwort : $('#password').val()
+            password : $('#password').val()
         };
         
         $.ajax({
@@ -39,11 +39,11 @@ $(document).ready(function() {
             data: JSON.stringify(updatedUser),
             contentType: 'application/json',
             success: function(response) {
-                alert(`User erfolgreich aktualisiert:`, response);
-                
+               // alert(`User erfolgreich aktualisiert:`, response);
+                alert(data.message);
             },
             error: function(error) {
-                console.error(`Aktualisierung nicht erfolgreich:`, error);
+               // console.error(`Aktualisierung nicht erfolgreich:`, error);
             },
         });
     });
@@ -57,12 +57,14 @@ $(document).ready(function() {
                 headers: {
                     'Authorization': localStorage.getItem('authToken')
                 },
-                success: function(response) {
-                    console.log(`User erfolgreich gelöscht:`, response);
-                    window.location.href = '../Homepage.html';
+                success: function(data) {
+                   // console.log(`User erfolgreich gelöscht:`, response);
+                   alert(data.message);
+                   window.location.href = '../Homepage.html';
                 },
-                error: function(error) {
-                    console.error('Fehler beim Löschen des Profils:', error);
+                error: function(data) {
+                   // console.error('Fehler beim Löschen des Profils:', error);
+                   alert(data.message);
                 }
             });
         }

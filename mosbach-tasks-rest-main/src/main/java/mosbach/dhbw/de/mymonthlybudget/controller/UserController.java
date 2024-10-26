@@ -52,7 +52,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String token) {
         User user = userManager.getUser(token);
         if(user != null){
-            userManager.deleteUser(user.getEmail());
+            userManager.deleteUser(user.getUserID());
             return new ResponseEntity<>(new MessageAnswer("Account is deleted"), HttpStatus.OK);
         } else{
             return new ResponseEntity<>(new MessageAnswer ("Wrong token."), HttpStatus.UNAUTHORIZED);
@@ -63,10 +63,12 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> updateUser(
             @RequestHeader("Authorization") String token,
-            @RequestBody User updatedUser) {
+            @RequestBody UserDTO updatedUser) {
         User user = userManager.getUser(token);
         if (user != null) {
-            boolean isUpdated = userManager.updateUser(updatedUser);
+            user.setFirstName(updatedUser.getFirstName());
+            user.setLastName(updatedUser.getLastName());
+            boolean isUpdated = userManager.updateUser(user);
             if (isUpdated) {
                 return new ResponseEntity<>(new MessageAnswer("User updated successfully"), HttpStatus.OK);
             } else {
