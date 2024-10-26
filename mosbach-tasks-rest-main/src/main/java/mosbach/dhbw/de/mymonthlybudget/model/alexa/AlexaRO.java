@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.*;
 public class AlexaRO
 {
     protected final static String TYPENAME = "Alexa";
-
+    @JsonProperty("sessionAttributes")
+    private HashMap<String, String> sessionAttributes;
     @JsonProperty("request")
     private RequestRO request;
     @JsonProperty("response")
@@ -35,7 +36,15 @@ public class AlexaRO
     {
         super();
     }
+    @JsonProperty("sessionAttributes")
+    public HashMap<String, String> getSessionAttributes() {
+        return sessionAttributes;
+    }
 
+    @JsonProperty("sessionAttributes")
+    public void setSessionAttributes(HashMap<String, String> sessionAttributes) {
+        this.sessionAttributes = sessionAttributes;
+    }
     @JsonProperty("request")
     public RequestRO getRequest() {
         return request;

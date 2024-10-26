@@ -5,16 +5,15 @@ import mosbach.dhbw.de.mymonthlybudget.data.impl.*;
 import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
-import mosbach.dhbw.de.mymonthlybudget.model.alexa.AlexaRO;
-import mosbach.dhbw.de.mymonthlybudget.model.alexa.OutputSpeechRO;
-import mosbach.dhbw.de.mymonthlybudget.model.alexa.ResponseRO;
-import mosbach.dhbw.de.mymonthlybudget.model.alexa.SessionRO;
+import mosbach.dhbw.de.mymonthlybudget.model.alexa.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -305,10 +304,17 @@ public class MappingController {
                     if (user.checkPassword(processedPassword)) {
                         alexaRO.getSession().setAttributes(null);
                         HashMap<String, String> userCredentials = new HashMap<>();
-                        userCredentials.put("id", String.valueOf(id));
+                        userCredentials.put(
+                                "id",
+                                alexaRO.getRequest().getIntent().getSlotsRO().getId().getValue()
+                        );
+                        userCredentials.put(
+                                "password",
+                                alexaRO.getRequest().getIntent().getSlotsRO().getPassword().getValue()
+                        );
                         SessionRO session = new SessionRO();
                         session.setAttributes(userCredentials);
-                        alexaRO.setSession(session);
+                        alexaRO.setSessionAttributes(userCredentials);
                         outText.append("Die Anmeldung war erfolgreich. Du bist nun angemeldet. ");
                     } else {
                         outText.append("Anmeldung fehlgeschlagen. Bitte überprüfe dein Passwort. Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
@@ -316,23 +322,28 @@ public class MappingController {
                 }else{
                         outText.append("Benutzer nicht gefunden. Bitte überprüfe deine UserID in deiner Profilverwaltung.");
                     }
-            } /* else if (alexaRO.getRequest().getIntent().getName().equals("Logout")) {
-                outText.append("Du wurdest erfolgreich abgemeldet. ");
-                alexaRO.getSession().setAttributes(null);
-                return prepareResponse(alexaRO, outText.toString(), true);
-            }*/
+            }
             else if (!alexaRO.getSession().getAttributes().isEmpty()) {
 
-                // Handle monatsberichtabfrage intent
                 if (alexaRO.getRequest().getIntent().getName().equals("monatsberichtabfrage")) {
-                    String month = alexaRO.getRequest().getIntent().getSlotsRO().getMonth().getValue();
-                    int year = Integer.parseInt(alexaRO.getRequest().getIntent().getSlotsRO().getYear().getValue());
+                    SlotsRO slots = alexaRO.getRequest().getIntent().getSlotsRO();
+                    if (slots != null && slots.getMonth() != null && slots.getYear() != null) {
+                        String month = slots.getMonth().getValue();
+                        int year = Integer.parseInt(slots.getYear().getValue());
 
-                    outText.append(getMonthlyReportAlexa(alexaRO, month, year));
-                } else {
-                    outText.append("Diese Funktion ist im Finanzplaner nicht verfügbar.");
+                        logger.log(Level.INFO, "Retrieving report for Month: " + month + ", Year: " + year);
+
+                        outText.append(getMonthlyReportAlexa(alexaRO, month, year));
+                    } else {
+                        outText.append("Fehler: Monat oder Jahr wurde nicht korrekt angegeben.");
+                    }
+                }if (alexaRO.getRequest().getIntent().getName().equals("Logout")) {
+                    alexaRO.getSession().setAttributes(null);
+                    outText.append("Du wurdest erfolgreich abgemeldet. ");
+                    return prepareResponse(alexaRO, outText.toString(), true);
                 }
-            }
+                }
+
         } else {
             outText.append("Diese Funktion des Monthly Budget Finanzplaners existiert nicht.");
         }
@@ -340,17 +351,19 @@ public class MappingController {
         return prepareResponse(alexaRO, outText.toString(), false);
     }
 
+
     private String getMonthlyReportAlexa(AlexaRO alexaRO, String month, int year) {
         User user = userManager.getUserByID(Integer.parseInt(alexaRO.getSession().getAttributes().get("id")));
         if(user != null){
             MonthlyReport monthlyReport = monthlyReportManager.getMonthlyReport(user.getUserID(), month,  year);
-
+            double differenceSummary = monthlyReport.getDifferenceSummary();
+            BigDecimal roundedDifference = new BigDecimal(differenceSummary).setScale(2, RoundingMode.HALF_UP);
             String answer = "Dein Monatsbericht für den Monat " + month + " und das Jahr "+ year +
                     " lautet: Dein Gesamteinkommen für den Monat sind: "+ monthlyReport.getIncomeTotal() +
                     " Euro , Deine gesamten Fixen Kosten für den Monat sind: " + monthlyReport.getFixedTotal() +
                     " Euro , Deine gesamten variablen Kosten für den Monat sind: " + monthlyReport.getVariableTotal() +
                     " Euro , Deine gesamten Ausgaben für den Monat sind: " + monthlyReport.getExpensesTotal() +
-                    " Euro, deine Differenz für den Monat beträgt: " + monthlyReport.getDifferenceSummary();
+                    " Euro, deine Differenz für den Monat beträgt: " + roundedDifference + " Euro. " ;
                 return answer;
         }
 

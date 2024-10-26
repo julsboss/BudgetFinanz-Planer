@@ -42,6 +42,11 @@ public class SlotsRO {
         this.password = password;
         this.id = id;
     }
+    public SlotsRO(MonthRO month, YearRO year) {
+        super();
+        this.month = month;
+        this.year = year;
+    }
 
     @JsonProperty("password")
     public PasswordRO getPassword() {
