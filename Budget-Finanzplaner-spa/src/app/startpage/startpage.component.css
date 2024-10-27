@@ -1,0 +1,174 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f4ee;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row; /* Horizontale Anordnung */
+    justify-content: space-between;
+    align-items: center;
+    background-color: #8FBC8F;
+    padding: 20px 40px;
+}
+
+.hamburger {
+    display: none; /* Standardmäßig verstecken */
+    cursor: pointer; /* Zeiger anzeigen */
+    font-size: 28px; /* Größe des Icons */
+}
+
+.logo img {
+    height: 100px;
+    border-radius: 200px;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+.nav-links {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ddd;
+}
+.login-icon {
+    font-weight: bold;
+    background-color: #7cac7c;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.login-icon:hover {
+    background-color: #6b9b6b;
+}
+
+main {
+    max-width: 1200px;
+    margin: 100px auto; /* Adjusted for fixed navbar */
+    padding: 40px 20px;
+}
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#dashboard {
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #8FBC8F;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #7cac7c;
+}
+
+.btn-secondary {
+    background-color: #8FBC8F;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #7cac7c;
+}
+
+footer {
+    background-color: #8FBC8F;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+#map-section {
+    margin: 40px auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+#pac-input {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 80%;
+    font-size: 16px;
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+}
+
+
+@media (max-width: 768px) {
+   .hamburger {
+        display: block; /* Hamburger-Icon anzeigen */
+         cursor: pointer; /* Zeigerzeiger hinzufügen */
+         position: relative; /* relative Position */
+                 z-index: 2;
+    }
+    .navbar {
+        flex-direction: column; /* Vertikale Anordnung auf kleinen Bildschirmen */
+        align-items: flex-start; /* Links ausrichten */
+         position: relative; /* Positionierung für Navbar */
+    }
+    .nav-links {
+                display: none; /* Links ausblenden */
+                flex-direction: column; /* Vertikale Anordnung */
+                position: absolute; /* Positionieren */
+                top: 0px; /* Abstand von oben */
+                left: 0; /* Links ausrichten */
+                background-color: #8FBC8F; /* Hintergrundfarbe */
+                width: 100%; /* Vollbreite */
+                padding: 10px 0; /* Padding */
+                z-index: 1; /* Z-Index auf niedrigerem Wert als das Hamburger-Icon */
+
+    }
+        .nav-links.active {
+            display: flex; /* Links anzeigen, wenn aktiv */
+        }
+    .nav-links li {
+        margin: 10px 0; /* Abstand zwischen den Links */
+        text-align: center; /* Zentrierung */
+    }
+}

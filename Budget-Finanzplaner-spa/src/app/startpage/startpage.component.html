@@ -1,0 +1,38 @@
+<header>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="assets/logo.jpg" alt="Logo" />
+    </div>
+    <div class="hamburger" id="hamburger">☰</div>
+    <ul class="nav-links">
+      <li><a routerLink="/homepage">Home</a></li>
+      <li><a routerLink="/cashflow-overview">Finanzfluss</a></li>
+      <li><a routerLink="/monthly-report">Monatsbericht</a></li>
+      <li><a routerLink="/profile">Profil</a></li>
+      <li><a routerLink="/login" id="logout" class="login-icon">Abmelden</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="dashboard">
+    <h1>Willkommen zurück!</h1>
+    <div class="button-container">
+      <a routerLink="/add-cashflow"><button class="btn btn-primary">Finanzstrom hinzufügen</button></a>
+      <a routerLink="/monthly-report"><button class="btn btn-primary">Monatsbericht anzeigen</button></a>
+      <a routerLink="/statistik"><button class="btn btn-secondary">Statistik anzeigen</button></a>
+    </div>
+  </section>
+
+  <section id="map-section">
+    <input id="pac-input" class="controls" type="text" placeholder="Suche nach Geldautomaten" (input)="onLocationChange($event)"/>
+    <div>
+      <iframe id="map" src="https://www.google.com/maps?q=Geldautomat&output=embed"></iframe>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; 2024 My Monthly Budget. Alle Rechte vorbehalten.</p>
+</footer>
