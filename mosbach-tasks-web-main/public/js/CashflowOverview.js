@@ -72,6 +72,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     paymentMethodCell.textContent = transaction.payment_method; // Hier den Namen des Feldes anpassen
                     row.appendChild(paymentMethodCell);
 
+                     const repetitionCell = document.createElement('td');
+                     repetitionCell.textContent = transaction.repetition; // Hier den Namen des Feldes anpassen
+                     row.appendChild(repetitionCell);
+
                     const commentsCell = document.createElement('td');
                     commentsCell.textContent = transaction.comment; // Kommentare oder leer, falls nicht vorhanden
                     row.appendChild(commentsCell);
@@ -124,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('edit-category').value = transaction.category;
                 document.getElementById('edit-amount').value = transaction.amount;
                 document.getElementById('edit-payment_method').value = transaction.payment_method;
+                document.getElementById('edit-repetition').value = transaction.repetition;
                 document.getElementById('edit-comments').value = transaction.comments;
                 document.getElementById('editModal').style.display = 'block';
 
@@ -154,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     category: document.getElementById('edit-category').value,
                     amount: parseFloat(document.getElementById('edit-amount').value),
                     payment_method: document.getElementById('edit-payment_method').value,
+                    repetition: document.getElementById('edit-repetition').value,
                     comment: document.getElementById('edit-comments').value,
                 };
 
