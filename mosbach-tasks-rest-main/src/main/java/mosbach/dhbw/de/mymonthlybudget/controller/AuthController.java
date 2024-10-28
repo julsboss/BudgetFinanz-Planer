@@ -28,8 +28,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-   // @Autowired
-    //private UserService userService;
 
     @Autowired
     private UserManager userManager;
