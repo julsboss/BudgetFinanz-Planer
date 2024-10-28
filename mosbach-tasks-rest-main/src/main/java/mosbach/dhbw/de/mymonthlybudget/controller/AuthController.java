@@ -39,8 +39,6 @@ public class AuthController {
         Logger.getLogger("MappingController")
                 .log(Level.INFO,"MappingController create-user-table " + token);
 
-        // TODO:  Check token, this should be a very long, super secret token
-        // Usually this is done via a different, internal component, not the same component for all public REST access
 
         userManager.createUserTable();
 
@@ -89,7 +87,7 @@ public class AuthController {
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("Account created"), HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<MessageReason>(new MessageReason("Account already exists"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<MessageAnswer>(new MessageAnswer("Account already exists"), HttpStatus.BAD_REQUEST);
         }
     }
 

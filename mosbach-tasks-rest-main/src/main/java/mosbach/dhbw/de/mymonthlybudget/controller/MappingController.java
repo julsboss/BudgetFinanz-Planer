@@ -25,8 +25,7 @@ import java.util.logging.Logger;
 @RequestMapping("/api")
 public class MappingController {
 
-  //  CashflowManager propertiesCashflowManager = CashflowManagerImpl.getCashflowManagerImpl();
-//  AuthService authService = AuthServiceImpl.getAuthServiceImpl();
+
 
     @Autowired
             AuthService authService;
@@ -43,8 +42,6 @@ public class MappingController {
         Logger.getLogger("MappingController")
                 .log(Level.INFO, "MappingController create-cashflow-table " + token);
 
-        // TODO:  Check token, this should be a very long, super secret token
-        // Usually this is done via a different, internal component, not the same component for all public REST access
 
         cashflowManager.createCashflowTable();
 
@@ -54,9 +51,6 @@ public class MappingController {
     public String createMonthlyReportTable(@RequestParam(value = "token", defaultValue = "no-token") String token) {
         Logger.getLogger("MappingController")
                 .log(Level.INFO, "MappingController create-monthlyReport-table " + token);
-
-        // TODO:  Check token, this should be a very long, super secret token
-        // Usually this is done via a different, internal component, not the same component for all public REST access
 
         monthlyReportManager.createMonthlyReportTable();
 
