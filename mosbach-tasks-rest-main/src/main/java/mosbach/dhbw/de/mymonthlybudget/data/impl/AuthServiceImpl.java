@@ -19,14 +19,7 @@ import java.util.function.Function;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-   /* private static AuthServiceImpl authServiceImpl = null;
 
-    private AuthServiceImpl(){};
-
-    public static AuthServiceImpl getAuthServiceImpl(){
-        if(authServiceImpl == null) authServiceImpl = new AuthServiceImpl();
-        return authServiceImpl;
-    }*/
 
     @Autowired
     private TokenBlacklistImpl tokenBlacklist;
@@ -65,16 +58,7 @@ public class AuthServiceImpl implements AuthService {
         tokenBlacklist.blacklistToken(token);
     }
 
-    @Override
-    public String generateVerificationToken(User user) {
-        return Jwts
-                .builder()
-                .setSubject(user.getEmail())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 *60 *60*24))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
+
 
     @Override
     public String generateToken(User userDetails) {

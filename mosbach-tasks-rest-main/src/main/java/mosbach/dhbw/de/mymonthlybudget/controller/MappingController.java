@@ -2,7 +2,6 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.*;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.*;
-import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.*;
 import mosbach.dhbw.de.mymonthlybudget.model.MonthlyReport;
 import mosbach.dhbw.de.mymonthlybudget.model.alexa.*;
@@ -156,14 +155,17 @@ public class MappingController {
             boolean removed = cashflowManager.removeCashflow(cashflowId);
             if (removed) {
                 logger.info("Cashflow successfully deleted.");
-                return ResponseEntity.ok("Cashflow successfully deleted.");
+               // return ResponseEntity.ok("Cashflow successfully deleted.");
+               return new ResponseEntity<MessageAnswer>(new MessageAnswer("Cashflow successfully deleted"), HttpStatus.OK);
             } else {
                 logger.warning("Cashflow not found.");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cashflow not found.");
+                //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cashflow not found.");
+                return new ResponseEntity<MessageAnswer>(new MessageAnswer("Cashflow not found"), HttpStatus.NOT_FOUND);
             }
         } else {
             logger.warning("Unauthorized access attempt.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+           // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+            return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong token"), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -229,7 +231,7 @@ public class MappingController {
             return new ResponseEntity<MessageAnswer>(new MessageAnswer("MonthlyReport created"), HttpStatus.OK);
         }
         else{
-        return new ResponseEntity<MessageReason>(new MessageReason("Wrong token"), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong token"), HttpStatus.UNAUTHORIZED);
     }
     }
     @GetMapping(
@@ -243,11 +245,11 @@ public class MappingController {
             logger.log(Level.INFO, "User found: {}", user.getUserID());
             MonthlyReport report = monthlyReportManager.getMonthlyReport(user.getUserID(), month, year);
             if (report == null)
-                return new ResponseEntity<MessageReason>(new MessageReason("Monthly Report not found."), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<MessageAnswer>(new MessageAnswer("Monthly Report not found."), HttpStatus.NOT_FOUND);
             return new ResponseEntity<MonthlyReport>(report, HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<MessageReason>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -258,10 +260,10 @@ public class MappingController {
             List<StatistikDTO> statistikList = monthlyReportManager.getStatistikByYear(user.getUserID(), year);
             return new ResponseEntity<>(new StatistikResponse(statistikList), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new MessageReason("Wrong Credentials"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new MessageAnswer("Wrong Token"), HttpStatus.UNAUTHORIZED);
         }
     }
-    //TODO: ALEXA implementieren
+    
     @PostMapping(
             path = "/alexa",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -270,15 +272,15 @@ public class MappingController {
     public AlexaRO financialPlannerAlexaController(@RequestBody AlexaRO alexaRO) {
 
         final Logger logger = Logger.getLogger("AlexaLogger");
-        StringBuilder outText = new StringBuilder();
+        StringBuilder text = new StringBuilder();
 
         if (alexaRO.getRequest().getType().equalsIgnoreCase("LaunchRequest")) {
-            outText.append("Willkommen im My Monthly Budget Finanzplaner. Um dich anzumelden, sprich zuerst das Stichwort 'Login',und nenne anschließend deine User ID und dein Passwort jeweils mit den Stichwörtern davor.");
+            text.append("Willkommen im My Monthly Budget Finanzplaner. Um dich anzumelden, sprich zuerst das Stichwort 'Login',und nenne anschließend deine User ID und dein Passwort jeweils mit den Stichwörtern davor.");
         } else if (alexaRO.getRequest().getType().equals("IntentRequest")) {
 
             // Check if user is logged in
             if (alexaRO.getSession().getAttributes().isEmpty() && !alexaRO.getRequest().getIntent().getName().equals("Login")) {
-                outText.append("Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
+                text.append("Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
             } else if (alexaRO.getRequest().getIntent().getName().equals("Login")) {
 
                 // Extract email and password from slots
@@ -297,24 +299,24 @@ public class MappingController {
                     // Validate password
                     if (user.checkPassword(processedPassword)) {
                         alexaRO.getSession().setAttributes(null);
-                        HashMap<String, String> userCredentials = new HashMap<>();
-                        userCredentials.put(
+                        HashMap<String, String> credentials = new HashMap<>();
+                        credentials.put(
                                 "id",
                                 alexaRO.getRequest().getIntent().getSlotsRO().getId().getValue()
                         );
-                        userCredentials.put(
+                        credentials.put(
                                 "password",
                                 alexaRO.getRequest().getIntent().getSlotsRO().getPassword().getValue()
                         );
                         SessionRO session = new SessionRO();
-                        session.setAttributes(userCredentials);
-                        alexaRO.setSessionAttributes(userCredentials);
-                        outText.append("Die Anmeldung war erfolgreich. Du bist nun angemeldet. ");
+                        session.setAttributes(credentials);
+                        alexaRO.setSessionAttributes(credentials);
+                        text.append("Die Anmeldung war erfolgreich. Du bist nun angemeldet.");
                     } else {
-                        outText.append("Anmeldung fehlgeschlagen. Bitte überprüfe dein Passwort. Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
+                        text.append("Anmeldung fehlgeschlagen. Bitte überprüfe dein Passwort. Bitte melde dich zuerst mit dem Stichwort 'Login', gefolgt von deiner Benutzer-ID und deinem Passwort an.");
                     }
                 }else{
-                        outText.append("Benutzer nicht gefunden. Bitte überprüfe deine UserID in deiner Profilverwaltung.");
+                        text.append("Benutzer nicht gefunden. Bitte überprüfe deine UserID in deiner Profilverwaltung.");
                     }
             }
             else if (!alexaRO.getSession().getAttributes().isEmpty()) {
@@ -327,22 +329,22 @@ public class MappingController {
 
                         logger.log(Level.INFO, "Retrieving report for Month: " + month + ", Year: " + year);
 
-                        outText.append(getMonthlyReportAlexa(alexaRO, month, year));
+                        text.append(getMonthlyReportAlexa(alexaRO, month, year));
                     } else {
-                        outText.append("Fehler: Monat oder Jahr wurde nicht korrekt angegeben.");
+                        text.append("Fehler: Monat oder Jahr wurde nicht korrekt angegeben.");
                     }
                 }if (alexaRO.getRequest().getIntent().getName().equals("Logout")) {
                     alexaRO.getSession().setAttributes(null);
-                    outText.append("Du wurdest erfolgreich abgemeldet. ");
-                    return prepareResponse(alexaRO, outText.toString(), true);
+                    text.append("Du wurdest erfolgreich abgemeldet. ");
+                    return prepareResponse(alexaRO, text.toString(), true);
                 }
                 }
 
         } else {
-            outText.append("Diese Funktion des Monthly Budget Finanzplaners existiert nicht.");
+            text.append("Diese Funktion des Monthly Budget Finanzplaners existiert nicht.");
         }
 
-        return prepareResponse(alexaRO, outText.toString(), false);
+        return prepareResponse(alexaRO, text.toString(), false);
     }
 
 

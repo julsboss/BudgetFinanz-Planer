@@ -2,7 +2,6 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
-import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.UserDTO;
 import mosbach.dhbw.de.mymonthlybudget.model.MessageAnswer;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.User;
@@ -29,10 +28,10 @@ public class UserController {
            // userDTO.setUserID(user.getUserID());
 
             return new ResponseEntity<UserResponse>(new UserResponse(user), HttpStatus.OK);
-            //return new ResponseEntity<User>(new UserDTO(user), HttpStatus.OK);
+
         }
         else{
-            return new ResponseEntity<MessageReason>(new MessageReason("Wrong Token"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<MessageAnswer>(new MessageAnswer("Wrong Token"), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -43,7 +42,7 @@ public class UserController {
             // Convert User to UserResponse or UserDTO if needed
             return new ResponseEntity<>(new UserResponse(user), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new MessageReason("User not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new MessageAnswer("User not found"), HttpStatus.NOT_FOUND);
         }
     }
 

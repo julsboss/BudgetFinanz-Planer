@@ -2,7 +2,6 @@ package mosbach.dhbw.de.mymonthlybudget.controller;
 
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
-import mosbach.dhbw.de.mymonthlybudget.model.MessageReason;
 import mosbach.dhbw.de.mymonthlybudget.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

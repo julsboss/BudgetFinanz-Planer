@@ -19,9 +19,10 @@ function logout() {
             headers: {
                 'Authorization': localStorage.getItem('authToken')
             },
-            success: function(response) {
+            success: function(data) {
                 localStorage.removeItem('authToken');
-                console.log('Erfolgreich abgemeldet:', response);
+                console.log('Erfolgreich abgemeldet:', data.message);
+                alert(data.message);
                 localStorage.removeItem('authToken'); // Remove token from storage
                 window.location.href = 'LoginPage.html'; // Redirect to login page
             },

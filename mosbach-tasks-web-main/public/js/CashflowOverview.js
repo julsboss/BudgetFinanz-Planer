@@ -94,30 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-/*
-            // Funktion zum Rendern der Transaktionen
-           function displayTransactions() {
-                cashflowList.innerHTML = ''; // Leere die Tabelle
-                transactions.forEach((transaction, index) => {
 
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${transaction.date}</td>
-                        <td>${transaction.type}</td>
-                        <td>${transaction.category}</td>
-                        <td>€${transaction.amount.toFixed(2)}</td>
-                        <td>${transaction.payment_method}</td>
-                        <td>${transaction.comments}</td>
-                        <td>
-                            <button onclick="editTransaction(${index})">Bearbeiten</button>
-                            <button onclick="deleteTransaction(${index})">Löschen</button>
-                        </td>
-                    `;
-                    cashflowList.appendChild(row);
-                });
-            }
-
-            */
 
             // Funktion für das Bearbeiten von Transaktionen
             window.editTransaction = function (transactionId) {
@@ -200,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         displayTransactions(); // Transaktionen anzeigen
                                     } else {
                                         console.error('Eine oder mehrere Transaktionen haben keine ID.');
+                                        alert(data.message);
                                     }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -221,12 +199,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     processData: false,
                     success: function(data) {
                         $("#serverAnswer").html(data.message);
-                        alert('Transaktion erfolgreich aktualisiert!');
-
+                        //alert('Transaktion erfolgreich aktualisiert!');
+                        alert(data.message);
                         displayTransactions(); // Aktualisiere die Anzeige der Transaktionen
                     },
-                    error: function(xhr, ajaxOptions, thrownError) {
+                    error: function(xhr, ajaxOptions, thrownError, data) {
                         handleAjaxError(xhr, thrownError);
+                        alert(data.message);
                     }
                 });
             }
@@ -240,7 +219,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     success: function(data) {
                         $("#serverAnswer").html(data.message);
-                        alert('Transaktion erfolgreich gelöscht!');
+                      //  alert('Transaktion erfolgreich gelöscht!');
+                        alert(data.message);
                         displayTransactions();
                     },
                     error: function(xhr, ajaxOptions, thrownError) {

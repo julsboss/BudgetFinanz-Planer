@@ -110,34 +110,6 @@ public class PostgresDBUserManagerImpl implements UserManager {
 
 
 
-    /*@Override
-    public boolean deleteUser(String email) {
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        boolean isDeleted = false;
-
-        try {
-            connection = DriverManager.getConnection(dbUrl, username, password);
-            String deleteSQL = "DELETE FROM group21Users WHERE email = ?";
-            pstmt = connection.prepareStatement(deleteSQL);
-            pstmt.setString(1, email);
-
-            int affectedRows = pstmt.executeUpdate();
-            isDeleted = (affectedRows > 0);
-
-        } catch (SQLException e) {
-            System.err.println("SQL Exception occurred while deleting user: " + e.getMessage());
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                System.err.println("Failed to close resources: " + e.getMessage());
-            }
-        }
-
-        return isDeleted;
-    }*/
     @Override
     public boolean deleteUser(int userID) {
         Connection connection = null;

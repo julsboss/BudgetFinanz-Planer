@@ -15,13 +15,13 @@ $('#confirmButton').on('click', function() {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify(postData),
-        success: function(response) {
-            console.log('Monthly Report created:', response);
-            alert('Monatsbericht erfolgreich erstellt.', response);
+        success: function(data) {
+            console.log('Monthly Report created:', data.message);
+            alert(data.message);
         },
-        error: function(error) {
-            console.error('Error creating report:', error);
-            alert('Fehler beim Erstellen des Berichts.', error);
+        error: function(data) {
+            console.error('Error creating report:', data.message);
+            alert('Fehler beim Erstellen des Berichts.', data.message);
         }
     });
 });

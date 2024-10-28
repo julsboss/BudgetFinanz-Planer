@@ -32,5 +32,4 @@ mosbach\dhbw\de\mymonthlybudget\model\StatistikRequest.class
 mosbach\dhbw\de\mymonthlybudget\model\StatistikResponse.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBUserManagerImpl.class
 mosbach\dhbw\de\mymonthlybudget\data\impl\PostgresDBCashflowManagerImpl.class
-mosbach\dhbw\de\mymonthlybudget\model\MessageReason.class
 mosbach\dhbw\de\mymonthlybudget\model\alexa\UserIDRO.class
