@@ -3,8 +3,8 @@ applications:
   - name: BudgetFrontendSpa
 instances: 1
 host: BudgetFrontendSpa{random-word}
-path: ./dist/Budget-Finanzplaner-spa
+path: ./dist/budget-finanzplaner-spa
 random-route: true
 memory: 800M
 #needed for Java 17:
-buildpacks: https://github.com/cloudfoundry/staticfile-buildpack.git
+buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git
