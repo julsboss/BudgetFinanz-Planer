@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-@CrossOrigin(origins = "https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", allowedHeaders = "*")
+@CrossOrigin(origins = {"https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", "*"}, allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

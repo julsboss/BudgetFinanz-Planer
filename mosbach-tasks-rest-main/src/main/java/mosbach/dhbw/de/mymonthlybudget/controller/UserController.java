@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", allowedHeaders = "*")
+@CrossOrigin(origins = {"https://BudgetFrontend-triumphant-panda-iv.apps.01.cf.eu01.stackit.cloud", "*"}, allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

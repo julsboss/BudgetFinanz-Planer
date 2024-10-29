@@ -279,7 +279,8 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
 
         try {
             connection = DriverManager.getConnection(dbUrl, username, password);
-            String sql = "SELECT * FROM group21cashflows WHERE user_id = ?";
+          //  String sql = "SELECT * FROM group21cashflows WHERE user_id = ?";
+            String sql = "SELECT * FROM group21cashflows WHERE user_id = ? ORDER BY date DESC";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, userId);
 
@@ -371,6 +372,7 @@ public class PostgresDBCashflowManagerImpl implements CashflowManager {
             connection = DriverManager.getConnection(dbUrl, username, password);
 
             String query = "SELECT * FROM group21cashflows WHERE cashflow_id = ?";
+
             pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, cashflowID);
 

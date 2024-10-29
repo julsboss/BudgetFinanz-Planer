@@ -258,6 +258,9 @@ public class MappingController {
         User user = userManager.getUser(token);
         if (user != null) {
             List<StatistikDTO> statistikList = monthlyReportManager.getStatistikByYear(user.getUserID(), year);
+            if(statistikList.isEmpty()){
+                return new ResponseEntity<>(new MessageAnswer("No statistic available for this year"),HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<>(new StatistikResponse(statistikList), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new MessageAnswer("Wrong Token"), HttpStatus.UNAUTHORIZED);

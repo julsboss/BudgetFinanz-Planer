@@ -3,6 +3,7 @@ package mosbach.dhbw.de.mymonthlybudget.data.impl;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
+import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import mosbach.dhbw.de.mymonthlybudget.model.CashflowDTO;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -77,7 +78,7 @@ public class CashflowImpl implements Cashflow {
         this.paymentMethod = paymentMethod;
         this.repetition = repetition;
         this.comments = comments;
-        UserService userService = new UserServiceImpl();
+        UserManager userService = PostgresDBUserManagerImpl.getPostgresDBUserManagerImpl();
         User user = userService.getUser(token);
         this.user_id = user.getUserID();
 
@@ -131,7 +132,7 @@ public class CashflowImpl implements Cashflow {
     }
 
     public void setUserID(String token){
-        UserService userService = new UserServiceImpl();
+        UserManager userService = PostgresDBUserManagerImpl.getPostgresDBUserManagerImpl();
         User user = userService.getUser(token);
         this.user_id = user.getUserID();
     }

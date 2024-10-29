@@ -14,7 +14,7 @@ function initializeChart() {
   data.addColumn('number', 'Vermögen');
 
   options = {
-    title: 'Monatsbericht für Jahr',
+   // title: 'Monatsbericht für Jahr',
     vAxis: {title: 'Summe in Euro €'},
     hAxis: {title: 'Monat'},
     seriesType: 'bars',
@@ -36,6 +36,13 @@ function updateChart() {
 $('#yearButton').on('click', function() {
     const year = $('#year').val();
     if (year) {
+         // Clear existing data before making the request
+                data = new google.visualization.DataTable();
+                data.addColumn('string', 'Monat');
+                data.addColumn('number', 'Einkommen');
+                data.addColumn('number', 'Ausgaben');
+                data.addColumn('number', 'Differenz');
+                data.addColumn('number', 'Vermögen');
         $.ajax({
             url: 'https://BudgetBackend-active-lemur-qg.apps.01.cf.eu01.stackit.cloud/api/statistik',
             method: 'GET',
@@ -45,15 +52,22 @@ $('#yearButton').on('click', function() {
             data: { year: year }, // Send as query parameter
             success: function(response) {
                 console.log('Statistik Report:', response);
+
                 // Process and display the response data
                 response.statistik.forEach(function(item) {
                     addData(item.month, item.income_total, item.expenses_total, item.difference_summary, item.wealth);
                 });
+                 // Update the chart title with the selected year
+                                options.title = `Monatsberichte für ${year}`;
+
+                                // Update the chart with new data
+                                updateChart();
             },
             error: function(error) {
+
                 console.error('Error fetching report:', error.message);
-                alert('Fehler beim Abrufen des Berichts.');
-                //alert(error.message);
+                //alert('Fehler beim Abrufen des Berichts.');
+                alert('No statistics available for this year');
             }
         });
     } else {

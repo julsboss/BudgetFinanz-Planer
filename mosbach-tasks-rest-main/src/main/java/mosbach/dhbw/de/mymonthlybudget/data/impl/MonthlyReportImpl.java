@@ -2,6 +2,7 @@ package mosbach.dhbw.de.mymonthlybudget.data.impl;
 
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReport;
+import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 
 import java.util.List;
@@ -86,7 +87,7 @@ public class MonthlyReportImpl implements MonthlyReport {
         return userID;
     }
    public void setUserID(String token){
-       UserService userService = new UserServiceImpl();
+       UserManager userService = PostgresDBUserManagerImpl.getPostgresDBUserManagerImpl();
        User user = userService.getUser(token);
        this.userID = user.getUserID();
    }

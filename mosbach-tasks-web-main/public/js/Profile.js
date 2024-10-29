@@ -38,12 +38,13 @@ $(document).ready(function() {
             },
             data: JSON.stringify(updatedUser),
             contentType: 'application/json',
-            success: function(response) {
+            success: function(data) {
                // alert(`User erfolgreich aktualisiert:`, response);
                 alert(data.message);
             },
             error: function(error) {
                // console.error(`Aktualisierung nicht erfolgreich:`, error);
+               alert(error.message);
             },
         });
     });

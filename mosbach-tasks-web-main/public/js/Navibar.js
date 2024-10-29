@@ -22,9 +22,9 @@ function logout() {
             success: function(data) {
                 localStorage.removeItem('authToken');
                 console.log('Erfolgreich abgemeldet:', data.message);
-                alert(data.message);
                 localStorage.removeItem('authToken'); // Remove token from storage
-                window.location.href = 'LoginPage.html'; // Redirect to login page
+                window.location.href = 'LoginPage.html';
+                //alert(data.message); // Redirect to login page
             },
             error: function(error) {
                 console.error('Fehler beim Abmelden:', error);

@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('edit-amount').value = transaction.amount;
                 document.getElementById('edit-payment_method').value = transaction.payment_method;
                 document.getElementById('edit-repetition').value = transaction.repetition;
-                document.getElementById('edit-comments').value = transaction.comments;
+                document.getElementById('edit-comments').value = transaction.comment;
                 document.getElementById('editModal').style.display = 'block';
 
                  // Verstecktes Feld, um die Transaktions-ID zu speichern
