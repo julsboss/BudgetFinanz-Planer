@@ -11,7 +11,7 @@ import mosbach.dhbw.de.mymonthlybudget.data.api.AuthService;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+//nicht mehr in Benutzung
 @Service
 public class UserServiceImpl implements UserService{ //hier habe ich das Interface Userservice entfernt
     private static List<User> users = new ArrayList();

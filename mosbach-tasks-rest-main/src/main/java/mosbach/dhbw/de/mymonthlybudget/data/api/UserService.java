@@ -4,7 +4,7 @@ package mosbach.dhbw.de.mymonthlybudget.data.api;
 import mosbach.dhbw.de.mymonthlybudget.data.impl.User;
 
 import java.util.List;
-
+//nicht mehr in Benutzung
 public interface UserService {
 
     public void addUser(User user);

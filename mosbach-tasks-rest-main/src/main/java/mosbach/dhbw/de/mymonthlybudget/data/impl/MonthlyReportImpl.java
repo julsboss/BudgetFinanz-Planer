@@ -3,7 +3,7 @@ package mosbach.dhbw.de.mymonthlybudget.data.impl;
 import mosbach.dhbw.de.mymonthlybudget.data.api.Cashflow;
 import mosbach.dhbw.de.mymonthlybudget.data.api.MonthlyReport;
 import mosbach.dhbw.de.mymonthlybudget.data.api.UserManager;
-import mosbach.dhbw.de.mymonthlybudget.data.api.UserService;
+
 
 import java.util.List;
 
